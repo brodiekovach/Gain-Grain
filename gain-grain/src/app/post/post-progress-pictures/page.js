@@ -4,8 +4,9 @@ import Navbar from "@/components/Navbar";
 
 export default function UploadProgressPicture() {
   const [pic, setPic] = useState('');
+  const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  const [user, setUser] = useState(null)
+  const [success, setSuccess] = useState('');
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -86,7 +87,8 @@ export default function UploadProgressPicture() {
           return;
       }
 
-      alert('Progress picture uploaded successfully!');
+      setSuccess('Progress picture uploaded successfully!');
+      await new Promise(r => setTimeout(r, 2000));
       window.location.href = '/post'
     } catch (err) {
       console.log(err);
@@ -99,7 +101,8 @@ export default function UploadProgressPicture() {
       <Navbar />
       <div className="container mx-auto p-4">
         <h1 className="text-2xl font-bold">Upload Progress Picture</h1>
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500 mt-4">{error}</p>}
+        {success && <p className="text-green-500 mt-4">{success}</p>}
         
         <div className="mt-4">
           <label className="text-lg">Progress Picture: </label>

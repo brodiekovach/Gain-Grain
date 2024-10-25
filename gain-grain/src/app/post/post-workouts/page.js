@@ -103,10 +103,9 @@ export default function PostWorkouts() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col">
-            <Navbar /> {/* Navbar at the top */}
-            <div className="flex-grow flex items-center justify-center bg-gray-100 p-6">
-                <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-4xl">
+        <div className="min-h-screen flex flex-col items-center justify-start bg-gray-100">
+            <Navbar /> 
+                <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-4xl mt-32">
                     <h1 className="text-3xl font-bold mb-6 text-center">Post Workouts</h1>
                     <input
                         type="text"
@@ -172,9 +171,8 @@ export default function PostWorkouts() {
                         </button>
                     </div>
                 </div>
-            </div>
-            {success && <p className="text-green-500 mt-4">{success}</p>}
-            {error && <p className="text-red-500 mt-4">{error}</p>}
+            {success && <p className="text-center text-green-500 mt-4">{success}</p>}
+            {error && <p className="text-center text-red-500 mt-4">{error}</p>}
         </div>
     );
 }
