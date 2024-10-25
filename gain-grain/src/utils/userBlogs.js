@@ -9,7 +9,7 @@ export async function createBlogPost(userId, content) {
     const blogCollection = db.collection('blogs');
 
     const result = await blogCollection.insertOne({
-        _id: new ObjectId(userId),
+        userId: new ObjectId(userId),  
         content,
         date: new Date(),
     });
