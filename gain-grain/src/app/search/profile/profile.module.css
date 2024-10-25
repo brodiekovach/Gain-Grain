@@ -10,10 +10,54 @@
     border-radius: 100px;
     color: white;
     width: 120px;
+    font-size: 18px;
 }
 
 .username {
     font-size: 30px;
     font-weight: bold;
     text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+  
+.alert {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    padding: 20px;
+    font-size: 17px;
+    background-color: #fff;
+    border: 2px solid #f3dac1c5;
+    color: var(--vol-orange);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 1000;
+}
+  
+.alert::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    border-radius: 5px;
+    z-index: -1;
+}
+  
+.alert.hidden {
+    display: none;
+}
+  
+#alert-close {
+    background: transparent;
+    border: none;
+    color: var(--vol-orange);
+    font-size: 16px;
+    cursor: pointer;
+    padding-right: 0px;
 }

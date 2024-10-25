@@ -75,6 +75,10 @@ export default function Navbar() {
         setNotifications(notifications.filter((notif) => notif.id !== id));
       };
 
+      const clearSearchText = () => {
+        setSearchText('');
+    };
+
     return (
         <nav className={styles.bigBar}>
             {/* gain & grain logo top left */}
@@ -98,11 +102,15 @@ export default function Navbar() {
                 />
                 
                 {searchResults.length > 0 && (
-                    <div class={styles.searchDropdownContainer}>
+                    <div className={styles.searchDropdownContainer}>
                         <ul className={styles.searchDropdown}>
                             {searchResults.map((result) => (
                                 <li key={result._id}>
-                                    <Link href={`/search/profile?userId=${result._id}`}>
+                                    <Link 
+                                        href={`/search/profile?userId=${result._id}`} 
+                                        onClick={clearSearchText}
+                                        className="block w-full text-left"
+                                    >
                                         {result.username}
                                     </Link>
                                 </li>

@@ -288,3 +288,146 @@ export const updateProfile = async(userId, username, name, bio, profilePicPath) 
     return { success: false, message: 'Error updating profile' };
   }
 }
+
+export const followAccount = async (user, currentUser) => {
+  try {
+    const client = await clientPromise;
+    const db = client.db();
+
+    const userId = user._id;
+    const currentUserId = currentUser._id;
+
+    const updateCurrentUser = await db.collection('users').updateOne(
+      {_id: new ObjectId(currentUserId) },
+      { 
+        $addToSet: { following: userId },
+        $inc: { numFollowing: 1 },
+      },
+      { new: true }
+    );
+
+    if(!updateCurrentUser) {
+      return { success: false, message: 'The user trying to follow does not exist' }
+    }
+
+    const updateUser = await db.collection('users').updateOne(
+      {_id: new ObjectId(userId) },
+      { 
+          $addToSet: { followers: currentUserId, notifications: `${currentUser.username} started following you.` },
+          $inc: { numFollowers: 1 },
+      },
+      { new: true }
+    );
+
+    if(!updateUser) {
+      return { success: false, message: 'The user you\'re trying to follow does not exist' }
+    }
+
+    return { success: true, message: 'Successfully followed the user' };
+  } catch (error) {
+    console.error("Error in following user: ", error);
+    return { success: false, message: `Error: ${error.message}` };
+  }
+}
+
+export const unfollowAccount = async (user, currentUser) => {
+  try {
+    const client = await clientPromise;
+    const db = client.db();
+
+    const userId = user._id;
+    const currentUserId = currentUser._id;
+
+    const updateCurrentUser = await db.collection('users').updateOne(
+      {_id: new ObjectId(currentUserId) },
+      { 
+        $pull: { following: userId },
+        $inc: { numFollowing: -1 },
+      },
+      { new: true }
+    );
+
+    if(!updateCurrentUser) {
+      return { success: false, message: 'The user trying to unfollow does not exist' }
+    }
+
+    const updateUser = await db.collection('users').updateOne(
+      {_id: new ObjectId(userId) },
+      { 
+          $pull: { followers: currentUserId },
+          $inc: { numFollowers: -1 },
+      },
+      { new: true }
+    );
+
+    if(!updateUser) {
+      return { success: false, message: 'The user you\'re trying to unfollow does not exist' }
+    }
+
+    return { success: true, message: 'Successfully unfollowed the user' };
+  } catch (error) {
+    console.error("Error in unfollowing user: ", error);
+    return { success: false, message: `Error: ${error.message}` };
+  }
+}
+
+export const isFollowing = async(currentUser, user) => {
+  try {
+    const client = await clientPromise;
+    const db = client.db();
+
+    const currentUserId = currentUser._id;
+    const userId = user._id;
+
+    const currentUserData = await db.collection('users').findOne({ _id: new ObjectId(currentUserId) });
+
+    if (!currentUserData) {
+      return { following: false, message: 'Current user does not exist' };
+    }
+
+    if (currentUserData.following.includes(userId)) {
+      return { following: true };
+    } else {
+      return { following: false };
+    }
+  } catch (error) {
+    console.error("Error in checking following status: ", error);
+    return { following: false, message: error.message };
+  }
+}
+
+export const updateUserSchema = async() => {
+  const client = await clientPromise;
+  const db = client.db();
+
+  try {
+    const users = await db.collection('users').find({}).toArray();
+
+    for (const user of users) {
+      const updates = {};
+
+      if(user.name === undefined) updates.name = '';
+      if(user.email === undefined) updates.email = '';
+      if(user.username === undefined) updates.username = '';
+      if(user.password === undefined) updates.password = '';
+      if(user.numFollowers === undefined) updates.numFollowers = '';
+      if(user.numFollowing === undefined) updates.numFollowing = 0;
+      if(!Array.isArray(user.followers)) updates.followers = [];
+      if(!Array.isArray(user.following)) updates.following = [];
+      if(user.bio === undefined) updates.bio = '';
+      if(user.profilePic === undefined) updates.profilePic = '';
+      if(!Array.isArray(user.notifications)) updates.notifications = [];
+
+      if(Object.keys(updates).length > 0) {
+        await db.collection('users').updateOne(
+          { _id: user._id },
+          { $set: updates }
+        );
+      }
+    }
+
+    console.log('All users updated with missing fields');
+  } catch (error) {
+    console.error('Error updating user schema: ', error);
+  }
+}
