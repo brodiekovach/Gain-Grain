@@ -7,6 +7,8 @@ export default function PostWorkouts() {
     ]);
     const [title, setTitle] = useState(''); 
     const [userId, setUserId] = useState('');
+    const [success, setSuccess] = useState('');
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -54,14 +56,47 @@ export default function PostWorkouts() {
                 body: JSON.stringify({ userId, title, exercises }),
             });
 
-            if (response.ok) {
-                alert('Workout submitted successfully!');
-                window.location.href = '/post';
+            const result = await response.json();
+
+            if(!result.success) {
+                setError('Failed to submit workout');
+                return;
+            }
+
+            const savedPost = await fetch('/api/posts/save-post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    userId,
+                    postType: 'Workout',
+                    postData: {
+                        title,
+                        exercises,
+                        date: new Date(),
+                    }
+                }),
+            });
+
+            const postResult = await savedPost.json();
+
+            if(!postResult.success) {
+                setError('Failed to submit post');
+                return;
             } else {
-                alert('Failed to submit workout');
+                console.log('Workout posted');
+                setSuccess('Workout posted successfully!');
+                await new Promise(r => setTimeout(r, 2000));
+                window.location.href = '/post';
+            }
+
+
+            if (response.ok) {
+                setSuccess('Workout submitted successfully!');
+                window.location.href = '/post';
             }
         } catch (error) {
             console.error('Error submitting workout:', error);
+            setError('Error submitting workout. Please try again.')
         }
     };
 
@@ -133,6 +168,8 @@ export default function PostWorkouts() {
                 </button>
                 </div>
             </div>
+            {success && <p className="text-green-500 mt-4">{success}</p>}
+            {error && <p className="text-red-500 mt-4">{error}</p>}
         </div>
     );
 }

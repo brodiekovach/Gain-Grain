@@ -52,9 +52,11 @@ export default function profile() {
             <p>Followers: <strong>{user.numFollowers}</strong></p>
             <p>Following: <strong>{user.numFollowing}</strong></p>
           </div>
-            <p className="mt-4 text-center">
-              <p>{user.bio}</p>
-            </p>
+            {user.bio ? (
+              <p className="mt-4 text-center">{user.bio}</p>
+            ) : (
+              <p></p>
+            )}
             <div className="flex flex-col items-center w-full mt-6">
             <button className={styles.followButton}>Follow</button>
             </div>

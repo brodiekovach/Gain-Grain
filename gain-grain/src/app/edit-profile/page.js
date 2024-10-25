@@ -9,7 +9,7 @@ export default function EditProfile() {
   const [username, setUsername] = useState('');
   const [name, setName] = useState('');
   const [bio, setBio] = useState('');
-  const [profilePic, setProfilePic] = useState('');
+  const [pic, setPic] = useState('');
   const [profilePicPath, setProfilePicPath] = useState('');
   const [error, setError] = useState(null);
 
@@ -64,11 +64,11 @@ export default function EditProfile() {
     let updatedProfilePicPath = profilePicPath;
 
     try {
-      if(profilePic) {
+      if(pic) {
         const formData = new FormData();
-        formData.append('profilePic', profilePic);
+        formData.append('pic', pic);
 
-        const uploadResponse = await fetch('/api/profile/upload-profilePic', {
+        const uploadResponse = await fetch('/api/profile/upload-pic', {
           method: 'POST',
           body: formData,
         });
@@ -150,7 +150,7 @@ export default function EditProfile() {
                   type="file"
                   accept="image/*"
                   id="profilePic"
-                  onChange={(e) => setProfilePic(e.target.files[0])}
+                  onChange={(e) => setPic(e.target.files[0])}
                 />
             </div>
 

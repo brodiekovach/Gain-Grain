@@ -1,5 +1,5 @@
-import Post from '../../../../models/Post';
-import clientPromise from '../../../utils/mongodb';
+import Post from '../../../../../models/Post';
+import clientPromise from '../../../../utils/mongodb';
 
 // Fetch all posts
 const fetchPosts = async () => {

@@ -29,6 +29,7 @@ const CreateBlogPost = () => {
             }
           } catch (error) {
             console.error(error);
+            return;
           }
         };
     
@@ -52,14 +53,37 @@ const CreateBlogPost = () => {
                 body: JSON.stringify({ userId, content: postContent }), 
             });
 
-            if (response.ok) {
+            const blogResult = await response.json();
+
+            if(!blogResult.success) {
+                setError('Failed to submit blog post');
+                return;
+            }
+
+            const savedPost = await fetch('/api/posts/save-post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    userId,
+                    postType: 'Blog',
+                    postData: {
+                        content: postContent,
+                        date: new Date(),
+                    }
+                }),
+            });
+
+            const postResult = await savedPost.json();
+
+            if(!postResult.success) {
+                setError('Failed to submit post');
+                return;
+            } else {
                 console.log('Blog post submitted');
                 setSuccess('Blog post submitted successfully!');
                 setPostContent(''); 
                 await new Promise(r => setTimeout(r, 2000));
                 window.location.href = '/post';
-            } else {
-                throw new Error('Failed to submit blog post');
             }
         } catch (error) {
             console.error('Error submitting blog post:', error);

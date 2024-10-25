@@ -8,7 +8,7 @@ export async function POST(req) {
     try {
         const formData = await req.formData();
         const body = Object.fromEntries(formData);
-        const file = body.profilePic;
+        const file = body.pic;
 
         const buffer = Buffer.from(await file.arrayBuffer());
         if(!fs.existsSync(UPLOAD_DIR)) {
@@ -22,7 +22,7 @@ export async function POST(req) {
 
         return NextResponse.json({ success: true, fileName: file.name });
     } catch (error) {
-        console.error('Error in update-profilePic API:', error);
+        console.error('Error in update-pic API:', error);
         return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
       }
 }

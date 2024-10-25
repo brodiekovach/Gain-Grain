@@ -2,10 +2,12 @@
 import { useState, useEffect } from 'react';
 
 export default function PostMeals() {
-    const [meals, setMeals] = useState([
-        { id: 1, name: '', calories: '', proteins: '', carbs: '', fats: '' },
-    ]);
-    const [user, setUser] = useState('');
+    const [meal, setMeal] = useState(
+        { name: '', calories: '', protein: '', carbs: '', fats: '' },
+    );
+    const [userId, setUserId] = useState('');
+    const [success, setSuccess] = useState('');
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -20,7 +22,7 @@ export default function PostMeals() {
             const data = await response.json();
     
             if (data.success) {
-              setUser(data.user);
+              setUserId(data.user._id);
             }
           } catch (error) {
             console.error(error);
@@ -30,21 +32,58 @@ export default function PostMeals() {
         fetchUserData();
       }, []);
 
-    const handleChange = (id, field, value) => {
-        setMeals((prev) =>
-            prev.map((meal) =>
-                meal.id === id ? { ...meal, [field]: value } : meal
-            )
-        );
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setMeal((prevMeal) => ({
+            ...prevMeal,
+            [name]: value,
+        }));
     };
 
     // Placeholder function for submitting the meal data
-    const handleSubmitMeal = () => {
-        const meal = meals[0]; 
-        console.log("Meal submitted:", meal);
-        // Placeholder: Add backend submission logic here in the future
-        alert('Meal submitted (placeholder)!');
-        window.location.href = '/post';
+    const handleSubmitMeal = async() => {
+        try {
+            const response = await fetch('/api/posts/post-meal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, meal }), 
+            });
+
+            const mealResult = await response.json();
+
+            if(!mealResult.success) {
+                setError('Failed to post meal.');
+                return;
+            }
+
+            const savedPost = await fetch('/api/posts/save-post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    userId,
+                    postType: 'Meal',
+                    postData: {
+                        meal,
+                        date: new Date(),
+                    }
+                }),
+            });
+
+            const postResult = await savedPost.json();
+
+            if(!postResult.success) {
+                setError('Failed to post meal.');
+                return;
+            } else {
+                console.log('Meal posted.');
+                setSuccess('Meal posted!');
+                await new Promise(r => setTimeout(r, 2000));
+                window.location.href = '/post';
+            }
+        } catch (error) {
+            console.error('Error posting meal:', error);
+            setError('Error posting meal. Please try again.');
+        }
     };
 
     return (
@@ -56,61 +95,62 @@ export default function PostMeals() {
                         <tr>
                             <th className="border px-4 py-2">Meal / Recipe</th>
                             <th className="border px-4 py-2">Calories</th>
-                            <th className="border px-4 py-2">Proteins (g)</th>
+                            <th className="border px-4 py-2">Protein (g)</th>
                             <th className="border px-4 py-2">Carbohydrates (g)</th>
                             <th className="border px-4 py-2">Fats (g)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {meals.map((meal) => (
-                            <tr key={meal.id}>
-                                <td className="border px-4 py-2">
-                                    <input
-                                        type="text"
-                                        value={meal.name}
-                                        onChange={(e) => handleChange(meal.id, 'name', e.target.value)}
-                                        className="border w-full px-2 py-1 rounded"
-                                        placeholder="Enter meal name"
-                                    />
-                                </td>
-                                <td className="border px-4 py-2">
-                                    <input
-                                        type="number"
-                                        value={meal.calories}
-                                        onChange={(e) => handleChange(meal.id, 'calories', e.target.value)}
-                                        className="border w-full px-2 py-1 rounded"
-                                        placeholder="Enter calories"
-                                    />
-                                </td>
-                                <td className="border px-4 py-2">
-                                    <input
-                                        type="number"
-                                        value={meal.proteins}
-                                        onChange={(e) => handleChange(meal.id, 'proteins', e.target.value)}
-                                        className="border w-full px-2 py-1 rounded"
-                                        placeholder="Enter proteins"
-                                    />
-                                </td>
-                                <td className="border px-4 py-2">
-                                    <input
-                                        type="number"
-                                        value={meal.carbs}
-                                        onChange={(e) => handleChange(meal.id, 'carbs', e.target.value)}
-                                        className="border w-full px-2 py-1 rounded"
-                                        placeholder="Enter carbs"
-                                    />
-                                </td>
-                                <td className="border px-4 py-2">
-                                    <input
-                                        type="number"
-                                        value={meal.fats}
-                                        onChange={(e) => handleChange(meal.id, 'fats', e.target.value)}
-                                        className="border w-full px-2 py-1 rounded"
-                                        placeholder="Enter fats"
-                                    />
-                                </td>
-                            </tr>
-                        ))}
+                        <td className="border px-4 py-2">
+                            <input
+                                type="text"
+                                name="name"
+                                value={meal.name}
+                                onChange={handleChange}
+                                className="border w-full px-2 py-1 rounded"
+                                placeholder="Meal name"
+                            />
+                        </td>
+                        <td className="border px-4 py-2">
+                            <input
+                                type="number"
+                                name="calories"
+                                value={meal.calories}
+                                onChange={handleChange}
+                                className="border w-full px-2 py-1 rounded"
+                                placeholder="Calories"
+                            />
+                        </td>
+                        <td className="border px-4 py-2">
+                            <input
+                                type="number"
+                                name="protein"
+                                value={meal.protein}
+                                onChange={handleChange}
+                                className="border w-full px-2 py-1 rounded"
+                                placeholder="Protein"
+                            />
+                        </td>
+                        <td className="border px-4 py-2">
+                            <input
+                                type="number"
+                                name="carbs"
+                                value={meal.carbs}
+                                onChange={handleChange}
+                                className="border w-full px-2 py-1 rounded"
+                                placeholder="Carbs"
+                            />
+                        </td>
+                        <td className="border px-4 py-2">
+                            <input
+                                type="number"
+                                name="fats"
+                                value={meal.fats}
+                                onChange={handleChange}
+                                className="border w-full px-2 py-1 rounded"
+                                placeholder="Fats"
+                            />
+                        </td>
                     </tbody>
                 </table>
                 <button
@@ -120,6 +160,8 @@ export default function PostMeals() {
                     Submit Meal
                 </button>
             </div>
+            {success && <p className="text-green-500 mt-4">{success}</p>}
+            {error && <p className="text-red-500 mt-4">{error}</p>}
         </div>
     );
 }

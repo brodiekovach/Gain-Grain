@@ -1,19 +1,4 @@
-import mongoose from 'mongoose';
 import clientPromise from './mongodb';
-
-const workoutSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  title: { type: String, required:true},
-  exercises: [
-    {
-      name: { type: String, required: true },
-      Sets: { type: Number },
-      Reps: { type: Number },
-    }
-  ]
-});
-
-const Workout = mongoose.models.Workout || mongoose.model('Workout', workoutSchema);
 
 // create a workout in the database
 export const createWorkout = async (userId, title, exercises) => {
@@ -53,5 +38,3 @@ export const deleteWorkoutById = async (workoutId) => {
   const result = await workoutsCollection.deleteOne({ _id: objectId}); // Delete the workout by ID
   return result; // Return the result of the delete operation
 };
-
-export default Workout;

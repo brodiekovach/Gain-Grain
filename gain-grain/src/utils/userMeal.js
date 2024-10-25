@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import clientPromise from './mongodb';
+import MealPost from './postModels/Post'
 
 const mealSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -56,5 +57,23 @@ export const deleteMealById = async (mealId) => {
   const result = await workoutsCollection.deleteOne({ _id: objectId}); // Delete the workout by ID
   return result; // Return the result of the delete operation
 };
+
+export const saveMealPost = async(userId, meal) => {
+  const client = await clientPromise;
+  const db = client.db();
+
+  try {
+    await db.collection('mealPosts').insertOne({
+      userId,
+      meal,
+      date: new Date(),
+    });
+
+    return { success: true }
+  } catch (error) {
+    console.error('Error posting meal:', error);
+    return NextResponse.json({ success: false, message: 'Error posting meal.' });
+  }
+}
 
 export default Meal;
