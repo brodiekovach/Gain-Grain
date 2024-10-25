@@ -2,15 +2,18 @@
 
 import Link from "next/link";
 import { Bars3Icon } from '@heroicons/react/24/outline'
+import { BellIcon } from '@heroicons/react/24/solid'; 
 import styles from './navbar.module.css'
 import { useState, useEffect } from "react";
 
 
 export default function Navbar() {
-    const [showDropdown, setShowDropdown] = useState(false)
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
-    const [searchText, setSearchText] = useState('')
+    const [searchText, setSearchText] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+    const [notifications, setNotifications] = useState([]);
 
     function toggleHamburgerDropdown(){
         setShowDropdown(!showDropdown)
@@ -48,6 +51,29 @@ export default function Navbar() {
             setSearchResults([]);
         }
     }, [searchText]);
+
+    useEffect(() => {
+        const fetchNotifications = async () => {
+          try {
+            const response = await fetch('/api/notifications');
+            const data = await response.json();
+            if (data.success) {
+              setNotifications(data.notifications);
+            }
+          } catch (error) {
+            console.error('Error fetching notifications:', error);
+          }
+        };
+        fetchNotifications();
+      }, []);
+
+      const toggleNotificationDropdown = () => {
+        setShowNotificationDropdown(!showNotificationDropdown);
+      };
+
+      const handleDismissNotification = (id) => {
+        setNotifications(notifications.filter((notif) => notif.id !== id));
+      };
 
     return (
         <nav className={styles.bigBar}>
@@ -94,11 +120,43 @@ export default function Navbar() {
                 </Link>
                 {/* post button */}
                 <Link href="/post">
-                    <button className="bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-orange-600 transition-all">
+                    <button className="bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-orange-600 transition-all mr-2">
                         Post
                     </button>
                 </Link>
             </div>
+
+            <div className="relative">
+        <button onClick={toggleNotificationDropdown} className="bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-orange-600 transition-all relative flex items-center">
+          <BellIcon className="h-6 w-6 text-white" />
+          {notifications.length > 0 && (
+            <span className="absolute top-0 right-0 bg-red-600 rounded-full h-2 w-2"></span>
+          )}
+        </button>
+
+        {/* Notification Dropdown */}
+        {showNotificationDropdown && (
+          <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg overflow-hidden">
+            {notifications.length === 0 ? (
+              <div className="p-4 text-gray-500">No notifications</div>
+            ) : (
+              notifications.map((notif) => (
+                <div key={notif.id} className="p-4 border-b">
+                  <div className="flex justify-between items-center">
+                    <span>{notif.message}</span>
+                    <button
+                      className="ml-4 text-red-500 font-bold"
+                      onClick={() => handleDismissNotification(notif.id)}
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+      </div>
             {/* hamburger options menu */}
             <div className={styles.hamburgerButton} onClick={toggleHamburgerDropdown}>
                 <Bars3Icon className="size-10 text-white rounded-lg hover:bg-orange-600 p-0.5"/>

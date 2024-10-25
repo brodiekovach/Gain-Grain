@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
 
 const tokenSchema = new mongoose.Schema({
   email: { type: String, required: true },
-  reset_token: { type: String, rerquired: true },
+  reset_token: { type: String, required: true },
   token_expiry: { type: Date, required: true }
 });
 
@@ -159,6 +159,7 @@ export const resetPassword = async(email, newPassword) => {
 
 export const generateToken = async (email) => {
   const client = await clientPromise;
+  const db = client.db();
 
   await createTokenTTLIndex();
 
@@ -173,7 +174,7 @@ export const generateToken = async (email) => {
       token_expiry: expiration_time
     });
 
-    await newToken.save();
+    await db.collection('tokens').insertOne(newToken);
 
     return {
       success: true, 

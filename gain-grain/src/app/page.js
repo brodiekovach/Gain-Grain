@@ -27,7 +27,6 @@ export default function Home() {
       {/* Feed Section */}
       <Feed toggleComments={toggleComments} visibleComments={visibleComments} />
 
-      {/* Optionally, you can have a separate Comments component here */}
     </main>
   );
 }

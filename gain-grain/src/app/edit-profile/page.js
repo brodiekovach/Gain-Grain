@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
 import Navbar from "@/components/Navbar";
 
 export default function EditProfile() {

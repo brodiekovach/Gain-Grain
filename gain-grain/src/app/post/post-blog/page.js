@@ -1,4 +1,6 @@
 'use client';
+
+import Navbar from '../../../components/Navbar'
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
@@ -53,8 +55,7 @@ const CreateBlogPost = () => {
             });
 
             if (response.ok) {
-                const result = await response.json();
-                console.log('Blog post submitted:', result);
+                console.log('Blog post submitted');
                 setSuccess('Blog post submitted successfully!');
                 setPostContent(''); 
                 await new Promise(r => setTimeout(r, 2000));
@@ -71,39 +72,42 @@ const CreateBlogPost = () => {
     };
 
     return (
-        <div className="max-w-2xl mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Create a Blog Post</h1>
-            <form onSubmit={handleSubmit}>
-                <ReactQuill
-                    value={postContent}
-                    onChange={handleChange}
-                    placeholder="Write your blog post..."
-                    modules={{
-                        toolbar: [
-                            [{ 'header': [1, 2, false] }],
-                            ['bold', 'italic', 'underline', 'strike'],
-                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                            ['link', 'image'],
-                            ['clean']
-                        ],
-                    }}
-                    formats={[
-                        'header', 'bold', 'italic', 'underline', 'strike',
-                        'list', 'bullet', 'link', 'image',
-                    ]}
-                    className="mb-4"
-                />
-                <button
-                    type="submit"
-                    className={`bg-blue-500 text-white px-4 py-2 rounded-lg ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    disabled={loading} 
-                >
-                    {loading ? 'Submitting...' : 'Submit Post'}
-                </button>
-            </form>
+        <div className="min-h-screen flex flex-col overflow-hidden">
+            <Navbar /> 
+            <div className="max-w-2xl mx-auto p-4">
+                <h1 className="text-2xl font-bold mb-4">Create a Blog Post</h1>
+                <form onSubmit={handleSubmit}>
+                    <ReactQuill
+                        value={postContent}
+                        onChange={handleChange}
+                        placeholder="Write your blog post..."
+                        modules={{
+                            toolbar: [
+                                [{ 'header': [1, 2, false] }],
+                                ['bold', 'italic', 'underline', 'strike'],
+                                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                ['link', 'image'],
+                                ['clean']
+                            ],
+                        }}
+                        formats={[
+                            'header', 'bold', 'italic', 'underline', 'strike',
+                            'list', 'bullet', 'link', 'image',
+                        ]}
+                        className="mb-4"
+                    />
+                    <button
+                        type="submit"
+                        className={`bg-blue-500 text-white px-4 py-2 rounded-lg ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        disabled={loading} 
+                    >
+                        {loading ? 'Submitting...' : 'Submit Post'}
+                    </button>
+                </form>
 
-            {success && <p className="text-green-500 mt-4">{success}</p>}
-            {error && <p className="text-red-500 mt-4">{error}</p>}
+                {success && <p className="text-green-500 mt-4">{success}</p>}
+                {error && <p className="text-red-500 mt-4">{error}</p>}
+            </div>
         </div>
     );
 };

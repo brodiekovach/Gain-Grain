@@ -86,7 +86,7 @@ export default function ResetPassword() {
             if (response.ok && data.success) {
                 const reset_token = tokenData.reset_token;
 
-                const response = await fetch('/api/reset-password/remove-token', {
+                await fetch('/api/reset-password/remove-token', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

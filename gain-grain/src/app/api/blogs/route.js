@@ -8,7 +8,11 @@ export async function POST(req) {
 
         const result = await createBlogPost(userId, content);
 
-        return NextResponse.json({ message: 'Blog post added!', result });
+        if (!result.success) {
+            return NextResponse.json({ success: false, message: result.message }, { status: 401 });
+        }
+
+        return NextResponse.json({ success: true, message: 'Blog post added!' });
     } catch (error) {
         console.error('Error when adding blog post:', error);
         return NextResponse.json({ success: false, message: 'Failed to save blog post' }, { status: 500 });
