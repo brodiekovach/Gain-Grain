@@ -1,22 +1,38 @@
 import clientPromise from './mongodb';
-import { Blog } from './postModels/Post'
+import { ObjectId } from 'mongodb';
 
 export async function createBlogPost(userId, content) {
     const client = await clientPromise;
     const db = client.db();
+    const blogCollection = db.collection('blogs');
 
     try {
-        const newBlog = new Blog({
-            userId,
+        // Create and insert the new blog post
+        const newBlog = {
+            userId: userId,
             content,
             date: new Date(),
-        })
-
-        await db.collection('blogs').insertOne(newBlog);
-
-        return { success: true, message: 'Blog post saved.' };
+        };
+        
+        const result = await blogCollection.insertOne(newBlog);
+        return { success: true, message: 'Blog post saved.', result };
     } catch (error) {
-        console.error('Error saving blog post: ', error);
+        console.error('Error saving blog post:', error);
         return { success: false, message: 'Error saving blog post.' };
     }
-};
+}
+
+// Function to retrieve a blog post by its ID
+export async function getBlogById(blogId) {
+    const client = await clientPromise;
+    const db = client.db();
+    const blogCollection = db.collection('blogs');
+
+    try {
+        const blog = await blogCollection.findOne({ _id: new ObjectId(blogId) });
+        return blog || { success: false, message: 'Blog not found.' };
+    } catch (error) {
+        console.error('Error fetching blog:', error);
+        return { success: false, message: 'Error fetching blog.' };
+    }
+}
