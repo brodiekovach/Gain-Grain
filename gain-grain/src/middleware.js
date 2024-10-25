@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { verifyToken } from './utils/auth';
 
 const publicRoutes = ['/login', '/register', '/login/forgot-password', '/reset-password'];
-const apiRoutes = ['/api/login/find-user'];
+const apiRoutes = ['/api/login/find-user', '/api/blogs'];
 const ignoredExtensions = ['.js', '.css', '.jpeg', '.jpg', '.png', '.svg',];
 
 export async function middleware(req) {

@@ -17,4 +17,15 @@ export async function createBlogPost(userId, content) {
     return result;
 }
 
+export async function getBlogById(blogId) {
+    const client = await clientPromise;
+    const db = client.db();
+    const blogCollection = db.collection('blogs');
+
+    // Retrieve the blog with the specified `_id`
+    const blog = await blogCollection.findOne({ _id: new ObjectId(blogId) });
+
+    return blog;
+}
+
 
