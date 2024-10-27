@@ -297,6 +297,16 @@ export const followAccount = async (user, currentUser) => {
     const userId = user._id;
     const currentUserId = currentUser._id;
 
+    const currentUserData = await db.collection('users').findOne({ _id: new ObjectId(currentUserId) });
+    
+    if (!currentUserData) {
+      return { success: false, message: 'Current user does not exist' };
+    }
+
+    if (currentUserData.following.includes(userId)) {
+      return { success: false, message: 'You are already following this user.' };
+    }
+
     const updateCurrentUser = await db.collection('users').updateOne(
       {_id: new ObjectId(currentUserId) },
       { 
@@ -337,6 +347,16 @@ export const unfollowAccount = async (user, currentUser) => {
 
     const userId = user._id;
     const currentUserId = currentUser._id;
+
+    const currentUserData = await db.collection('users').findOne({ _id: new ObjectId(currentUserId) });
+    
+    if (!currentUserData) {
+      return { success: false, message: 'Current user does not exist' };
+    }
+
+    if (!currentUserData.following.includes(userId)) {
+      return { success: false, message: 'You are already not following this user.' };
+    }
 
     const updateCurrentUser = await db.collection('users').updateOne(
       {_id: new ObjectId(currentUserId) },

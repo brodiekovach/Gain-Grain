@@ -100,7 +100,10 @@ export default function profile() {
 
       const data = await response.json();
 
-      showAlert(data.message);
+      if (data.success) {
+        setFollowing(!following);
+        showAlert(data.message);
+      }
     } catch (error) {
       console.error(error);
     }
