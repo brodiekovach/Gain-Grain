@@ -12,7 +12,8 @@ const postSchema = new mongoose.Schema({
     required: true
   },
   author: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Reference to User model
     required: true
   },
   dateCreated: {
@@ -20,9 +21,18 @@ const postSchema = new mongoose.Schema({
     default: Date.now
   },
   comments: [{
-    user: String,
-    comment: String,
-    date: { type: Date, default: Date.now }
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User' // Reference to User model for commenters
+    },
+    comment: {
+      type: String,
+      required: true
+    },
+    date: { 
+      type: Date, 
+      default: Date.now 
+    }
   }]
 });
 

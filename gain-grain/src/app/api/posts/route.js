@@ -17,14 +17,22 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
+    const { userId } = req.query || {};
+  
+    // Check if userId is defined
+    if (!userId) {
+      return new Response("Missing userId in query", { status: 400 });
+    }
+  
+    // Proceed with fetching data for the given userId
     try {
         const { userId } = req.query;
 
         const workouts = await findWorkoutsByUserId(userId);
 
         return NextResponse.json({ workouts });
-    } catch (error) {
-        console.error('Error when fetching workouts:', error);
-        return NextResponse.json({ success: false, message: 'Failed to fetch workouts' }, { status: 500 });
+    } 
+    catch (error) {
+      return new Response("Error fetching workouts", { status: 500 });
     }
-}
+}  
