@@ -11,6 +11,7 @@ export default function Navbar() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
     const [searchText, setSearchText] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [notifications, setNotifications] = useState([]);
@@ -31,6 +32,15 @@ export default function Navbar() {
             setTimeout(() => setIsVisible(true), 0); 
         }
     }
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
 
     useEffect(() => {
         if (searchText.length > 0) {
@@ -80,7 +90,7 @@ export default function Navbar() {
     };
 
     return (
-        <nav className={styles.bigBar}>
+        <nav className={`${styles.bigBar} ${isScrolled ? styles.scrolled : ''}`}>
             {/* gain & grain logo top left */}
             <div>
                 <img
