@@ -375,6 +375,7 @@ export const unfollowAccount = async (user, currentUser) => {
       {_id: new ObjectId(userId) },
       { 
           $pull: { followers: currentUserId },
+          $pull: { notifications: `${currentUser.username} started following you.` },
           $inc: { numFollowers: -1 },
       },
       { new: true }
@@ -449,5 +450,26 @@ export const updateUserSchema = async() => {
     console.log('All users updated with missing fields');
   } catch (error) {
     console.error('Error updating user schema: ', error);
+  }
+}
+
+export const removeNotification = async(userId, notif) => {
+  const client = await clientPromise;
+  const db = client.db();
+
+  try {
+    const result = await db.collection('users').updateOne(
+      { _id: new ObjectId(userId) },
+      { $pull: { notifications: notif } },
+    );
+
+    if (result.modifiedCount === 1) {
+      return { success: true, message: 'Notification removed', notifications: result.notifications };
+    } else {
+      return { success: false, message: 'Notification not found' };
+    }
+  } catch (error) {
+    console.error('Error removing notification', error);
+    return { success: false, message: `Error: ${error.message}` };
   }
 }

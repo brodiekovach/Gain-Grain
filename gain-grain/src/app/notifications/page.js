@@ -21,7 +21,7 @@ export default function NotificationsPage() {
 
         if (data.success) {
           setUser(data.user);
-          setNotifications(user.notifications);
+          setNotifications(data.user.notifications);
         }
       } catch (error) {
         console.error(error);
@@ -31,20 +31,25 @@ export default function NotificationsPage() {
     fetchUserData();
   }, []);
 
-  const handleDismiss = (id) => {
-    setNotifications(notifications.filter((notif) => notif.id !== id));
-  };
+  const handleDismiss = async(index, notif) => {
+    setNotifications(notifications.filter((_, i) => i !== index));
 
-  const getNotificationStyle = (type) => {
-    switch (type) {
-      case 'success':
-        return 'bg-green-100 text-green-800';
-      case 'info':
-        return 'bg-blue-100 text-blue-800';
-      case 'error':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
+    try {
+      const response = await fetch('/api/notifications/dismiss-notifications', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: user._id, notif })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+          setNotifications(data.user.notifications);
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -54,19 +59,19 @@ export default function NotificationsPage() {
       <div className="notifications-page p-4">
         <h1 className="text-2xl font-bold mb-4">Notifications</h1>
         
-        {!notifications ? (
+        {notifications.length === 0 ? (
           <p className="text-gray-500">No notifications</p>
         ) : (
-          notifications.map((notif) => (
+          notifications.map((notif, index) => (
             <div
-              key={notif.id}
-              className={`notification-item p-4 mb-2 rounded-lg shadow-md ${getNotificationStyle(notif.type)}`}
+              key={index}
+              className={`notification-item p-4 mb-2 rounded-lg shadow-md`}
             >
               <div className="flex justify-between items-center">
-                <span>{notif.message}</span>
+                <span>{notif}</span>
                 <button
                   className="ml-4 text-red-500 font-bold"
-                  onClick={() => handleDismiss(notif.id)}
+                  onClick={() => handleDismiss(index, notif)}
                 >
                   Dismiss
                 </button>

@@ -15,6 +15,7 @@ export default function Navbar() {
     const [searchText, setSearchText] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [notifications, setNotifications] = useState([]);
+    const [user, setUser] = useState('');
 
     function toggleHamburgerDropdown(){
         setShowDropdown(!showDropdown)
@@ -63,26 +64,53 @@ export default function Navbar() {
     }, [searchText]);
 
     useEffect(() => {
-        const fetchNotifications = async () => {
+        const fetchUserData = async () => {
           try {
-            const response = await fetch('/api/notifications');
+            const response = await fetch('/api/profile/get-user-from-session', {
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+            });
+    
             const data = await response.json();
+    
             if (data.success) {
-              setNotifications(data.notifications);
+                setUser(data.user);
+                setNotifications(data.user.notifications);
             }
           } catch (error) {
-            console.error('Error fetching notifications:', error);
+            console.error(error);
           }
         };
-        fetchNotifications();
+    
+        fetchUserData();
       }, []);
 
       const toggleNotificationDropdown = () => {
         setShowNotificationDropdown(!showNotificationDropdown);
       };
 
-      const handleDismissNotification = (id) => {
-        setNotifications(notifications.filter((notif) => notif.id !== id));
+      const handleDismissNotification = async(index, notif) => {
+        setNotifications(notifications.filter((_, i) => i !== index));
+
+        try {
+            const response = await fetch('/api/notifications/dismiss-notifications', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ userId: user._id, notif })
+            });
+    
+            const data = await response.json();
+    
+            if (data.success) {
+                setNotifications(data.user.notifications);
+            }
+          } catch (error) {
+            console.error(error);
+          }
       };
 
       const clearSearchText = () => {
@@ -158,13 +186,13 @@ export default function Navbar() {
             {notifications.length === 0 ? (
               <div className="p-4 text-gray-500">No notifications</div>
             ) : (
-              notifications.map((notif) => (
-                <div key={notif.id} className="p-4 border-b">
+              notifications.map((notif, index) => (
+                <div key={index} className="p-4 border-b">
                   <div className="flex justify-between items-center">
-                    <span>{notif.message}</span>
+                    <span>{notif}</span>
                     <button
                       className="ml-4 text-red-500 font-bold"
-                      onClick={() => handleDismissNotification(notif.id)}
+                      onClick={() => handleDismissNotification(index, notif)}
                     >
                       Dismiss
                     </button>
@@ -187,6 +215,12 @@ export default function Navbar() {
                                     Login/Register
                                 </button>
                             </Link>
+                            <Link href="/notifications" className="w-full flex justify-center">
+                                {/* notifications button */}
+                                <button className="w-[95%] bg-orange-500 text-white font- semibold py-2 px-4 rounded-lg hover:bg-orange-600 hover:text-white transition-all">
+                                    Notifications
+                                </button>
+                            </Link>
                             <Link href="/profile" className="w-full flex justify-center">
                                 {/* profile button */}
                                 <button className="w-[95%] bg-orange-500 text-white font- semibold py-2 px-4 rounded-lg hover:bg-orange-600 hover:text-white transition-all">
@@ -204,12 +238,6 @@ export default function Navbar() {
                                 {/* exercise button*/}
                                 <button className="w-[95%] bg-orange-500 text-white font- semibold py-2 px-4 rounded-lg hover:bg-orange-600 hover:text-white transition-all">
                                     Exercise
-                                </button>
-                            </Link>
-                            <Link href="/notifications" className="w-full flex justify-center">
-                                {/* notifications button*/}
-                                <button className="w-[95%] bg-orange-500 text-white font- semibold py-2 px-4 rounded-lg hover:bg-orange-600 hover:text-white transition-all">
-                                    Notifications
                                 </button>
                             </Link>
                         </div>
