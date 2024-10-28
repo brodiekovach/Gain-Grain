@@ -35,6 +35,10 @@ export default function profile() {
       }
     };
 
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
     const fetchSavedWorkouts = async () => {
       try {
           const response = await fetch('/api/workouts/getSavedWorkouts', {
@@ -50,9 +54,8 @@ export default function profile() {
           console.error('Error fetching saved workouts:', error);
       }
       setLoadingWorkouts(false);
-  };
+    };
 
-    fetchUserData();
     if (user) fetchSavedWorkouts();
   }, [user]);
 
