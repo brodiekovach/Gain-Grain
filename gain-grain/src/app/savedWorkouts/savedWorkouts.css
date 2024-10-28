@@ -1,7 +1,3 @@
-html, body {
-    background-color: var(--smokey-gray);
-}
-
 /* Ensure navbar spans full width */
 .navbar {
     width: 100%;
