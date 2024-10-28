@@ -220,3 +220,31 @@
 .import-workout-item button:hover {
     box-shadow: 0px 2px 4px var(--vol-orange);
 }
+
+.expandable-ingredients {
+    margin-top: 10px;
+}
+
+.toggle-ingredients {
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: rgb(255, 166, 1);
+    margin-bottom: 5px;
+}
+
+.ingredients-list {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin: 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ingredients-list li {
+    color: black;
+    font-size: 1rem;
+    margin-bottom: 5px;
+}

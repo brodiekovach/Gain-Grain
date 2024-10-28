@@ -80,3 +80,68 @@
 .meal-action-button:last-child {
     width: 20%;
 }
+
+.meal-details {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #fff4e5;
+    border-radius: 5px;
+    border: 1px solid #ffd28b;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the ingredients list */
+.meal-details h4 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.meal-details ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin: 0;
+    color: #555;
+}
+
+.meal-details li {
+    margin-bottom: 5px;
+    font-size: 1rem;
+}
+
+/* Style the link for viewing full recipe */
+.meal-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #ff9900;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.meal-link:hover {
+    color: #ff7700;
+    text-decoration: underline;
+}
+
+/* Optional: Styling the anchor tag inside the meal card */
+.meal-details a {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 1.1rem;
+    color: #ff9900;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.meal-details a:hover {
+    color: #ff7700;
+    text-decoration: underline;
+}
+
+.manual-meal-label {
+    font-size: 0.9rem;
+    color: #ff6f61;
+    font-style: italic;
+    margin-top: 10px;
+}
+

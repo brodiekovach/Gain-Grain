@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { Toaster, toast } from 'react-hot-toast';
 import { FaAngleLeft, FaAngleRight, FaPlus } from 'react-icons/fa';
 import './custom_calendar.css'; 
 import './style.css';
@@ -36,7 +37,9 @@ const CustomCalendar = () => {
     const [loadingWorkouts, setLoadingWorkouts] = useState(false);
     const [savedMeals, setSavedMeals] = useState([]);
     const [loadingMeals, setLoadingMeals] = useState(false);
-    const [tempweight, setTempWeight] = useState({});    
+    const [tempweight, setTempWeight] = useState({});
+    const [ingredientsExpanded, setIngredientsExpanded] = useState(false);
+    
     const months = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
@@ -174,7 +177,7 @@ const CustomCalendar = () => {
     }
 
     const handleImportUrl = async () => {
-        if (!mealUrl) return; // Ensure URL is entered
+        if (!mealUrl) return;
     
         try {
             const response = await fetch('/api/meals/recipes', {
@@ -182,23 +185,30 @@ const CustomCalendar = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ url: mealUrl }), // Use the mealUrl state variable
+                body: JSON.stringify({ url: mealUrl }),
             });
     
+            const data = await response.json();
+            
             if (!response.ok) {
-                const errorData = await response.json();
-                alert(errorData.message);
+                toast.error(data.message || 'Failed to import recipe');
                 return;
             }
     
-            const data = await response.json();
             if (data.success) {
                 setMealName(data.name);
-                setMealCalories(data.calories);
                 setMealIngredients(data.ingredients);
+                setMealCalories(data.calories);
+    
+                if (!data.caloriesFound) {
+                    toast.warning('Recipe imported successfully, but calories information could not be found.');
+                } else {
+                    toast.success('Recipe imported successfully!');
+                }
             }
         } catch (error) {
             console.error('Error fetching the recipe:', error);
+            //toast.error('Failed to import recipe. Please try again.');
         }
     };
 
@@ -721,6 +731,25 @@ const CustomCalendar = () => {
                                                 onChange={(e) => setMealCalories(e.target.value)}
                                                 placeholder="Calories"
                                             />
+
+                                            {/* Ingredients section with expandable list */}
+                                            {mealIngredients && mealIngredients.length > 0 && (
+                                                <div className="expandable-ingredients">
+                                                    <p className="toggle-ingredients" onClick={() => setIngredientsExpanded(!ingredientsExpanded)}>
+                                                        Ingredients {ingredientsExpanded ? '▲' : '▼'}
+                                                    </p>
+                                                    {ingredientsExpanded && (
+                                                        <ul className="ingredients-list">
+                                                            {mealIngredients.map((ingredient, index) => (
+                                                                <li key={index}>
+                                                                    {ingredient.amount} - {ingredient.name}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    )}
+                                                </div>
+                                            )}
+
                                             <button onClick={handleAddMeal}>Add Meal</button>
                                         </>
                                     )}

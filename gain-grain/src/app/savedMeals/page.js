@@ -82,20 +82,31 @@ const SavedMealsPage = () => {
                         <div key={meal._id} className="meal-card">
                             <h3>{meal.meal.name}</h3>
                             <p>Calories: {meal.meal.calories}</p>
-                            {/*<h4>Ingredients:</h4>
-                            <ul>
-                                {meal.ingredients.map((ingredient, index) => (
-                                    <li key={index}>{ingredient}</li>
-                                ))}
-                            </ul>*/}
-                            {/* You can add interactive buttons here */}
-                            <button className="meal-action-button" onClick={() => toggleDetails(meal._id)}>
-                                {meal.showDetails ? 'Hide Details' : 'View Details'}
-                            </button>
-                            <button className="meal-action-button">Edit</button>
 
+                            {/* Conditionally render buttons */}
+                            <div className="meal-buttons">
+                                {/* Only show "View Details" if the meal has valid details */}
+                                {meal.meal.link && meal.meal.link.trim() !== '' ? (
+                                    <button className="meal-action-button" onClick={() => toggleDetails(meal._id)}>
+                                        {meal.showDetails ? 'Hide Details' : 'View Details'}
+                                    </button>
+                                ) : (
+                                    <p className="manual-meal-label">Manually Added</p> // Display a message for manual meals
+                                )}
+                                <button className="meal-action-button">Edit</button>
+                            </div>
+
+                            {/* Conditionally render details */}
                             {meal.showDetails && (
                                 <div className="meal-details">
+                                    <h4>Ingredients:</h4>
+                                    <ul>
+                                        {meal.meal.ingredients.map((ingredient, index) => (
+                                            <li key={index}>
+                                                {ingredient.amount} {ingredient.name}
+                                            </li>
+                                        ))}
+                                    </ul>
                                     {/* Conditionally render the link if it's not an empty string */}
                                     {meal.meal.link && meal.meal.link.trim() !== '' && (
                                         <p>
