@@ -15,7 +15,7 @@ export default function Navbar() {
     const [searchText, setSearchText] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [notifications, setNotifications] = useState([]);
-    const [user, setUser] = useState('');
+    const [user, setUser] = useState(null);
 
     function toggleHamburgerDropdown(){
         setShowDropdown(!showDropdown)
@@ -87,11 +87,11 @@ export default function Navbar() {
         fetchUserData();
       }, []);
 
-      const toggleNotificationDropdown = () => {
+    const toggleNotificationDropdown = () => {
         setShowNotificationDropdown(!showNotificationDropdown);
-      };
+    };
 
-      const handleDismissNotification = async(index, notif) => {
+    const handleDismissNotification = async(index, notif) => {
         setNotifications(notifications.filter((_, i) => i !== index));
 
         try {
@@ -111,10 +111,27 @@ export default function Navbar() {
           } catch (error) {
             console.error(error);
           }
-      };
+    };
 
-      const clearSearchText = () => {
+    const clearSearchText = () => {
         setSearchText('');
+    };
+
+    const handleLogout = async() => {
+        try {
+            const response = await fetch('/api/delete-cookie', { method: 'POST' });
+
+            const data = await response.json();
+
+            if(data.success) {
+                console.log('User logged out');
+                window.location.href = '/login';
+            } else {
+                alert('Unable to logout');
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -209,12 +226,24 @@ export default function Navbar() {
                 {showDropdown ?
                     <div className={`${styles.hamburgerMenu} transition-opacity duration-200 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
                         <div className="flex flex-col space-y-1 my-1">
+                        {user ? (
+                            <div className="w-full flex justify-center">
+                                <button 
+                                    className="w-[95%] bg-orange-500 text-white font- semibold py-2 px-4 rounded-lg hover:bg-orange-600 hover:text-white transition-all"
+                                    onClick={handleLogout}
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        ) : (
                             <Link href="/login" className="w-full flex justify-center">
                                 {/* combined login/register button */}
                                 <button className="w-[95%] bg-orange-500 text-white font- semibold py-2 px-4 rounded-lg hover:bg-orange-600 hover:text-white transition-all">
                                     Login/Register
                                 </button>
                             </Link>
+                        )
+                        }
                             <Link href="/notifications" className="w-full flex justify-center">
                                 {/* notifications button */}
                                 <button className="w-[95%] bg-orange-500 text-white font- semibold py-2 px-4 rounded-lg hover:bg-orange-600 hover:text-white transition-all">
