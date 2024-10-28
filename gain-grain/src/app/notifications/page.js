@@ -1,7 +1,6 @@
 "use client"
 import { useState, useEffect } from 'react';
 import Navbar from "@/components/Navbar";
-import Link from 'next/link';
 
 export default function NotificationsPage() {
   const [user, setUser] = useState(null);
@@ -27,26 +26,8 @@ export default function NotificationsPage() {
     fetchUserData();
   }, []);
 
-<<<<<<< HEAD
-  const handleDismiss = async(id) => {
-    try {
-      const response = await fetch('/api/notifications/dismiss', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ notificationId: id }),
-      });
-      if (response.ok) {
-        setNotifications(notifications.filter((notif, index) => index !== id));
-      }
-    } catch (error) {
-      console.error("Failed to dismiss notification:", error);
-    }
-
-  };
-=======
   const handleDismiss = async(index, notif) => {
     setNotifications(notifications.filter((_, i) => i !== index));
->>>>>>> refs/remotes/origin/main
 
     try {
       const response = await fetch('/api/notifications/dismiss-notifications', {
@@ -77,26 +58,32 @@ export default function NotificationsPage() {
           <p className="text-gray-500">No notifications</p>
         ) : (
           notifications.map((notif, index) => (
-<<<<<<< HEAD
-            
-            <div
-              key={index}
-              className={`notification-item p-4 mb-2 rounded-lg shadow-md ${getNotificationStyle(notif.type || 'info')}`}
-=======
             <div
               key={index}
               className={`notification-item p-4 mb-2 rounded-lg shadow-md`}
->>>>>>> refs/remotes/origin/main
             >
-              <div className="flex justify-between items-center">
-                <span>{notif}</span>
+              <div className="flex items-center">
+                {notif.profilePic ? (
+                  <img
+                    src={notif.profilePic}
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full mr-3"
+                  />
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+              <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+              </svg>
+                )}
+                <div className="flex-grow">
+                  <span className="block text-left">{notif}</span>
+                  {notif.timestamp && (
+                    <span className="text-gray-500 text-sm">{new Date(notif.timestamp).toLocaleString()}</span>
+                  )}
+                </div>
                 <button
                   className="ml-4 text-red-500 font-bold"
-<<<<<<< HEAD
-                  onClick={() => handleDismiss(index)}
-=======
                   onClick={() => handleDismiss(index, notif)}
->>>>>>> refs/remotes/origin/main
                 >
                   Dismiss
                 </button>
