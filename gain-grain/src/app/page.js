@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch("/api/posts/getPosts"); // Adjust route as needed
+        const response = await fetch("/api/posts/get-posts"); // Adjust route as needed
         const data = await response.json();
         
         if (response.ok) {
