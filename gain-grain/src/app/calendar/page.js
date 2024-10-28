@@ -39,6 +39,7 @@ const CustomCalendar = () => {
     const [loadingMeals, setLoadingMeals] = useState(false);
     const [tempweight, setTempWeight] = useState({});
     const [ingredientsExpanded, setIngredientsExpanded] = useState(false);
+    const [urlParseError, setUrlParseError] = useState('');
     
     const months = [
         "January", "February", "March", "April", "May", "June",
@@ -178,6 +179,7 @@ const CustomCalendar = () => {
 
     const handleImportUrl = async () => {
         if (!mealUrl) return;
+        setUrlParseError('');
     
         try {
             const response = await fetch('/api/meals/recipes', {
@@ -191,6 +193,7 @@ const CustomCalendar = () => {
             const data = await response.json();
             
             if (!response.ok) {
+                setUrlParseError(data.message);
                 toast.error(data.message || 'Failed to import recipe');
                 return;
             }
@@ -207,8 +210,9 @@ const CustomCalendar = () => {
                 }
             }
         } catch (error) {
+            setUrlParseError('This website is not yet supported for parsing')
             console.error('Error fetching the recipe:', error);
-            //toast.error('Failed to import recipe. Please try again.');
+            toast.error('Failed to import recipe. Please try again.');
         }
     };
 
@@ -714,6 +718,9 @@ const CustomCalendar = () => {
                                     />
                                     <button onClick={handleImportUrl}>Fetch Meal Details</button> {/* Button to fetch meal details */}
                                     
+                                    {/* Display error message if it exists */}
+                                    {urlParseError && <p className="error-message" style={{ color: 'red' }}>{urlParseError}</p>}
+
                                     {/* Display fetched meal details after the URL is processed */}
                                     {mealName && (
                                         <>
