@@ -65,7 +65,7 @@ export default function Navbar() {
     useEffect(() => {
         const fetchNotifications = async () => {
           try {
-            const response = await fetch('/api/notifications');
+            const response = await fetch('/src/notifications');
             const data = await response.json();
             if (data.success) {
               setNotifications(data.notifications);

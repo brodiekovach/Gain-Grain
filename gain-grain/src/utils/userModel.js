@@ -319,6 +319,7 @@ export const followAccount = async (user, currentUser) => {
     if(!updateCurrentUser) {
       return { success: false, message: 'The user trying to follow does not exist' }
     }
+    
 
     const updateUser = await db.collection('users').updateOne(
       {_id: new ObjectId(userId) },
