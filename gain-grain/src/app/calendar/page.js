@@ -203,12 +203,23 @@ const CustomCalendar = () => {
     };
 
     const saveWorkoutToProfile = async (title) => {
-        const userId = localStorage.getItem('userId');
-
-        if (!userId) {
-            alert('User not logged in');
-            return;
-        }
+        let userId = "";
+            try {
+                const response = await fetch('/api/profile/get-user-from-session', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+        
+                const data = await response.json();
+        
+                if (data.success) {
+                    userId = data.user._id;
+                }
+            } catch (error) {
+                console.error(error);
+            }
 
         try {
             const response = await fetch('/api/workouts/saveToProfile', {
@@ -237,14 +248,23 @@ const CustomCalendar = () => {
     };
     
     const saveMealToProfile = async (meal) => {
-        const userId = localStorage.getItem('userId'); // Retrieve the userId from localStorage (adjust as needed)
-    
-        if (!userId) {
-            alert('User not logged in');
-            return;
-        }
-    
-        console.log('UserId retrieved from localStorage:', userId); // Log userId for debugging
+        let userId = "";
+            try {
+                const response = await fetch('/api/profile/get-user-from-session', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+        
+                const data = await response.json();
+        
+                if (data.success) {
+                    userId = data.user._id;
+                }
+            } catch (error) {
+                console.error(error);
+            }
     
         try {
             const MealData = {
@@ -280,12 +300,23 @@ const CustomCalendar = () => {
 
     // Function to fetch workouts by userId
     const fetchUserWorkouts = async () => {
-        const userId = localStorage.getItem('userId'); // Retrieve userId from local storage
-    
-        if (!userId) {
-            console.error('User ID not found in local storage');
-            return []; // Handle this scenario appropriately
-        }
+        let userId = "";
+            try {
+                const response = await fetch('/api/profile/get-user-from-session', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+        
+                const data = await response.json();
+        
+                if (data.success) {
+                    userId = data.user._id;
+                }
+            } catch (error) {
+                console.error(error);
+            }
     
         try {
             const response = await fetch('/api/workouts/getSavedWorkouts', {
@@ -316,12 +347,23 @@ const CustomCalendar = () => {
     };
 
     const fetchUserMeals = async () => {
-        const userId = localStorage.getItem('userId'); // Retrieve userId from local storage
-    
-        if (!userId) {
-            console.error('User ID not found in local storage');
-            return []; // Handle this scenario appropriately
-        }
+        let userId = "";
+            try {
+                const response = await fetch('/api/profile/get-user-from-session', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+        
+                const data = await response.json();
+        
+                if (data.success) {
+                    userId = data.user._id;
+                }
+            } catch (error) {
+                console.error(error);
+            }
     
         try {
             const response = await fetch('/api/meals/getSavedMeals', {
