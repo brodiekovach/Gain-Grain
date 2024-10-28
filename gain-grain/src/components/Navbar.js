@@ -66,9 +66,6 @@ export default function Navbar() {
     useEffect(() => {
         const fetchUserData = async () => {
           try {
-<<<<<<< HEAD
-            const response = await fetch('/src/notifications');
-=======
             const response = await fetch('/api/profile/get-user-from-session', {
               method: 'GET',
               headers: {
@@ -76,7 +73,6 @@ export default function Navbar() {
               },
             });
     
->>>>>>> refs/remotes/origin/main
             const data = await response.json();
     
             if (data.success) {
