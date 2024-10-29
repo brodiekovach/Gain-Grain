@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server';
 import { Post, Blog, MealPost, ProgressPic, Workout } from './postModels/Post'
 import { ObjectId } from 'mongodb';
 
-
 export const savePost = async(userId, postType, postData) => {
   const client = await clientPromise;
   const db = client.db();
@@ -64,20 +63,22 @@ export const savePost = async(userId, postType, postData) => {
 
 export const fetchPosts = async(userId) => {
   try {
+    
     const client = await clientPromise;
     const db = client.db();
 
     const posts = await db.collection('posts').findAll({ userId });
 
     return { success: true, posts };
-  } catch (error) {
+  } 
+  catch (error) {
     console.error('Error fetching posts:', error);
     return { success: false, message: 'Error fetching posts' };
   }
 };
 
-
 export const getPostById = async (id) => {
+  console.log("User ID", userId);
   const client = await clientPromise;
   const db = client.db();
   const postCollection = db.collection('posts');
@@ -85,7 +86,8 @@ export const getPostById = async (id) => {
   try {
       const blog = await postCollection.findOne({ _id: new ObjectId(id) });
       return blog || { success: false, message: 'Post not found.' };
-  } catch (error) {
+  } 
+  catch (error) {
       console.error('Error fetching post:', error);
       return { success: false, message: 'Error fetching post.' };
   }

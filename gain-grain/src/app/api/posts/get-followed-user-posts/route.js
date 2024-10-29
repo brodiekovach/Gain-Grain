@@ -2,33 +2,13 @@ import {Post} from '../../../../utils/postModels/Post';
 import clientPromise from '../../../../utils/mongodb';
 
 // Fetch all posts
-const fetchPosts = async () => {
+const fetchFollowedUserPosts = async () => {
   try {
     const client = await clientPromise; // Ensure you have access to the client
     const db = client.db(); // Access the database
     const posts = await db
       .collection('posts')
       .find()
-      //.project({ title: 1, body: 1, author: 1, dateCreated: 1 })
-      .toArray();
-
-    return { success: true, posts };
-  } 
-  catch (error) {
-    console.error('Error fetching posts:', error);
-    return { success: false, message: 'Error fetching posts' };
-  }
-};
-
-// Fetch user posts
-const fetchUserPosts = async () => {
-  try {
-    const client = await clientPromise; // Ensure you have access to the client
-    const db = client.db(); // Access the database
-    const posts = await db
-      .collection('posts')
-      .find({})
-      .project({ title: 1, body: 1, author: 1, dateCreated: 1 })
       .toArray();
 
     return { success: true, posts };
@@ -42,7 +22,7 @@ const fetchUserPosts = async () => {
 // Handle GET requests
 export const GET = async (req) => {
   try {
-    const { success, posts, message } = await fetchPosts(); // Fetch all posts
+    const { success, posts, message } = await fetchFollowedUserPosts(); // Fetch all posts
 
     if (success) {
       return new Response(JSON.stringify(posts), { status: 200 });

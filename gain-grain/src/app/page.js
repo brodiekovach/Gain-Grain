@@ -7,8 +7,33 @@ import './homepage.css';
 
 export default function Home() {
   // State for managing posts and which post's comments are visible
+  const [user, setUser] = useState('');
   const [posts, setPosts] = useState([]);
+  const [followedUserPosts, setFollowedUserPosts] = useState([]);
   const [visibleComments, setVisibleComments] = useState(null);
+
+  useEffect(() => {
+    if (!user._id) return;
+
+    const fetchFollowedUserPosts = async () => {
+      try {
+        const response = await fetch(`/api/posts/get-followed-user-posts/${user._id}`);
+        const data = await response.json();
+        
+        if (response.ok) {
+          setFollowedUserPosts(data); // Set posts if fetch is successful
+        } 
+        else {
+          console.error("Error fetching posts:", data.message);
+        }
+      } 
+      catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    console.log("User", user);
+    fetchFollowedUserPosts();
+  }, [user]);
 
   // Fetch posts on component mount
   useEffect(() => {
@@ -19,15 +44,40 @@ export default function Home() {
         
         if (response.ok) {
           setPosts(data); // Set posts if fetch is successful
-        } else {
+        } 
+        else {
           console.error("Error fetching posts:", data.message);
         }
-      } catch (error) {
+      } 
+      catch (error) {
         console.error("Error:", error);
       }
     };
 
     fetchPosts();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('/api/profile/get-user-from-session', {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          setUser(data.user);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   // Toggle comments for the specific post

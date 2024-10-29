@@ -10,10 +10,32 @@ import foodicon from '../../../public/images/foodicon.png'
 
 export default function profile() {
   const [user, setUser] = useState('');
+  const [posts, setPosts] = useState([]);
   const [activeTab, setActiveTab] = useState('posts');
   const [savedWorkouts, setSavedWorkouts] = useState([]);
   const [loadingWorkouts, setLoadingWorkouts] = useState(true);
-    const [expandedWorkouts, setExpandedWorkouts] = useState({});
+  const [expandedWorkouts, setExpandedWorkouts] = useState({});
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch("/api/posts/get-posts"); // Adjust route as needed
+        const data = await response.json();
+        
+        if (response.ok) {
+          setPosts(data); // Set posts if fetch is successful
+        } 
+        else {
+          console.error("Error fetching posts:", data.message);
+        }
+      } 
+      catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -132,13 +154,16 @@ export default function profile() {
 
         {/* Posts Grid or No Posts Message */}
         <div className="mt-8">
-        {activeTab === 'posts' && user.posts && user.posts.length > 0 ? (
+        {/* {activeTab === 'posts' && user.posts && user.posts.length > 0 ? ( */}
+        {activeTab === 'posts' && posts.length > 0 ? (
           <div className="grid grid-cols-3 gap-2">
-            {user.posts.map((post) => (
+
+            {posts.map((post) => (
               <div key={post.id} className="bg-blue-200 h-32 rounded-lg flex justify-center items-center">
                 <p className="text-center text-white">{post.title || "Post"}</p>
               </div>
             ))}
+            
           </div>
         ) : activeTab === 'posts' ? (
           <div className="flex flex-col items-center mt-4 text-center text-gray-500">
