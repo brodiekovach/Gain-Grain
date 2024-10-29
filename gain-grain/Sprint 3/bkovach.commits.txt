@@ -698,6 +698,8 @@ d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 20
 99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 124) }
 99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 125) 
 
+* Idk why these below dont have the files but ill just put them above the code corresponding
+gain-grain/utils/recipeScrape/domainConfig.js
 d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   1) export const supportedDomains = [
 d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   2)     'allrecipes.com',
 d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   3)     'bbcgoodfood.com',
@@ -949,6 +951,8 @@ d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 248)         directionsSelector
 d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 249)     }
 d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 250) }
 
+
+gain-grain/utils/recipeScrape/recipeScraper.js
 d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   1) // utils/recipeScraper.js
 d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   2) import { load } from 'cheerio';
 d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   3) import { recipeSelectors } from './domainConfig';
@@ -1219,6 +1223,7 @@ d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 267)         caloriesFound: cal
 d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 268)     };
 d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 269) }
 
+gain-grain/src/app/api/meals/recipes/route.js
 d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   1) /*import { NextResponse } from 'next/server';
 d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  57)     }*//*
 d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  98) }*/
