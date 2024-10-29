@@ -22,5 +22,13 @@ Gain-Grain
 * gain-grain/src/app/post/post-blog/page.js
 * gain-grain/src/app/post/post-meals/page.js
 * gain-grain/src/app/post/post-workouts/page.js
+* gain-grain/src/app/api/posts/get-posts/route.js
+* gain-grain/src/app/page.js
+* gain-grain/src/app/profile/page.js
+* gain-grain/src/middleware.js
+* gain-grain/src/utils/userPosts.js
+* .../posts/get-followed-user-posts/[id]/route.js
+* .../app/api/posts/get-followed-user-posts/route.js
+* .../src/app/api/posts/get-posts/[id]/route.js
 
 ### What you accomplished
