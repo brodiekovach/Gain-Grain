@@ -1,0 +1,708 @@
+c42bff9b (V1w35h 2024-10-27 21:24:23 -0400  6)   const [user, setUser] = useState(null);
+c42bff9b (V1w35h 2024-10-27 21:24:23 -0400 13)         const response = await fetch('/api/profile/get-user-from-session');c42bff9b (V1w35h 2024-10-27 21:24:23 -0400 19)           setNotifications(data.user.notifications);
+c42bff9b (V1w35h 2024-10-27 21:24:23 -0400 22)         console.error("Failed to fetch user data:",error);
+c42bff9b (V1w35h 2024-10-27 21:24:23 -0400 60)           notifications.map((notif, index) => (
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 65)               <div className="flex items-center">
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 66)                 {notif.profilePic ? (
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 67)                   <img
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 68)                     src={notif.profilePic}
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 69)                     alt="Profile"
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 70)                     className="w-10 h-10 rounded-full mr-3"
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 71)                   />
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 72)                 ) : (
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 73)                   <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" viewBox="0 0 16 16">
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 74)               <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 75)               <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 76)               </svg>
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 77)                 )}
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 78)                 <div className="flex-grow">
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 79)                   <span className="block text-left">{notif}</span>
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 80)                   {notif.timestamp && (
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 81)                     <span className="text-gray-500 text-sm">{new Date(notif.timestamp).toLocaleString()}</span>
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 82)                   )}
+a581934a (V1w35h 2024-10-27 21:52:15 -0400 83)                 </div>
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400   1) "use client";
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400   2) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400   3) import React, { useEffect, useState} from "react"; 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400   4) import styles from './profile.module.css'
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400   5) import Navbar from "@/components/Navbar";
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400   6) import Link from "next/link";
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400   8) import dumbbell from '../../../public/images/dumbbell.png'
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400   9) import foodicon from '../../../public/images/foodicon.png'
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  10) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  11) export default function profile() {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  12)   const [user, setUser] = useState('');
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  14)   const [savedWorkouts, setSavedWorkouts] = useState([]);
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  15)   const [loadingWorkouts, setLoadingWorkouts] = useState(true);
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  16)     const [expandedWorkouts, setExpandedWorkouts] = useState({});
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  17) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  18)   useEffect(() => {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  19)     const fetchUserData = async () => {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  20)       try {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  23)           headers: {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  24)               'Content-Type': 'application/json',
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  25)           },
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  26)         });
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  27) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  28)         const data = await response.json();
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  29) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  30)         if (data.success) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  31)           setUser(data.user);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  32)         }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  33)       } catch (error) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  35)       }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  36)     };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  37) 
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  42)     const fetchSavedWorkouts = async () => {
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  43)       try {
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  44)           const response = await fetch('/api/workouts/getSavedWorkouts', {
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  45)               method: 'POST',
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  46)               headers: { 'Content-Type': 'application/json' },
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  47)               body: JSON.stringify({ userId: user?._id }),
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  48)           });
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  49)           const data = await response.json();
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  50)           if (data.success) {
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  51)               setSavedWorkouts(data.workouts);
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  52)           }
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  53)       } catch (error) {
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  54)           console.error('Error fetching saved workouts:', error);
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  55)       }
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  56)       setLoadingWorkouts(false);
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  58) 
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  59)     if (user) fetchSavedWorkouts();
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  60)   }, [user]);
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  61) 
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  62)   const toggleWorkoutExpand = (workoutId) => {
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  63)     setExpandedWorkouts((prev) => ({
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  64)         ...prev,
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  65)         [workoutId]: !prev[workoutId],
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  66)     }));
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400  67) };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  68) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  69)   return (
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  70)     <div className={styles.wrapper}>
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  71)       <Navbar />
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  82)           </div>
+d09687d3 (V1w35h 2024-10-22 19:54:59 -0400  98)             </div>
+d09687d3 (V1w35h 2024-10-22 19:54:59 -0400  99)           </div>
+d09687d3 (V1w35h 2024-10-22 19:54:59 -0400 100) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 129)             </button>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 135)         {activeTab === 'posts' && user.posts && user.posts.length > 0 ? (
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 136)           <div className="grid grid-cols-3 gap-2">
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 137)             {user.posts.map((post) => (
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 138)               <div key={post.id} className="bg-blue-200 h-32 rounded-lg flex justify-center items-center">
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 139)                 <p className="text-center text-white">{post.title || "Post"}</p>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 140)               </div>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 141)             ))}
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 142)           </div>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 143)         ) : activeTab === 'posts' ? (
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 144)           <div className="flex flex-col items-center mt-4 text-center text-gray-500">
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 145)             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-camera-video-off mb-2" viewBox="0 0 16 16">
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 146)               <path fillRule="evenodd" d="M10.961 12.365a2 2 0 0 0 .522-1.103l3.11 1.382A1 1 0 0 0 16 11.731V4.269a1 1 0 0 0-1.406-.913l-3.111 1.382A2 2 0 0 0 9.5 3H4.272l.714 1H9.5a1 1 0 0 1 1 1v6a1 1 0 0 1-.144.518zM1.428 4.18A1 1 0 0 0 1 5v6a1 1 0 0 0 1 1h5.014l.714 1H2a2 2 0 0 1-2-2V5c0-.675.334-1.272.847-1.634zM15 11.73l-3.5-1.555v-4.35L15 4.269zm-4.407 3.56-10-14 .814-.58 10 14z" />
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 147)             </svg>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 148)             <p>No posts available.</p>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 149)           </div>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 150)         ) : activeTab === 'savedWorkouts' && loadingWorkouts ? (
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 151)           <p>Loading workouts...</p>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 152)       ) : activeTab === 'savedWorkouts' && savedWorkouts.length === 0 ? (
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 153)           <div className="flex flex-col items-center mt-4 text-center text-gray-500">
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 154)               <Image src={dumbbell} width={32} height={32} alt="Dumbbell" className="mb-2"/>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 155)               <p>No saved workouts.</p>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 156)           </div>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 157)       ) : activeTab === 'savedWorkouts' ? (
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 158)           <div className="grid grid-cols-2 gap-4">
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 159)               {savedWorkouts.map((workout) => (
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 160)                   <div key={workout._id} className="bg-gray-200 p-4 rounded-lg">
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 161)                       <h3 className="cursor-pointer font-semibold" onClick={() => toggleWorkoutExpand(workout._id)}>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 162)                                     {workout.title}
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 163)                                 </h3>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 164)                       <p>Exercises: {workout.exercises.length}</p>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 165)                       {expandedWorkouts[workout._id] && (
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 166)                                     <ul className="mt-2">
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 167)                                         {workout.exercises.map((exercise, index) => (
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 168)                                             <li key={index} className="text-gray-700 ml-4">
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 169)                                                 • {exercise.name} - {exercise.reps} reps, {exercise.sets} sets
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 170)                                             </li>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 171)                                         ))}
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 172)                                     </ul>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 173)                                 )}
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 174)                             </div>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 175)                         ))}
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 176)                     </div>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 177)       ) : activeTab === 'savedMeals' && (!user.savedMeals || user.savedMeals.length === 0) ? (
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 178)           <div className="flex flex-col items-center mt-4 text-center text-gray-500">
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 179)               <Image src={foodicon} width={45} height={45} alt="Cooking food" className="mb-2"/>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 180)               <p>No saved meals.</p>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 181)           </div>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 182)       ) : activeTab === 'likedPosts' && (!user.likedPosts || user.likedPosts.length === 0) ? (
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 183)           <div className="flex flex-col items-center mt-4 text-center text-gray-500">
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 184)               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-heart" viewBox="0 0 16 16">
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 185)                   <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 187)               <p>No liked posts.</p>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 188)           </div>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 189)       ) : (
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 190)           <div className="mt-4 text-center">
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 192)           </div>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 193)       )}
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 194)   </div>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 195) </div>
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 196) );
+9b061cc2 (V1w35h 2024-10-28 13:40:17 -0400 197) }
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400   8) import dumbbell from '../../../../public/images/dumbbell.png'
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400   9) import foodicon from '../../../../public/images/foodicon.png'
+0611cebb (V1w35h 2024-10-22 22:42:49 -0400  14)   const [activeTab, setActiveTab] = useState('posts');
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400  16)   const [savedWorkouts, setSavedWorkouts] = useState([]);
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400  17)   const [loadingWorkouts, setLoadingWorkouts] = useState(true);
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400  18)   const [expandedWorkouts, setExpandedWorkouts] = useState({});
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400  96)   // Fetch saved workouts when 'savedWorkouts' tab is selected
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400  97)   useEffect(() => {
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400  98)     const fetchSavedWorkouts = async () => {
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400  99)       setLoadingWorkouts(true);
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 100)       try {
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 101)         const response = await fetch('/api/profile/get-saved-workouts', {
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 102)           method: 'POST',
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 103)           headers: {
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 104)             'Content-Type': 'application/json',
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 105)           },
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 106)           body: JSON.stringify({ userId }),
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 107)         });
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 108)         
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 109)         const data = await response.json();
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 110)         if (data.success) {
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 111)           setSavedWorkouts(data.savedWorkouts);
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 112)         } else {
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 113)           setSavedWorkouts([]);
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 114)         }
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 115)       } catch (error) {
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 116)         console.error(error);
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 117)         setSavedWorkouts([]);
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 118)       } finally {
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 119)         setLoadingWorkouts(false);
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 120)       }
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 121)     };
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 122) 
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 123)     if (activeTab === 'savedWorkouts') {
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 124)       fetchSavedWorkouts();
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 125)     }
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 126)   }, [activeTab, userId]);
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 127) 
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 165) const toggleWorkoutExpand = (workoutId) => {
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 166)   setExpandedWorkouts(prevState => ({
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 167)     ...prevState,
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 168)     [workoutId]: !prevState[workoutId]
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 169)   }));
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 170) };
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 171) 
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 172) 
+0611cebb (V1w35h 2024-10-22 22:42:49 -0400 211)           </div>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 245)                {/* Posts Grid or No Posts Message */}
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 246)                <div className="mt-8">
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 247)         {activeTab === 'posts' && user.posts && user.posts.length > 0 ? (
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 248)           <div className="grid grid-cols-3 gap-2">
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 249)             {user.posts.map((post) => (
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 250)               <div key={post.id} className="bg-blue-200 h-32 rounded-lg flex justify-center items-center">
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 251)                 <p className="text-center text-white">{post.title || "Post"}</p>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 252)               </div>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 253)             ))}
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 254)           </div>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 255)         ) : activeTab === 'posts' ? (
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 256)           <div className="flex flex-col items-center mt-4 text-center text-gray-500">
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 257)             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-camera-video-off mb-2" viewBox="0 0 16 16">
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 258)               <path fillRule="evenodd" d="M10.961 12.365a2 2 0 0 0 .522-1.103l3.11 1.382A1 1 0 0 0 16 11.731V4.269a1 1 0 0 0-1.406-.913l-3.111 1.382A2 2 0 0 0 9.5 3H4.272l.714 1H9.5a1 1 0 0 1 1 1v6a1 1 0 0 1-.144.518zM1.428 4.18A1 1 0 0 0 1 5v6a1 1 0 0 0 1 1h5.014l.714 1H2a2 2 0 0 1-2-2V5c0-.675.334-1.272.847-1.634zM15 11.73l-3.5-1.555v-4.35L15 4.269zm-4.407 3.56-10-14 .814-.58 10 14z" />
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 259)             </svg>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 260)             <p>No posts available.</p>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 261)           </div>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 262)         ) : activeTab === 'savedWorkouts' && loadingWorkouts ? (
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 263)           <p>Loading workouts...</p>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 264)       ) : activeTab === 'savedWorkouts' && savedWorkouts.length === 0 ? (
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 265)           <div className="flex flex-col items-center mt-4 text-center text-gray-500">
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 266)               <Image src={dumbbell} width={32} height={32} alt="Dumbbell" className="mb-2"/>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 267)               <p>No saved workouts.</p>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 268)           </div>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 269)       ) : activeTab === 'savedWorkouts' ? (
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 270)           <div className="grid grid-cols-2 gap-4">
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 271)               {savedWorkouts.map((workout) => (
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 272)                   <div key={workout._id} className="bg-gray-200 p-4 rounded-lg">
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 273)                       <h3 className="cursor-pointer font-semibold" onClick={() => toggleWorkoutExpand(workout._id)}>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 274)                                     {workout.title}
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 275)                                 </h3>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 276)                       <p>Exercises: {workout.exercises.length}</p>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 277)                       {expandedWorkouts[workout._id] && (
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 278)                                     <ul className="mt-2">
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 279)                                         {workout.exercises.map((exercise, index) => (
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 280)                                             <li key={index} className="text-gray-700 ml-4">
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 281)                                                 • {exercise.name} - {exercise.reps} reps, {exercise.sets} sets
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 282)                                             </li>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 283)                                         ))}
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 284)                                     </ul>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 285)                                 )}
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 286)                             </div>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 287)                         ))}
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 288)                     </div>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 289)       ) : activeTab === 'savedMeals' && (!user.savedMeals || user.savedMeals.length === 0) ? (
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 290)           <div className="flex flex-col items-center mt-4 text-center text-gray-500">
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 291)               <Image src={foodicon} width={45} height={45} alt="Cooking food" className="mb-2"/>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 292)               <p>No saved meals.</p>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 293)           </div>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 294)       ) : activeTab === 'likedPosts' && (!user.likedPosts || user.likedPosts.length === 0) ? (
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 295)           <div className="flex flex-col items-center mt-4 text-center text-gray-500">
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 296)               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-heart" viewBox="0 0 16 16">
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 297)                   <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 298)               </svg>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 299)               <p>No liked posts.</p>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 300)           </div>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 301)       ) : (
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 302)           <div className="mt-4 text-center">
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 303)               <p>{`Showing ${activeTab.replace(/([A-Z])/g, ' $1').toLowerCase()}...`}</p>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 304)           </div>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 305)       )}
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 306)   </div>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 307) </div>
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 308) );
+8f4efc7a (V1w35h 2024-10-28 19:53:57 -0400 309) }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400   1) import mongoose from 'mongoose';
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400   2) import bcrypt from 'bcryptjs';
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400   3) import crypto from 'crypto';
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400   4) import clientPromise from './mongodb';
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400   5) import { ObjectId } from 'mongodb';
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400   6) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400   7) const userSchema = new mongoose.Schema({
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400   8)   name: { type: String, required: true },
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  10)   username: { type: String, required: true },
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  11)   password: { type: String, required: true },
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  16)   bio: { type: String, default: "" },
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  19) });
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  20) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  21) const tokenSchema = new mongoose.Schema({
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  22)   email: { type: String, required: true },
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  24)   token_expiry: { type: Date, required: true }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  25) });
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  26) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  27) const User = mongoose.models.User || mongoose.model("User", userSchema);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  28) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  29) const Token = mongoose.models.Token || mongoose.model("Token", tokenSchema);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  30) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  31) async function createTokenTTLIndex() {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  32)   const client = await clientPromise;
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  33)   const db = client.db();
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  34)   await db.collection('tokens').createIndex({ token_expiry: 1 }, { expireAfterSeconds: 0 });
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  35) }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  36) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  37) export const createAndSaveUser = async (name, email, username, password) => {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  38)   const client = await clientPromise;
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  39)   const db = client.db();
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  40) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  41)   try {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  42)     const existingEmail = await db.collection('users').findOne({ email });
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  43)     if (existingEmail) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  44)       return { success: false, message: 'Email already in use.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  45)     }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  46) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  47)     const existingUser = await db.collection('users').findOne({ username });
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  48)     if (existingUser) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  49)       return { success: false, message: 'Username already in use.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  50)     }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  51) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  52)     const hashedPassword = await bcrypt.hash(password, 10);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  53)   
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  54)     const newUser = new User({
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  55)       name: name,
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  56)       email: email,
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  57)       username: username,
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  58)       password: hashedPassword,
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  59)       numFollowers: 0,
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  60)       numFollowing: 0,
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  61)       bio: "",
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  62)       profilePic: "",
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  63)     });
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  64) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  65)     const result = await db.collection('users').insertOne(newUser);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  66)   
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  67)     return {success: true, message: 'User registered successfully.', userId: result.insertedId };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  68)   } catch (error) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  69)     console.error('Error creating user: ', error);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  70)     return { success: false, message: 'Error creating user.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  71)   }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  72) };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  73) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  74) export const findUser = async (username, password) => {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  75)   const client = await clientPromise;
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  76)   const db = client.db();
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  77) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  78)   try {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  79)     const user = await db.collection('users').findOne({ username });
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  80) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  81)     if (!user) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  82)       return { success: false, message: 'Username or password is incorrect.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  83)     }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  84) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  85)     const isMatch = await bcrypt.compare(password, user.password);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  86) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  87)     if (!isMatch) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  88)       return { success: false, message: 'Username or password is incorrect.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  89)     }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  90)     
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  91) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  92)     return { success: true, message: 'Login successful', user };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  93)   } catch (error) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  94)     console.error('Error when finding user: ', error);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  95)     return { success: false, message: 'Error when finding user' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  96)   }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  97) };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  98) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400  99) export const findUserByEmail = async (email) => {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 100)   const client = await clientPromise;
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 101)   const db = client.db();
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 102) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 103)   try {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 104)     const user = await db.collection('users').findOne({ email });
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 105) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 106)     if (!user) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 107)       return { success: false, message: 'Could not find a user with that email.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 108)     }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 109) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 110)     return { success: true, message: 'Found user with that email.'};
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 111)   } catch (error) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 112)     console.error('Error when finding user: ', error);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 113)     return { success: false, message: 'Error when finding user' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 114)   }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 115) };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 116) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 135) export const resetPassword = async(email, newPassword) => {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 136)   const client = await clientPromise;
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 137)   const db = client.db();
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 138) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 139)   try {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 140)     const hashedPassword = await bcrypt.hash(newPassword, 10);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 141) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 142)     const updatedUser = await db.collection('users').updateOne(
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 143)       { email: email },
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 144)       { $set: { password: hashedPassword } },
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 145)     );
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 146) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 147)     if (updatedUser.matchedCount === 0) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 148)       return { success: false, message: 'No user found with the provided email.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 149)     } else if (updatedUser.modifiedCount === 0) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 150)       return { success: false, message: 'User found but password not changed.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 151)     }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 152) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 153)     return { success: true, message: 'Password updated successfully.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 154)   } catch(error) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 155)     console.error('Error updating password:', error);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 156)     return { success: false, message: 'Error resetting password.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 157)   }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 158) }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 159) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 160) export const generateToken = async (email) => {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 164)   await createTokenTTLIndex();
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 165) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 166)   try {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 167)     const reset_token = crypto.randomBytes(32).toString('hex');
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 168)     const current_date = new Date();
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 169)     const expiration_time = new Date(current_date.getTime() + 60 * 60 * 1000);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 170) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 171)     const newToken = new Token({
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 172)       email: email,
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 173)       reset_token: reset_token,
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 174)       token_expiry: expiration_time
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 175)     });
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 176) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 178) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 179)     return {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 180)       success: true, 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 181)       message: 'Reset token generated successfully.',
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 182)       token: reset_token
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 183)     };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 184)   } catch (error) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 185)     console.error('Error generating reset token: ', error);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 186)     return { success: false, message: 'Error generating reset token.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 187)   }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 188) };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 189) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 190) export const validateToken = async (reset_token) => {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 191)   const client = await clientPromise;
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 192)   const db = client.db();
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 193) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 194)   try {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 195)     const token_db = await db.collection('tokens').findOne({ reset_token });
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 196) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 197)     if (!token_db) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 198)       return { success: false, message: 'Token not found or invalid.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 199)     }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 200) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 201)     const current_time = new Date();
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 202)     if (token_db.token_expiry < current_time) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 203)       return { success: false, message: 'Token has expired.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 204)     }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 205) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 206)     return { success: true, token: token_db }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 207)   } catch (error) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 208)     console.error('Error finding token: ', error);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 209)     return { success: false, message: 'Server error during token verification.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 210)   }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 211) };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 212) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 213) export const removeToken = async (reset_token) => {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 214)   const client = await clientPromise;
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 215)   const db = client.db();
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 216) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 217)   try {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 218)     const deletedToken = await db.collection('tokens').deleteOne({ reset_token });
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 219) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 220)     if(deletedToken.deletedCount === 0) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 221)       return { success: false, message: 'Token not found.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 222)     }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 223) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 224)     return { success: true, message: 'Token deleted successfully' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 225)   } catch(error) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 226)     console.error('Error deleting token: ', error);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 227)     return { success: false, message: 'Error deleting token' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 228)   }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 229) }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 230) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 231) export const getUserById = async (userId) => {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 232)   const client = await clientPromise;
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 233)   const db  = client.db();
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 234) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 235)   try {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 236)     const user = await db.collection('users').findOne({ _id: new ObjectId(userId) });
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 237) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 238)     if(!user)  {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 239)       return  {success: false, message: 'User not found.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 240)     }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 241) 
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 242)     return { success: true, user };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 243)   }
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 244)   catch(error) {
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 245)     console.error('Error retrieving user: ', error);
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 246)     return { success: false, message: 'Error retrieving user.' };
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 247)   }
+c42bff9b (V1w35h 2024-10-27 21:24:23 -0400 322)     
+^58098ab (V1w35h 2024-10-15 17:59:02 -0400 476) }
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400   1) "use client";
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400   2) 
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400   3) import React, { useState, useEffect } from 'react';
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400   4) import Navbar from "@/components/Navbar";
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400   5) 
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400   6) export default function EditProfile() {
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400   7)   const [user, setUser] = useState('');
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400  10)   const [name, setName] = useState('');
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  11)   const [bio, setBio] = useState('');
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  14)   const [error, setError] = useState(null);
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  15) 
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  16)   useEffect(() => {
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  17)     const fetchUserData = async () => {
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  18)       try {
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  24)         });
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  25) 
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  26)         const data = await response.json();
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  27) 
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  29)           setUser(data.user);
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400  31)           setUsername(data.user.username);
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400  32)           setName(data.user.name);
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  35)         }
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  38)       }
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  39)     };
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  40) 
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  43) 
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  66)     try {
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  86)         method: 'POST',
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  87)         headers: { 'Content-Type': 'application/json' },
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  89)       });
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  90) 
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  98)     } catch (err) {
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400  99)       setError(err.message);
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 101)     }
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 102)   };
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 103) 
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 104)   return (
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 105)     <div>
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 106)       <Navbar />
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 107)       <div className="container mx-auto p-4">
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 108)         <h1 className="text-2xl font-bold">Edit Profile</h1>
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 109)         {error && <p className="text-red-500">{error}</p>}
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 111)           <div className="mt-4">
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 112)             <div className="flex flex-col">
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 113)               {/* change your name */}
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 115)               <input
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 116)                 type="text"
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 117)                 value={name}
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 118)                 onChange={(e) => setName(e.target.value)}
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 119)                 className="border p-2 rounded-md"
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 120)               />
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 121)               </div>
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 122)           </div>
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 134)           <div className="mt-4">
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 135)             {/* change your bio */}
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 136)             <div className="flex flex-col">
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 138)               <textarea
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 139)                 value={bio}
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 140)                 onChange={(e) => setBio(e.target.value)}
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 141)                 className="border p-2 rounded-md"
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 142)               />
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 143)               </div>
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 144)             </div>
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 145) 
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 146)             <div className="flex flex-col mt-4">
+d7765cb6 gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-22 16:50:34 -0400 147)               {/* add a profile picture */}
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 149)               <input
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 150)                   type="file"
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 151)                   accept="image/*"
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 154)                 />
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 155)             </div>
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 156) 
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 158)               Save Changes
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 159)             </button>
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 160)           </div>
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 162)       </div>
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 163)     </div>
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 164)   );
+^58098ab gain-grain/src/app/EditProfile/page.js  (V1w35h 2024-10-15 17:59:02 -0400 165) }
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400   1) "use client";
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400   2) 
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400   3) import Link from "next/link";
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400   4) import { Bars3Icon } from '@heroicons/react/24/outline'
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400   5) import { BellIcon } from '@heroicons/react/24/solid'; 
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400   6) import styles from './navbar.module.css'
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400   8) 
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400   9) 
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  10) export default function Navbar() {
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  11)     const [showDropdown, setShowDropdown] = useState(false);
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  12)     const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  13)     const [isVisible, setIsVisible] = useState(false);
+b9d3808a (V1w35h       2024-10-26 20:57:50 -0400  14)     const [isScrolled, setIsScrolled] = useState(false);
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  15)     const [searchText, setSearchText] = useState('');
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  17)     const [notifications, setNotifications] = useState([]);
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  19) 
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  20)     function toggleHamburgerDropdown(){
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  21)         setShowDropdown(!showDropdown)
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  22)     }
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  23) 
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  24)     function toggleHamburgerDropdown() {
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  25)         if (showDropdown) {
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  26)         // Fade out
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  27)             setIsVisible(false);
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  28)             setTimeout(() => setShowDropdown(false), 200); 
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  29)         } 
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  30)         else {
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  31)             // Fade in
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  32)             setShowDropdown(true);            
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  33)             setTimeout(() => setIsVisible(true), 0); 
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  34)         }
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  35)     }
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400  36) 
+b9d3808a (V1w35h       2024-10-26 20:57:50 -0400  37)     useEffect(() => {
+b9d3808a (V1w35h       2024-10-26 20:57:50 -0400  38)         const handleScroll = () => {
+b9d3808a (V1w35h       2024-10-26 20:57:50 -0400  39)             setIsScrolled(window.scrollY > 50);
+b9d3808a (V1w35h       2024-10-26 20:57:50 -0400  40)         };
+b9d3808a (V1w35h       2024-10-26 20:57:50 -0400  41)         window.addEventListener("scroll", handleScroll);
+b9d3808a (V1w35h       2024-10-26 20:57:50 -0400  42)         return () => window.removeEventListener("scroll", handleScroll);
+b9d3808a (V1w35h       2024-10-26 20:57:50 -0400  43)     }, []);
+b9d3808a (V1w35h       2024-10-26 20:57:50 -0400  44) 
+b9d3808a (V1w35h       2024-10-26 20:57:50 -0400  45) 
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  66)     useEffect(() => {
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  68)           try {
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  76)             const data = await response.json();
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  78)             if (data.success) {
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  81)             }
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  82)           } catch (error) {
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  84)           }
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  85)         };
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  88)       }, []);
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  89) 
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  91)         setShowNotificationDropdown(!showNotificationDropdown);
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400  93) 
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 115) 
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 137)     return (
+b9d3808a (V1w35h       2024-10-26 20:57:50 -0400 138)         <nav className={`${styles.bigBar} ${isScrolled ? styles.scrolled : ''}`}>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 139)             {/* gain & grain logo top left */}
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 140)             <div>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 141)                 <img
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 142)                     className={styles.logo} 
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 143)                     height={50} 
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 144)                     width={150}
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 145)                     onClick={() => window.location.href = '/'}
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 146)                 ></img>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 147)             </div>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 148)             {/* search bar */}
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 149)             <div className={styles.centerContainer}>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 150)                 <input
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 151)                     type="text"
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 153)                     className={styles.searchBar}
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 157)                 />
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 176)             </div>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 177)             <div className={styles.buttonContainer}>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 178)                 {/* calendar button */}
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 180)                     <button className="bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-orange-600 transition-all">
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 181)                         Calendar
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 182)                     </button>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 183)                 </Link>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 184)                 {/* post button */}
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 185)                 <Link href="/post">
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 186)                     <button className="bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-orange-600 transition-all mr-2">
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 187)                         Post
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 188)                     </button>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 189)                 </Link>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 190)             </div>
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 191) 
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 192)             <div className="relative">
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 193)         <button onClick={toggleNotificationDropdown} className="bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-orange-600 transition-all relative flex items-center">
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 194)           <BellIcon className="h-6 w-6 text-white" />
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 195)           {notifications.length > 0 && (
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 196)             <span className="absolute top-0 right-0 bg-red-600 rounded-full h-2 w-2"></span>
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 197)           )}
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 198)         </button>
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 199) 
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 200)         {/* Notification Dropdown */}
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 201)         {showNotificationDropdown && (
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 202)           <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg overflow-hidden">
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 203)             {notifications.length === 0 ? (
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 204)               <div className="p-4 text-gray-500">No notifications</div>
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 205)             ) : (
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 208)                   <div className="flex justify-between items-center">
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 210)                     <button
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 211)                       className="ml-4 text-red-500 font-bold
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 213)                     >
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 214)                       Dismiss
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 215)                     </button>
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 216)                   </div>
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 217)                 </div>
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 218)               ))
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 219)             )}
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 220)           </div>
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 221)         )}
+23e5e37b (V1w35h       2024-10-24 12:00:06 -0400 222)       </div>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 223)             {/* hamburger options menu */}
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 224)             <div className={styles.hamburgerButton} onClick={toggleHamburgerDropdown}>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 225)                 <Bars3Icon className="size-10 text-white rounded-lg hover:bg-orange-600 p-0.5"/>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 226)                 {showDropdown ?
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 227)                     <div className={`${styles.hamburgerMenu} transition-opacity duration-200 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 228)                         <div className="flex flex-col space-y-1 my-1">
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 239)                             <Link href="/login" className="w-full flex justify-center">
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 240)                                 {/* combined login/register button */}
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 241)                                 <button className="w-[95%] bg-orange-500 text-white font- semibold py-2 px-4 rounded-lg hover:bg-orange-600 hover:text-white transition-all">
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 242)                                     Login/Register
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 243)                                 </button>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 244)                             </Link>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 253)                             <Link href="/profile" className="w-full flex justify-center">
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 255)                                 <button className="w-[95%] bg-orange-500 text-white font- semibold py-2 px-4 rounded-lg hover:bg-orange-600 hover:text-white transition-all">
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 256)                                     Profile
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 257)                                 </button>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 258)                             </Link>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 260)                                 {/* nutrition button */}
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 261)                                 <button className="w-[95%] bg-orange-500 text-white font- semibold py-2 px-4 rounded-lg hover:bg-orange-600 hover:text-white transition-all">
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 263)                                 </button>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 264)                             </Link>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 265)                             
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 267)                                 {/* exercise button*/}
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 268)                                 <button className="w-[95%] bg-orange-500 text-white font- semibold py-2 px-4 rounded-lg hover:bg-orange-600 hover:text-white transition-all">
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 270)                                 </button>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 271)                             </Link>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 272)                         </div>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 273)                     </div>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 274)                     // if not clicked, render nothing
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 275)                     :<></>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 276)                 }
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 277)             </div>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 278)         </nav>
+^58098ab (V1w35h       2024-10-15 17:59:02 -0400 279)     );
