@@ -1,0 +1,1323 @@
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400   5) import { Toaster, toast } from 'react-hot-toast';
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  40)     const [tempweight, setTempWeight] = useState({});
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  41)     const [ingredientsExpanded, setIngredientsExpanded] = useState(false);
+2fe0c7e3 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 16:11:24 -0400  42)     const [urlParseError, setUrlParseError] = useState('');
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  43)     
+83a43fe0 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-23 11:21:15 -0400 142)             const newMeal = { name: mealName, calories: mealCalories, ingredients: mealIngredients, link:mealUrl, };
+91a5b15b gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-15 07:33:12 -0400 149)             setMealOption('');
+91a5b15b gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-15 07:33:12 -0400 150)             setAddingType('');
+202f6d19 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 18:53:44 -0400 161)             weight: exercise.weight || null,
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 181)         if (!mealUrl) return;
+2fe0c7e3 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 16:11:24 -0400 182)         setUrlParseError('');
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 190)                 body: JSON.stringify({ url: mealUrl }),
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 193)             const data = await response.json();
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 194)             
+2fe0c7e3 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 16:11:24 -0400 196)                 setUrlParseError(data.message);
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 197)                 toast.error(data.message || 'Failed to import recipe');
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 204)                 setMealCalories(data.calories);
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 205)     
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 206)                 if (!data.caloriesFound) {
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 207)                     toast.warning('Recipe imported successfully, but calories information could not be found.');
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 208)                 } else {
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 209)                     toast.success('Recipe imported successfully!');
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 210)                 }
+2fe0c7e3 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 16:11:24 -0400 213)             setUrlParseError('This website is not yet supported for parsing')
+2fe0c7e3 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 16:11:24 -0400 215)             toast.error('Failed to import recipe. Please try again.');
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 220)         let userId = "";
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 221)             try {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 222)                 const response = await fetch('/api/profile/get-user-from-session', {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 223)                     method: 'GET',
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 224)                     headers: {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 225)                         'Content-Type': 'application/json',
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 226)                     },
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 227)                 });
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 228)         
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 229)                 const data = await response.json();
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 230)         
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 231)                 if (data.success) {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 232)                     userId = data.user._id;
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 233)                 }
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 234)             } catch (error) {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 235)                 console.error(error);
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 236)             }
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 265)         let userId = "";
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 266)             try {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 267)                 const response = await fetch('/api/profile/get-user-from-session', {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 268)                     method: 'GET',
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 269)                     headers: {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 270)                         'Content-Type': 'application/json',
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 271)                     },
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 272)                 });
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 273)         
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 274)                 const data = await response.json();
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 275)         
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 276)                 if (data.success) {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 277)                     userId = data.user._id;
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 278)                 }
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 279)             } catch (error) {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 280)                 console.error(error);
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 281)             }
+83a43fe0 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-23 11:21:15 -0400 288)                 link: meal.link,
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 317)         let userId = "";
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 318)             try {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 319)                 const response = await fetch('/api/profile/get-user-from-session', {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 320)                     method: 'GET',
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 321)                     headers: {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 322)                         'Content-Type': 'application/json',
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 323)                     },
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 324)                 });
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 325)         
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 326)                 const data = await response.json();
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 327)         
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 328)                 if (data.success) {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 329)                     userId = data.user._id;
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 330)                 }
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 331)             } catch (error) {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 332)                 console.error(error);
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 333)             }
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 364)         let userId = "";
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 365)             try {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 366)                 const response = await fetch('/api/profile/get-user-from-session', {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 367)                     method: 'GET',
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 368)                     headers: {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 369)                         'Content-Type': 'application/json',
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 370)                     },
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 371)                 });
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 372)         
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 373)                 const data = await response.json();
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 374)         
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 375)                 if (data.success) {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 376)                     userId = data.user._id;
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 377)                 }
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 378)             } catch (error) {
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 379)                 console.error(error);
+e10db102 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 10:45:36 -0400 380)             }
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 492)                     <ul className="exercise-list">
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 493)                         {selectedExercises.map((exercise, index) => (
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 494)                             <li key={index}>
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 496)                                     <span className='exercise-name'>{exercise.name}</span>
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 500) 
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 501)                                     {/* Display weight if set; otherwise show input */}
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 502)                                     {exercise.Weight ? (
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 503)                                         <span>{exercise.Weight} lbs</span> // Show weight if already set
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 504)                                     ) : (
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 505)                                         <input
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 506)                                         className='weight-input'
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 507)                                             type="number"
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 508)                                             placeholder="Weight (lbs)"
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 509)                                             onKeyDown={(e) => {
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 510)                                                 if (e.key === 'Enter') {
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 511)                                                     const weightValue = parseFloat(e.target.value); // Get weight value from input
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 512)                                                     if (!isNaN(weightValue)) {
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 513)                                                         const updatedExercises = [...selectedExercises];
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 514)                                                         updatedExercises[index].Weight = weightValue; // Set weight
+202f6d19 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 18:53:44 -0400 515)                                                         setSelectedExercises(updatedExercises);
+202f6d19 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 18:53:44 -0400 516)                                                         saveExercisesToLocalStorage(updatedExercises); // Update localStorage
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 517)                                                     }
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 518)                                                     e.target.value = ''; // Clear input after setting
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 519)                                                 }
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 520)                                             }}
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 521)                                             onBlur={(e) => {
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 522)                                                 // Optionally handle blur, if you want to clear the input
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 523)                                                 e.target.value = ''; // Clear input on blur
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 524)                                             }}
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 525)                                         />
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 526)                                     )}
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 530)                         ))}
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 531)                     </ul>
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 15:03:25 -0400 533) 
+fcb013b7 gain-grain/src/app/dashboard/calendar/page.js (brodiekovach 2024-10-22 10:07:36 -0400 658)                                                 <span className='import-workout-name'>{workout.title}</span>
+2fe0c7e3 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 16:11:24 -0400 721)                                     {/* Display error message if it exists */}
+2fe0c7e3 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 16:11:24 -0400 722)                                     {urlParseError && <p className="error-message" style={{ color: 'red' }}>{urlParseError}</p>}
+2fe0c7e3 gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 16:11:24 -0400 723) 
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 741) 
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 742)                                             {/* Ingredients section with expandable list */}
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 743)                                             {mealIngredients && mealIngredients.length > 0 && (
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 744)                                                 <div className="expandable-ingredients">
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 745)                                                     <p className="toggle-ingredients" onClick={() => setIngredientsExpanded(!ingredientsExpanded)}>
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 746)                                                         Ingredients {ingredientsExpanded ? '▲' : '▼'}
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 747)                                                     </p>
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 748)                                                     {ingredientsExpanded && (
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 749)                                                         <ul className="ingredients-list">
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 750)                                                             {mealIngredients.map((ingredient, index) => (
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 751)                                                                 <li key={index}>
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 752)                                                                     {ingredient.amount} - {ingredient.name}
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 753)                                                                 </li>
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 754)                                                             ))}
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 755)                                                         </ul>
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 756)                                                     )}
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 757)                                                 </div>
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 758)                                             )}
+d23442cd gain-grain/src/app/calendar/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 759) 
+
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 199)     line-height: 200%;
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 203) }
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 204) 
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 205) .import-workout-name {
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 206)     font-size: 1.5rem;
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 207)     padding-right: 15%;
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 208)     text-decoration: underline;
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 209)     text-decoration-color: var(--powder-blue);
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 210) }
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 211) 
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 212) .import-workout-item button {
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 213)     background-color: var(--smokey-gray);
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 214)     border-radius: 10px;
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 215)     color: var(--vol-orange);
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 216)     padding: 0px 8px;
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 217)     margin-bottom: 5px;
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 218) }  
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 219) 
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 220) .import-workout-item button:hover {
+fcb013b7 gain-grain/src/app/dashboard/calendar/modal.css (brodiekovach 2024-10-22 10:07:36 -0400 221)     box-shadow: 0px 2px 4px var(--vol-orange);
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 222) }
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 223) 
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 224) .expandable-ingredients {
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 225)     margin-top: 10px;
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 226) }
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 227) 
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 228) .toggle-ingredients {
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 229)     font-size: 1rem;
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 230)     font-weight: bold;
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 231)     cursor: pointer;
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 232)     color: rgb(255, 166, 1);
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 233)     margin-bottom: 5px;
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 234) }
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 235) 
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 236) .ingredients-list {
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 237)     list-style-type: disc;
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 238)     padding-left: 20px;
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 239)     margin: 0;
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 240)     border: 1px solid #ddd;
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 241)     border-radius: 8px;
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 242)     background-color: #f9f9f9;
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 243)     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 244) }
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 245) 
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 246) .ingredients-list li {
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 247)     color: black;
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 248)     font-size: 1rem;
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 249)     margin-bottom: 5px;
+d23442cd gain-grain/src/app/calendar/modal.css           (brodiekovach 2024-10-28 15:51:08 -0400 250) }
+
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 705) 
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 706) .weight-input {
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 707)     color: white;
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 708)     overflow: hidden;
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 709)     width: 42%;
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 710)     padding-left: 5px;
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 711)     background-color: var(--powder-blue);
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 712)     border: solid rgba(0, 0, 0, 0.5);
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 713)     border-radius: 5px;
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 714) }
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 715) 
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 716) .weight-input::placeholder {
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 717)     color: white;
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 718)     opacity: 1;
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 719) }
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 720) 
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 721) /* Hide the spinner arrows in number inputs for modern browsers */
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 722) .weight-input::-webkit-inner-spin-button,
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 723) .weight-input::-webkit-outer-spin-button {
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 724)     -webkit-appearance: none; /* Hide the arrows */
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 725)     margin: 0; /* Reset margin */
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 726) }
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 727) 
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 728) .exercise-name {
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 729)     font-size: 1.3rem;
+5cf9e4c9 gain-grain/src/app/dashboard/calendar/style.css (brodiekovach 2024-10-22 15:03:25 -0400 730) }
+
+
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400   1) 'use client';
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400   2) import React, { useState, useEffect } from 'react';
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400   6) 
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400   7) const SavedMealsPage = () => {
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400   8)     const [savedMeals, setSavedMeals] = useState([]);
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400   9)     const [loadingMeals, setLoadingMeals] = useState(true);
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  10) 
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  11)     useEffect(() => {
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  12)         const fetchUserMeals = async () => {
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  23)         
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  29)             }
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  30)         
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  31)             try {
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  32)                 const response = await fetch('/api/meals/getSavedMeals', {
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  33)                     method: 'POST',
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  34)                     headers: {
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  35)                         'Content-Type': 'application/json',
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  36)                     },
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  38)                 });
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  39)         
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  40)                 if (response.ok) {
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  41)                     const data = await response.json();
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  42)                     if (data.success) {
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  43)                         setSavedMeals(data.meals);
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  44)                     } else {
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  45)                         console.error('Failed to fetch meals:', data.message);
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  46)                         setSavedMeals([]); // Set to empty array if not successful
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  47)                     }
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  48)                 } else {
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  49)                     console.error('Failed to fetch meals:', response.statusText);
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  50)                     setSavedMeals([]); // Handle response error
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  51)                 }
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  52)             } catch (error) {
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  53)                 console.error('Error fetching meals:', error);
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  54)                 setSavedMeals([]);
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  55)             }
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  56)             setLoadingMeals(false);
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  57)         };
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  58) 
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  59)         fetchUserMeals();
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  60)     }, []);
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  61) 
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400  62)     const toggleDetails = (mealId) => {
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400  63)         setSavedMeals((prevMeals) => 
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400  64)             prevMeals.map((meal) =>
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400  65)                 meal._id === mealId ? {...meal, showDetails: !meal.showDetails } : meal
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400  66)             )
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400  67)         )    
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400  68)     }
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400  69) 
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  70)     return (
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  71)       <div className='navbar'>
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  72)         <Navbar/>
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  73)         <div className="saved-meals-container">
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  74)             <h1 className="page-title">Your Saved Meals</h1>
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  75)             {loadingMeals ? (
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  76)                 <p>Loading meals...</p>
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  77)             ) : savedMeals.length === 0 ? (
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  78)                 <p>No saved meals available.</p>
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  79)             ) : (
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  80)                 <div className="meals-grid">
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  81)                     {savedMeals.map((meal) => (
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  82)                         <div key={meal._id} className="meal-card">
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  83)                             <h3>{meal.meal.name}</h3>
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400  84)                             <p>Calories: {meal.meal.calories}</p>
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400  85) 
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  86)                             {/* Conditionally render buttons */}
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  87)                             <div className="meal-buttons">
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  88)                                 {/* Only show "View Details" if the meal has valid details */}
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  89)                                 {meal.meal.link && meal.meal.link.trim() !== '' ? (
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  90)                                     <button className="meal-action-button" onClick={() => toggleDetails(meal._id)}>
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  91)                                         {meal.showDetails ? 'Hide Details' : 'View Details'}
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  92)                                     </button>
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  93)                                 ) : (
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  94)                                     <p className="manual-meal-label">Manually Added</p> // Display a message for manual meals
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  95)                                 )}
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  96)                                 <button className="meal-action-button">Edit</button>
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  97)                             </div>
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  98) 
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400  99)                             {/* Conditionally render details */}
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400 100)                             {meal.showDetails && (
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400 101)                                 <div className="meal-details">
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 102)                                     <h4>Ingredients:</h4>
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 103)                                     <ul>
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 104)                                         {meal.meal.ingredients.map((ingredient, index) => (
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 105)                                             <li key={index}>
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 106)                                                 {ingredient.amount} {ingredient.name}
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 107)                                             </li>
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 108)                                         ))}
+d23442cd gain-grain/src/app/savedMeals/page.js           (brodiekovach 2024-10-28 15:51:08 -0400 109)                                     </ul>
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400 110)                                     {/* Conditionally render the link if it's not an empty string */}
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400 111)                                     {meal.meal.link && meal.meal.link.trim() !== '' && (
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400 112)                                         <p>
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400 113)                                             <a href={meal.meal.link} target="_blank" rel="noopener noreferrer">
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400 114)                                                 View Full Recipe
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400 115)                                             </a>
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400 116)                                         </p>
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400 117)                                     )}
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400 118)                                 </div>
+83a43fe0 gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-23 11:21:15 -0400 119)                             )}
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400 120)                         </div>
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400 121)                     ))}
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400 122)                 </div>
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400 123)             )}
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400 124)         </div>
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400 126)     );
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400 127) };
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400 128) 
+929b26da gain-grain/src/app/dashboard/savedMeals/page.js (brodiekovach 2024-10-22 11:16:35 -0400 129) export default SavedMealsPage;
+
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400   1) /* Ensure navbar spans full width */
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400   2) .navbar {
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400   3)     width: 100%;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400   4)     /* Add any other necessary navbar styling */
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400   5) }
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400   6) 
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400   7) /* Grid layout for meal cards */
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400   8) .meals-grid {
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400   9)     display: grid;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  10)     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjusted the min width */
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  11)     gap: 20px;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  12)     width: 100%; /* Ensure the grid takes up the full width */
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  13)     max-width: 1200px; /* Optional: Set a max-width to control spread */
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  14)     margin: 0 auto; /* Center the grid */
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  15)     padding: 20px;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  16) }
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  17) 
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  18) /* Each meal is displayed in its own card */
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  19) .meal-card {
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  20)     border: 1px solid #ddd;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  21)     border-radius: 8px;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  22)     padding: 20px;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  23)     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  24)     background-color: #f9f9f9;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  25)     transition: transform 0.2s;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  26)     max-width: 100%;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  27)     /* Optional: Max height to maintain uniformity */
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  28) }
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  29) 
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  30) /* Hover effect on meal card */
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  31) .meal-card:hover {
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  32)     transform: translateY(-5px);
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  33) }
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  34) 
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  35) /* Other existing styles */
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  36) .page-title {
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  37)     text-align: center;
+56d40602 gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 13:58:53 -0400  38)     border-bottom: 2px solid var(--vol-orange);
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  39)     padding-bottom: 10px;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  40)     margin-bottom: 20px;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  41)     font-size: 2.5rem;
+56d40602 gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 13:58:53 -0400  42)     color: var(--vol-orange);
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  43) }
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  44) 
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  45) .meal-card h3 {
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  46)     margin-top: 0;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  47)     font-size: 1.5rem;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  48)     color: #333;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  49) }
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  50) 
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  51) .meal-card p {
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  52)     font-size: 1.1rem;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  53)     margin: 5px 0;
+56d40602 gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 13:58:53 -0400  54)     color: #333;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  55) }
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  56) 
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  57) .meal-buttons {
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  58)     display: flex;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  59)     justify-content: space-between;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  60)     margin-top: 10px;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  61) }
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  62) 
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  63) .meal-action-button {
+56d40602 gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 13:58:53 -0400  64)     position: relative; /* To position pseudo-element */
+56d40602 gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 13:58:53 -0400  65)     background-color: rgb(255, 166, 1);
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  66)     color: white;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  67)     border: none;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  68)     border-radius: 5px;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  69)     cursor: pointer;
+56d40602 gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 13:58:53 -0400  70)     width: 48%;;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  71)     text-align: center;
+56d40602 gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 13:58:53 -0400  72)     padding: 4px 2px;
+56d40602 gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 13:58:53 -0400  73)     margin-right: 15px;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  74) }
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  75) 
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  76) .meal-action-button:hover {
+56d40602 gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 13:58:53 -0400  77)     background-color: var(--vol-orange);
+56d40602 gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 13:58:53 -0400  78) }
+56d40602 gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 13:58:53 -0400  79) 
+56d40602 gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 13:58:53 -0400  80) .meal-action-button:last-child {
+56d40602 gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 13:58:53 -0400  81)     width: 20%;
+929b26da gain-grain/src/app/dashboard/savedMeals/savedMeals.css (brodiekovach 2024-10-22 11:16:35 -0400  82) }
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  83) 
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  84) .meal-details {
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  85)     margin-top: 15px;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  86)     padding: 10px;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  87)     background-color: #fff4e5;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  88)     border-radius: 5px;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  89)     border: 1px solid #ffd28b;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  90)     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  91) }
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  92) 
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  93) /* Style the ingredients list */
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  94) .meal-details h4 {
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  95)     font-size: 1.2rem;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  96)     margin-bottom: 8px;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  97)     color: #333;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  98) }
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400  99) 
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 100) .meal-details ul {
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 101)     list-style-type: disc;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 102)     padding-left: 20px;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 103)     margin: 0;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 104)     color: #555;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 105) }
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 106) 
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 107) .meal-details li {
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 108)     margin-bottom: 5px;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 109)     font-size: 1rem;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 110) }
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 111) 
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 112) /* Style the link for viewing full recipe */
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 113) .meal-link {
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 114)     display: inline-block;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 115)     margin-top: 10px;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 116)     color: #ff9900;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 117)     font-weight: bold;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 118)     text-decoration: none;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 119) }
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 120) 
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 121) .meal-link:hover {
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 122)     color: #ff7700;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 123)     text-decoration: underline;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 124) }
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 125) 
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 126) /* Optional: Styling the anchor tag inside the meal card */
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 127) .meal-details a {
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 128)     display: inline-block;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 129)     margin-top: 10px;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 130)     font-size: 1.1rem;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 131)     color: #ff9900;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 132)     font-weight: bold;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 133)     text-decoration: none;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 134) }
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 135) 
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 136) .meal-details a:hover {
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 137)     color: #ff7700;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 138)     text-decoration: underline;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 139) }
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 140) 
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 141) .manual-meal-label {
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 142)     font-size: 0.9rem;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 143)     color: #ff6f61;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 144)     font-style: italic;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 145)     margin-top: 10px;
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 146) }
+d23442cd gain-grain/src/app/savedMeals/savedMeals.css           (brodiekovach 2024-10-28 15:51:08 -0400 147) 
+
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400   1) 'use client';
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400   2) import React, { useState, useEffect } from 'react';
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400   6) const SavedWorkoutsPage = () => {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400   7)     const [savedWorkouts, setSavedWorkouts] = useState([]);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400   8)     const [loadingWorkouts, setLoadingWorkouts] = useState(true);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  10)     useEffect(() => {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  11)         const fetchUserWorkouts = async () => {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  28)             }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  29)         
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  30)             try {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  31)                 const response = await fetch('/api/workouts/getSavedWorkouts', {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  32)                     method: 'POST',
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  33)                     headers: {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  34)                         'Content-Type': 'application/json',
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  35)                     },
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  37)                 });
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  38)         
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  39)                 if (response.ok) {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  40)                     const data = await response.json();
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  41)                     if (data.success) {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  42)                         setSavedWorkouts(data.workouts); // Adjust this line to use the correct response
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  43)                     } else {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  44)                         console.error('Failed to fetch workouts:', data.message);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  45)                         setSavedWorkouts([]); // Set to empty array if not successful
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  46)                     }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  47)                 } else {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  48)                     console.error('Failed to fetch workouts:', response.statusText);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  49)                     setSavedWorkouts([]); // Handle response error
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  50)                 }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  51)             } catch (error) {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  52)                 console.error('Error fetching workouts:', error);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  53)                 setSavedWorkouts([]);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  54)             }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  55)             setLoadingWorkouts(false);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  56)         };
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  57) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  58)         fetchUserWorkouts();
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  59)     }, []);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  60) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  61)     const toggleDetails = (workoutId) => {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  62)       setSavedWorkouts((prevWorkouts) =>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  63)           prevWorkouts.map((workout) =>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  64)               workout._id === workoutId ? { ...workout, showDetails: !workout.showDetails } : workout
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  65)           )
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  66)       );
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  67)     };
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  68) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  69)     return (
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  70)       <div className='navbar'>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  71)         <Navbar/>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  72)         <div className="saved-workouts-container">
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  73)             <h1 className="page-title">Your Saved Workouts</h1>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  74)             {loadingWorkouts ? (
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  75)                 <p>Loading workouts...</p>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  76)             ) : savedWorkouts.length === 0 ? (
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  77)                 <p>No saved workouts available.</p>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  78)             ) : (
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  79)                 <div className="workouts-grid">
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  80)                     {savedWorkouts.map((workout) => (
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  81)                         <div key={workout._id} className="workout-card">
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  82)                             <h3>{workout.title}</h3>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  83)                             <p>Exercises: {workout.exercises.length}</p>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  84)                             <button className="workout-action-button" onClick={() => toggleDetails(workout._id)}>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  85)                                 {workout.showDetails ? 'Hide Details' : 'View Details'}
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  86)                             </button>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  87)                             <button className='workout-action-button'>edit</button>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  88)                             
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  89)                             {/* Show exercise details if toggleDetails is true */}
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  90)                             {workout.showDetails && (
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  91)                                 <div className="exercise-details">
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  92)                                     <h4>Exercises:</h4>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  93)                                     <ul>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  94)                                         {workout.exercises.map((exercise, index) => (
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  95)                                             <li key={index}>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  96)                                                 <strong>{exercise.name}</strong> - {exercise.sets} sets of {exercise.reps} reps
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  97)                                             </li>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  98)                                         ))}
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400  99)                                     </ul>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400 100)                                 </div>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400 101)                             )}
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400 102)                         </div>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400 103)                     ))}
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400 104)                 </div>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400 105)             )}
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400 106)         </div>
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400 108)     );
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400 109) };
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400 110) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/page.js (brodiekovach 2024-10-22 11:40:44 -0400 111) export default SavedWorkoutsPage;
+
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400   1) /* Ensure navbar spans full width */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400   2) .navbar {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400   3)     width: 100%;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400   4)     /* Add any other necessary navbar styling */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400   5) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400   6) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400   7) .saved-workouts-container {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400   8)     padding-top: 10px;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400   9) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  10) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  15) /* Grid layout for meal cards */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  16) .workouts-grid {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  17)     display: grid;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  18)     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjusted the min width */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  19)     gap: 20px;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  20)     width: 100%; /* Ensure the grid takes up the full width */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  21)     max-width: 1200px; /* Optional: Set a max-width to control spread */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  22)     margin: 0 auto; /* Center the grid */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  23)     padding: 20px;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  24) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  25) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  26) /* Each meal is displayed in its own card */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  27) .workout-card {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  28)     border: 1px solid #ddd;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  29)     border-radius: 8px;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  30)     padding: 20px;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  31)     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  32)     background-color: #f9f9f9;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  33)     transition: transform 0.2s;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  34)     max-width: 100%;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  35)     /* Optional: Max height to maintain uniformity */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  36) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  37) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  38) /* Hover effect on meal card */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  39) .workout-card:hover {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  40)     transform: translateY(-5px);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  41) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  42) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  43) /* Other existing styles */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  44) .page-title {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  45)     text-align: center;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  46)     border-bottom: 2px solid var(--vol-orange);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  47)     padding-bottom: 10px;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  48)     margin-bottom: 20px;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  49)     font-size: 2.5rem;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  50)     color: var(--vol-orange);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  51) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  52) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  53) .workout-card h3 {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  54)     margin-top: 0;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  55)     font-size: 1.5rem;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  56)     color: #333;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  57) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  58) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  59) .workout-card p {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  60)     font-size: 1.1rem;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  61)     margin: 5px 0;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  62) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  63) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  64) .workout-buttons {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  65)     display: flex;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  66)     justify-content: space-between;
+56d40602 gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 13:58:53 -0400  67)     flex-wrap: nowrap;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  68)     margin-top: 10px;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  69) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  70) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  71) .workout-action-button {
+56d40602 gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 13:58:53 -0400  72)     position: relative; /* To position pseudo-element */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  73)     background-color: rgb(255, 166, 1);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  74)     color: white;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  75)     border: none;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  76)     border-radius: 5px;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  77)     cursor: pointer;
+56d40602 gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 13:58:53 -0400  78)     width: 48%;;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  79)     text-align: center;
+56d40602 gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 13:58:53 -0400  80)     padding: 4px 2px;
+56d40602 gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 13:58:53 -0400  81)     margin-right: 15px;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  82) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  83) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  84) .workout-action-button:hover {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  85)     background-color: var(--vol-orange);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  86) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  87) 
+56d40602 gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 13:58:53 -0400  88) .workout-action-button:last-child {
+56d40602 gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 13:58:53 -0400  89)     flex: 0 0 auto;
+56d40602 gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 13:58:53 -0400  90)     width: 20%;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  91) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  92) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  93) .exercise-details {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  94)     margin-top: 15px; /* Space above exercise details */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  95)     padding: 10px;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  96)     background-color: #f9f9f9; /* Light gray background */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  97)     border-left: 5px solid var(--powder-blue); /* Accent border */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  98)     border-radius: 5px; /* Rounded corners */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400  99) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 100) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 101) .exercise-details h4 {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 102)     margin-bottom: 10px; /* Space below exercise heading */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 103)     color: #333; /* Green color for heading */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 104)     font-weight: bold; /* Bold heading */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 105) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 106) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 107) .exercise-details ul {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 108)     list-style-type: none; /* Remove default list styles */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 109)     padding-left: 0; /* Remove padding from the left */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 110) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 111) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 112) .exercise-details li {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 113)     color: var(--vol-orange);
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 114)     padding: 5px 0; /* Space between list items */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 115)     border-bottom: 1px solid #b2b1b1; /* Subtle divider line */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 116) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 117) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 118) .exercise-details strong {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 119)     color: #2a2a2a;
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 120) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 121) 
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 122) .exercise-details li:last-child {
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 123)     border-bottom: none; /* Remove bottom border from last item */
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 124) }
+99685dfe gain-grain/src/app/dashboard/savedWorkouts/savedWorkouts.css (brodiekovach 2024-10-22 11:40:44 -0400 125) 
+
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   1) export const supportedDomains = [
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   2)     'allrecipes.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   3)     'bbcgoodfood.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   4)     'bettycrocker.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   5)     'blueberry.org',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   6)     'bonappetit.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   7)     'budgetbytes.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   8)     'chefkoch.de',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   9)     'cookingclassy.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  10)     'cooking.nytimes.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  11)     'christinascucina.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  12)     'delish.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  13)     // 'eatwell101.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  14)     'epicurious.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  15)     'food.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  16)     'foodnetwork.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  17)     'gimmesomeoven.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  18)     'howtobbqright.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  19)     'ice.edu',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  20)     'inspiredtaste.net',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  21)     'joyfoodsunshine.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  22)     'justonecookbook.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  23)     'kingarthurbaking.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  24)     'kitchenstories.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  25)     'kotikokki.net',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  26)     'littlesweetbaker.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  27)     'loveandlemons.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  28)     'myrecipes.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  29)     'natashaskitchen.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  30)     'onceuponachef.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  31)     'pillsbury.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  32)     'pinchofyum.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  33)     'reseptitaivas.fi',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  34)     'sallysbakingaddiction.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  35)     'simplyrecipes.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  36)     'spendwithpennies.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  37)     'tasteofhome.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  38)     'tasty.co',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  39)     'thefoodietakesflight.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  40)     'thepioneerwoman.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  41)     'thestayathomechef.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  42)     'valio.fi',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  43)     'whatsgabycooking.com',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  44)     'yhteishyva.fi'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  45) ];
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  46) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  47) export const recipeSelectors = {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  48)     'allrecipes.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  49)         titleSelector: 'div[class="headline-wrapper"] > h1',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  50)         ingredientsSelector: 'section[data-tracking-zone="recipe-ingredients"] > fieldset > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  51)         directionsSelector: 'ul[class="instructions-section"] > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  52)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  53)     'bbcgoodfood.com': {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  54)         titleSelector: 'h1[class="heading-1"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  55)         ingredientsSelector: 'section.recipe__ingredients ul li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  56)         directionsSelector: 'section.recipe__method-steps ul li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  57)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  58)     'bettycrocker.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  59)         titleSelector: 'h1[class="rdpTitle"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  60)         ingredientsSelector: 'div[class="rdpIngredients"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  61)         directionsSelector: 'ul[class="recipeSteps"] > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  62)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  63)     'blueberry.org' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  64)         titleSelector: 'h1[itemprop="name"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  65)         ingredientsSelector: 'div[class="ingredients"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  66)         directionsSelector: 'section[itemprop="recipeInstructions"] > div > ol > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  67)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  68)     'budgetbytes.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  69)         titleSelector: 'h1[class="title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  70)         ingredientsSelector: 'ul[class="wprm-recipe-ingredients"] > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  71)         directionsSelector: 'ul[class="wprm-recipe-instructions"] > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  72)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  73)     'cookingclassy.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  74)         titleSelector: 'h1[class="title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  75)         ingredientsSelector: 'ul[class="wprm-recipe-ingredients"] > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  76)         directionsSelector: 'ul[class="wprm-recipe-instructions"] > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  77)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  78)     'christinascucina.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  79)         titleSelector: 'h2.mv-create-title',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  80)         ingredientsSelector: 'div.mv-create-ingredients > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  81)         directionsSelector: 'div.mv-create-instructions li, div.mv-create-instructions *:header:not(*[class~="mv-create-instructions-title"])'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  82)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  83)     'delish.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  84)         titleSelector: 'h1[class="content-hed recipe-hed"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  85)         ingredientsSelector: 'div[class="ingredient-lists"] > div[class="ingredient-item"] > span[class="ingredient-description"] > p',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  86)         ingredientsAmountSelector: 'div[class="ingredient-lists"] > div[class="ingredient-item"] > span[class="ingredient-amount"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  87)         directionsSelector: 'div[class="direction-lists"] > ol > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  88)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  89)     // 'eatwell101.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  90)     //     titleSelector: 'h1[class="entry-title black bold"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  91)     //     ingredientsSelector: 'div[id="rco"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  92)     //     directionsSelector: 'div[class="dr"] > p',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  93)     // },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  94)     'epicurious.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  95)         titleSelector: 'h1[data-testid="ContentHeaderHed"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  96)         ingredientsSelector: 'div[data-testid="IngredientList"] > div > div',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  97)         directionsSelector: 'div[data-testid="InstructionsWrapper"] > div > div',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  98)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  99)     'food.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 100)         titleSelector: 'h1',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 101)         ingredientsSelector: 'div.recipe-ingredients__ingredient-parts',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 102)         ingredientsAmountSelector: 'div.recipe-ingredients__ingredient-quantity',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 103)         directionsSelector: 'li.recipe-directions__step'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 104)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 105)     'foodnetwork.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 106)         titleSelector: 'section[class="o-AssetTitle"] > h1 > span',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 107)         ingredientsSelector: 'section[class="o-Ingredients"] > div > p',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 108)         directionsSelector: 'section[data-module="recipe-method"] > div > ol > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 109)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 110)     'gimmesomeoven.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 111)         titleSelector: 'h1[class="posttitle"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 112)         ingredientsSelector: 'div[class="tasty-recipes-ingredients-body"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 113)         directionsSelector: 'div[class="tasty-recipes-instructions-body"] > ol > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 114)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 115)     'howtobbqright.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 116)         titleSelector: 'h1',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 117)         ingredientsSelector: 'div.tasty-recipes-ingredients > div > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 118)         directionsSelector: 'div.tasty-recipes-instructions > div > ol > li'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 119)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 120)     'ice.edu' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 121)         titleSelector: 'h1',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 122)         ingredientsSelector: 'section[class="wysiwyg"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 123)         directionsSelector: 'ol > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 124)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 125)     'inspiredtaste.net' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 126)         titleSelector: 'div[class="itr-recipe-title"] > h2',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 127)         ingredientsSelector: 'span[class="itr-ingredients"] > p',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 128)         directionsSelector: 'span[class="itr-directions"] > p',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 129)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 130)     'justonecookbook.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 131)         titleSelector: 'h1[class="entry-title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 132)         ingredientsSelector: 'ul[class="wprm-recipe-ingredients"] > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 133)         directionsSelector: 'div[class="wprm-recipe-instruction-text"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 134)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 135)     'kingarthurbaking.com' :{
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 136)         titleSelector: 'title',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 137)         ingredientsSelector: 'div[class="ingredient-section"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 138)         directionsSelector: 'article[class="recipe__instructions"] > div > ol > li > p'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 139)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 140)     'kitchenstories.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 141)         titleSelector: 'h1[class~=recipe-title]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 142)         ingredientsSelector: 'table.ingredients > tbody > tr > td:nth-child(2)',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 143)         ingredientsAmountSelector: 'table.ingredients > tbody > tr > td:nth-child(1)',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 144)         directionsSelector: 'li[class~="step"] > p[class="text"]'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 145)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 146)     'kotikokki.net' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 147)         titleSelector: 'h1[id="recipe-title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 148)         ingredientsSelector: 'tr.ingredient > td.name',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 149)         ingredientsAmountSelector: 'tr.ingredient > td.amount-unit',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 150)         directionsSelector: 'div.instructions > span > p'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 151)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 152)     'littlesweetbaker.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 153)         titleSelector: 'h2[class="tasty-recipes-title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 154)         ingredientsSelector: 'div[class="tasty-recipes-ingredients"] > div > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 155)         directionsSelector: 'div[class="tasty-recipes-instructions"] > div > ol > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 156)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 157)     'loveandlemons.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 158)         titleSelector: 'h1[class="entry-title"] > a',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 159)         ingredientsSelector: 'ul[class="wprm-recipe-ingredients"] > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 160)         directionsSelector: 'ul[class="wprm-recipe-instructions"] > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 161)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 162)     'myrecipes.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 163)         titleSelector: 'h1[class~="heading-content"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 164)         ingredientsSelector: 'span.ingredients-item-name',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 165)         directionsSelector: 'li.instructions-section-item > div.section-body'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 166)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 167)     'natashaskitchen.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 168)         titleSelector: 'h2[class="wprm-recipe-name"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 169)         ingredientsSelector: 'div[class="wprm-recipe-ingredient-group"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 170)         directionsSelector: 'div[class="wprm-recipe-instruction-group"] > ol > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 171)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 172)     'onceuponachef.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 173)         titleSelector: 'h1[class="title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 174)         ingredientsSelector: 'div[class="ingredients"] > ul > li > span[class="name"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 175)         ingredientsAmountSelector: 'div[class="ingredients"] > ul > li > span[class="amount"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 176)         directionsSelector: 'div[class="instructions"] > ol > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 177)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 178)     'pillsbury.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 179)         titleSelector: 'h1[class="rdpTitle"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 180)         ingredientsSelector : 'div[class="rdpIngredients"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 181)         directionsSelector: 'ul[class="recipeSteps"] > li'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 182)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 183)     'pinchofyum.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 184)         titleSelector: 'h2[class="tasty-recipes-title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 185)         ingredientsSelector: 'div[class="tasty-recipes-ingredients"] > div > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 186)         directionsSelector: 'div[class="tasty-recipes-instructions"] > div > ol > li'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 187)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 188)     'reseptitaivas.fi' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 189)         titleSelector: 'h1.post-title',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 190)         ingredientsSelector: 'div.post-content > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 191)         directionsSelector: 'div.post-content > p:not(*[class="mobile-hidden"])'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 192)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 193)     'sallysbakingaddiction.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 194)         titleSelector: 'h2[class="tasty-recipes-title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 195)         ingredientsSelector: 'div[class="tasty-recipes-ingredients-body"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 196)         directionsSelector: 'div[class="tasty-recipes-instructions-body"] > ol > li'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 197)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 198)     'simplyrecipes.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 199)         titleSelector: 'h1[class="heading__title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 200)         ingredientsSelector: 'div[class="comp structured-ingredients"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 201)         directionsSelector: 'section[class="comp section--instructions section"] > div > div > ol > li > p',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 202)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 203)     'spendwithpennies.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 204)         titleSelector: 'h1[class="entry-title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 205)         ingredientsSelector: 'div[class="wprm-recipe-ingredient-group"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 206)         directionsSelector: 'div[class="wprm-recipe-instruction-group"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 207)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 208)     'tasteofhome.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 209)         titleSelector: 'h1[class="recipe-title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 210)         ingredientsSelector: 'div[class="recipe-ingredients"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 211)         directionsSelector: 'ol[class="recipe-directions__list"] > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 212)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 213)     'tasty.co' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 214)         titleSelector: 'h1[class="recipe-name extra-bold xs-mb05 md-mb1"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 215)         ingredientsSelector: 'div[class="ingredients-prep clearfix col"] > div > div > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 216)         directionsSelector: 'div[class="ingredients-prep clearfix col"] > div > ol > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 217)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 218)     'thefoodietakesflight.com': {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 219)         titleSelector: 'h2[class="wprm-recipe-name wprm-block-text-bold"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 220)         ingredientsSelector: 'div[class="wprm-recipe-ingredient-group"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 221)         directionsSelector: 'div[class="wprm-recipe-instruction-group"] > ul > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 222)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 223)     'thepioneerwoman.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 224)         titleSelector: 'h1[class="content-hed recipe-hed"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 225)         ingredientsSelector: 'div[class="ingredient-lists"] > div',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 226)         directionsSelector: 'div[class="direction-lists"] > ol > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 227)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 228)     'thestayathomechef.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 229)         titleSelector: 'header[class="article-header"] > h1',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 230)         ingredientsSelector: 'ul[class="wprm-recipe-ingredients"] > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 231)         directionsSelector: 'ul[class="wprm-recipe-instructions"] > li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 232)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 233)     'valio.fi' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 234)         titleSelector: 'h1[class^="Title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 235)         ingredientsSelector: 'td[class^="IngredientRowRight"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 236)         ingredientsAmountSelector: 'td[class^="IngredientRowLeft"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 237)         directionsSelector: 'div[class^="InstructionsRowRight"]'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 238)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 239)     'whatsgabycooking.com' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 240)         titleSelector: 'h1[class="entry-title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 241)         ingredientsSelector: 'li[class="wprm-recipe-ingredient"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 242)         directionsSelector: 'div[class="wprm-recipe-instruction-text"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 243)     },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 244)     'yhteishyva.fi' : {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 245)         titleSelector: 'h1[class~="title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 246)         ingredientsSelector: 'div.recipe__ingredients div.ingredient-row > div[class~="name"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 247)         ingredientsAmountSelector: 'div.recipe__ingredients div.ingredient-row > div[class~="amount"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 248)         directionsSelector: 'div.recipe__step-ingredients > div > p'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 249)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 250) }
+
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   1) // utils/recipeScraper.js
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   2) import { load } from 'cheerio';
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   3) import { recipeSelectors } from './domainConfig';
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   4) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   5) export function extractDomainFromUrl(url) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   6)     try {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   7)         const urlObj = new URL(url);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   8)         const hostname = urlObj.hostname;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   9)         return hostname.startsWith('www.') ? hostname.slice(4) : hostname;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  10)     } catch (error) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  11)         throw new Error('Invalid URL format');
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  12)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  13) }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  14) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  15) function getTitleFromSelector($, titleSelector) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  16)     // Try the specific selector first
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  17)     let title = $(titleSelector).first().text().trim();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  18)     
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  19)     // If no title found, try common fallback selectors
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  20)     if (!title) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  21)         const fallbackSelectors = [
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  22)             'h1',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  23)             'h1.recipe-title',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  24)             'h1.entry-title',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  25)             'h2.recipe-title',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  26)             '.recipe-title',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  27)             '.recipe-name',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  28)             'meta[property="og:title"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  29)             'title'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  30)         ];
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  31) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  32)         for (const selector of fallbackSelectors) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  33)             if (selector === 'meta[property="og:title"]') {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  34)                 title = $(selector).attr('content');
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  35)             } else {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  36)                 title = $(selector).first().text().trim();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  37)             }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  38)             
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  39)             if (title) break;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  40)         }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  41)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  42) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  43)     // Clean up the title
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  44)     if (title) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  45)         // Remove common suffixes like "| AllRecipes" or "- Food.com"
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  46)         title = title.split('|')[0].split('-')[0].trim();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  47)         // Remove "Recipe" suffix if it exists
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  48)         title = title.replace(/\s+recipe$/i, '').trim();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  49)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  50) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  51)     return title;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  52) }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  53) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  54) export function parseIngredient(ingredientText, amountText = '') {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  55)     // Clean up the input text first
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  56)     let cleanText = ingredientText
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  57)         .replace(/\n+/g, ' ')  // Replace newlines with spaces
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  58)         .replace(/\s+/g, ' ')  // Normalize multiple spaces
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  59)         .trim();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  60) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  61)     // If the text contains a full ingredient list, skip it
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  62)     if (cleanText.includes('Ingredients') || 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  63)         cleanText.includes('yields') || 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  64)         cleanText.includes('servings') ||
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  65)         cleanText.match(/\d+x\b/)) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  66)         return null;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  67)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  68) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  69)     let amount = amountText.trim();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  70)     let name = cleanText;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  71) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  72)     // Define measurement units pattern
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  73)     const measurementUnits = [
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  74)         'cup', 'cups',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  75)         'tablespoon', 'tablespoons', 'tbsp',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  76)         'teaspoon', 'teaspoons', 'tsp',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  77)         'ounce', 'ounces', 'oz',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  78)         'pound', 'pounds', 'lb', 'lbs',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  79)         'gram', 'grams', 'g',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  80)         'kilogram', 'kilograms', 'kg',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  81)         'milliliter', 'milliliters', 'ml',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  82)         'liter', 'liters', 'l',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  83)         'pinch', 'pinches',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  84)         'dash', 'dashes',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  85)         'handful', 'handfuls',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  86)         'piece', 'pieces',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  87)         'slice', 'slices',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  88)         'package', 'packages',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  89)         'can', 'cans',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  90)         'bottle', 'bottles',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  91)         'bunch', 'bunches',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  92)         'clove', 'cloves',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  93)         'stick', 'sticks',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  94)         'sprig', 'sprigs',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  95)         'head', 'heads',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  96)         'leaf', 'leaves',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  97)         'stalk', 'stalks',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  98)         'whole',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  99)         'jar', 'jars',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 100)         'container', 'containers',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 101)         'box', 'boxes'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 102)     ].join('|');
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 103) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 104)     // If no separate amount provided, try to extract from the name
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 105)     if (!amount) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 106)         // Match measurement patterns including fractions and decimals
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 107)         const measurementPattern = new RegExp(
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 108)             `^((?:\\d+(?:\\s+\\d+)?(?:\\/\\d+)?|\\d*\\.?\\d+)\\s*(?:${measurementUnits}))\\b\\s*`,
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 109)             'i'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 110)         );
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 111)         
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 112)         // Match just numbers at the start (for cases like "1 onion")
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 113)         const numberPattern = /^(\d+(?:\s+\d+)?(?:\/\d+)?|\d*\.?\d+)\s+/;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 114) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 115)         const measureMatch = name.match(measurementPattern);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 116)         const numberMatch = !measureMatch && name.match(numberPattern);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 117) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 118)         if (measureMatch) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 119)             amount = measureMatch[1].trim();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 120)             name = name.slice(measureMatch[0].length).trim();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 121)         } else if (numberMatch) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 122)             amount = numberMatch[1].trim();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 123)             name = name.slice(numberMatch[0].length).trim();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 124)         }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 125)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 126) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 127)     // Clean up the name
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 128)     // Remove any packaging info in parentheses at the start
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 129)     name = name.replace(/^\([\d\-\s]+(ounce|oz|pound|lb|gram|g)\)\s*/i, '');
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 130)     
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 131)     // Handle case where the entire ingredient list got captured
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 132)     if (name.includes('cup') && name.includes('teaspoon') && name.includes('tablespoon')) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 133)         return null;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 134)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 135) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 136)     // If we have multiple ingredients in the name (indicating a parsing error), return null
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 137)     if (name.match(/\d+\s+(?:cup|tablespoon|teaspoon|tbsp|tsp)\b.*\d+\s+(?:cup|tablespoon|teaspoon|tbsp|tsp)\b/i)) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 138)         return null;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 139)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 140) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 141)     // Return null if we don't have a valid ingredient
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 142)     if (!name || name.length < 2) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 143)         return null;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 144)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 145) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 146)     return {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 147)         amount: amount || 'as needed',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 148)         name: name
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 149)     };
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 150) }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 151) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 152) export async function scrapeRecipe($, domain) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 153)     const selectors = recipeSelectors[domain];
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 154)     if (!selectors) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 155)         throw new Error('Unsupported domain');
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 156)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 157) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 158)     // Extract title with better error handling
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 159)     const name = getTitleFromSelector($, selectors.titleSelector);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 160)     if (!name) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 161)         console.warn('Could not find recipe name using primary or fallback selectors');
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 162)         // Instead of throwing error, use a fallback name
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 163)         throw new Error('Could not find recipe name. Please check if the URL is correct and the recipe page is accessible.');
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 164)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 165) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 166)     // Extract ingredients
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 167)     const ingredients = [];
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 168)     const ingredientElements = $(selectors.ingredientsSelector);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 169)     const amountElements = selectors.ingredientsAmountSelector 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 170)         ? $(selectors.ingredientsAmountSelector) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 171)         : [];
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 172) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 173)     if (ingredientElements.length === 0) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 174)         // Try fallback selectors for ingredients
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 175)         const fallbackSelectors = [
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 176)             '.recipe-ingredients li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 177)             '.ingredients li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 178)             '[itemprop="recipeIngredient"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 179)             '.ingredient-list li',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 180)             '.ingredient',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 181)             '[class*="ingredient"]'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 182)         ];
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 183) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 184)         for (const selector of fallbackSelectors) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 185)             const elements = $(selector);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 186)             if (elements.length > 0) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 187)                 elements.each((i, el) => {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 188)                     const ingredientText = $(el).text().trim();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 189)                     if (ingredientText) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 190)                         const parsed = parseIngredient(ingredientText);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 191)                         if (parsed) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 192)                             ingredients.push(parsed);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 193)                         }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 194)                     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 195)                 });
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 196)                 break;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 197)             }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 198)         }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 199)     } else {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 200)         ingredientElements.each((i, el) => {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 201)             const ingredientText = $(el).text().trim();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 202)             const amountText = amountElements[i] 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 203)                 ? $(amountElements[i]).text().trim() 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 204)                 : '';
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 205)             
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 206)             if (ingredientText) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 207)                 const parsed = parseIngredient(ingredientText, amountText);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 208)                 if (parsed) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 209)                     ingredients.push(parsed);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 210)                 }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 211)             }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 212)         });
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 213)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 214) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 215)     // Extract calories with fallbacks
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 216)     const caloriePatterns = [
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 217)         /(\d+)\s*(?:kcal|calories|cal\b)/i,
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 218)         /Calories:\s*(\d+)/i,
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 219)         /Nutrition.*?(\d+)\s*(?:kcal|calories|cal\b)/i
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 220)     ];
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 221) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 222)     let calories = null;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 223)     const pageText = $('body').text();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 224)     
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 225)     for (const pattern of caloriePatterns) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 226)         const match = pageText.match(pattern);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 227)         if (match) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 228)             calories = parseInt(match[1], 10);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 229)             break;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 230)         }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 231)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 232) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 233)     if (!calories) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 234)         const calorieSelectors = [
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 235)             '[itemprop="calories"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 236)             '.nutrition-info calories',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 237)             '.calorie-count',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 238)             'meta[itemprop="calories"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 239)             'meta[property="og:calories"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 240)             'meta[name="calories"]',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 241)             '.nutrition-per-serving'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 242)         ];
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 243) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 244)         for (const selector of calorieSelectors) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 245)             const element = $(selector);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 246)             if (element.length) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 247)                 const value = element.text().trim() || element.attr('content');
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 248)                 const numberMatch = value?.match(/\d+/);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 249)                 if (numberMatch) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 250)                     calories = parseInt(numberMatch[0], 10);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 251)                     break;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 252)                 }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 253)             }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 254)         }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 255)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 256) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 257)     // Validate the scraped data
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 258)     if (ingredients.length === 0) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 259)         console.warn('No ingredients found for recipe');
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 260)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 261) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 262)     return {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 263)         name,
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 264)         ingredients,
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 265)         calories,
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 266)         success: true,
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 267)         caloriesFound: calories !== null
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 268)     };
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 269) }
+
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400   1) /*import { NextResponse } from 'next/server';
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  57)     }*//*
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  98) }*/
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400  99) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 100) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 101) import { NextResponse } from 'next/server';
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 102) import axios from 'axios';
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 103) import { load } from 'cheerio';
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 104) import { extractDomainFromUrl, scrapeRecipe } from '../../../../utils/recipeScrape/recipeScraper';
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 105) import { supportedDomains } from '../../../../utils/recipeScrape/domainConfig';
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 106) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 107) // Rate limiting configuration
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 108) const RATE_LIMIT = 60; // requests per minute
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 109) const requestCounts = new Map();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 110) const MINUTE = 60 * 1000;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 111) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 112) function isRateLimited(clientIp) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 113)     const now = Date.now();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 114)     const minuteAgo = now - MINUTE;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 115)     
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 116)     const recentRequests = requestCounts.get(clientIp) || [];
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 117)     const recentRequestCount = recentRequests.filter(time => time > minuteAgo).length;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 118)     
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 119)     if (recentRequestCount >= RATE_LIMIT) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 120)         return true;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 121)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 122)     
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 123)     // Update request count
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 124)     requestCounts.set(clientIp, [...recentRequests.filter(time => time > minuteAgo), now]);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 125)     return false;
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 126) }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 127) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 128) export async function POST(req) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 129)     try {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 130)         // Rate limiting
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 131)         const clientIp = req.headers.get('x-forwarded-for') || 'unknown';
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 132)         if (isRateLimited(clientIp)) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 133)             return NextResponse.json(
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 134)                 { success: false, message: 'Too many requests. Please try again later.' }, 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 135)                 { status: 429 }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 136)             );
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 137)         }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 138) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 139)         const { url } = await req.json();
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 140) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 141)         if (!url) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 142)             return NextResponse.json(
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 143)                 { success: false, message: 'URL is required' }, 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 144)                 { status: 400 }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 145)             );
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 146)         }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 147) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 148)         // Extract and validate domain
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 149)         const domain = extractDomainFromUrl(url);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 150)         if (!supportedDomains.includes(domain)) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 151)             return NextResponse.json(
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 152)                 { success: false, message: 'This recipe website is not currently supported' }, 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 153)                 { status: 400 }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 154)             );
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 155)         }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 156) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 157)         // Fetch and parse webpage
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 158)         const response = await axios.get(url, {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 159)             headers: {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 160)                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 161)             },
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 162)             timeout: 10000
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 163)         });
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 164) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 165)         const $ = load(response.data);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 166)         const result = await scrapeRecipe($, domain);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 167) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 168)         if (!result.calories) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 169)             console.log('No calories found for recipe');
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 170)             // Still return success, but with a flag indicating missing calories
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 171)             return NextResponse.json({
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 172)                 ...result,
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 173)                 caloriesFound: false,
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 174)                 message: 'Recipe parsed successfully, but calories information could not be found.'
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 175)             });
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 176)         }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 177) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 178)         return NextResponse.json(result);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 179)     } catch (error) {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 180)         console.error('Error parsing the recipe:', error);
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 181)         return NextResponse.json(
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 182)             { 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 183)                 success: false, 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 184)                 message: error.message || 'Failed to parse recipe',
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 185)                 error: process.env.NODE_ENV === 'development' ? error.stack : undefined
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 186)             }, 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 187)             { status: 500 }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 188)         );
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 189)     }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 190) }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 191) 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 192) export async function GET() {
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 193)     return NextResponse.json(
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 194)         { success: false, message: 'Method GET not allowed' }, 
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 195)         { status: 405 }
+d23442cd (brodiekovach 2024-10-28 15:51:08 -0400 196)     );
+
