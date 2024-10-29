@@ -1,0 +1,520 @@
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  1) // import mongoose from 'mongoose'; // Use ES Module import
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400  2) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  3) // // Define the Post schema
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  4) // const postSchema = new mongoose.Schema({
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  5) //   title: {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  6) //     type: String,
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  7) //     required: true,
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  8) //     trim: true
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  9) //   },
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 10) //   body: {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 11) //     type: String,
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 12) //     required: true
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 13) //   },
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 14) //   author: {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 15) //     type: mongoose.Schema.Types.ObjectId,
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 16) //     ref: 'User', // Reference to User model
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 17) //     required: true
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 18) //   },
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 19) //   dateCreated: {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 20) //     type: Date,
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 21) //     default: Date.now
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 22) //   },
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 23) //   comments: [{
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 24) //     user: {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 25) //       type: mongoose.Schema.Types.ObjectId,
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 26) //       ref: 'User' // Reference to User model for commenters
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 27) //     },
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 28) //     comment: {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 29) //       type: String,
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 30) //       required: true
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 31) //     },
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 32) //     date: { 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 33) //       type: Date, 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 34) //       default: Date.now 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 35) //     }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 36) //   }]
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 37) // });
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 38) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 39) // // Create a model for the Post schema
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 40) // const Post = mongoose.model('Post', postSchema);
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 41) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 42) // export default Post;
+e7a4ad05 (teisenba 2024-10-27 10:07:38 -0400 20)     const { userId } = req.query || {};
+e7a4ad05 (teisenba 2024-10-27 10:07:38 -0400 21)   
+e7a4ad05 (teisenba 2024-10-27 10:07:38 -0400 22)     // Check if userId is defined
+e7a4ad05 (teisenba 2024-10-27 10:07:38 -0400 23)     if (!userId) {
+e7a4ad05 (teisenba 2024-10-27 10:07:38 -0400 24)       return new Response("Missing userId in query", { status: 400 });
+e7a4ad05 (teisenba 2024-10-27 10:07:38 -0400 25)     }
+e7a4ad05 (teisenba 2024-10-27 10:07:38 -0400 26)   
+e7a4ad05 (teisenba 2024-10-27 10:07:38 -0400 27)     // Proceed with fetching data for the given userId
+e7a4ad05 (teisenba 2024-10-27 10:07:38 -0400 34)     } 
+e7a4ad05 (teisenba 2024-10-27 10:07:38 -0400 35)     catch (error) {
+e7a4ad05 (teisenba 2024-10-27 10:07:38 -0400 36)       return new Response("Error fetching workouts", { status: 500 });
+e7a4ad05 (teisenba 2024-10-27 10:07:38 -0400 38) }  
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400  1) import { useState, useEffect } from 'react';
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400  2) 
+5c1ee495 (teisenba 2024-10-10 12:24:03 -0400  3) export default function Feed({ toggleComments, visibleComments }) {
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400  4)   const [posts, setPosts] = useState([]); // To store posts fetched from the server
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400  5) 
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400  6)   // Fetch posts from the API
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400  7)   useEffect(() => {
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400  8)     const fetchPosts = async () => {
+78724e72 (teisenba 2024-10-24 11:17:43 -0400  9)       try {
+78724e72 (teisenba 2024-10-24 11:17:43 -0400 10)         const res = await fetch('/api/posts');
+78724e72 (teisenba 2024-10-24 11:17:43 -0400 11)         if (!res.ok) {
+78724e72 (teisenba 2024-10-24 11:17:43 -0400 12)           throw new Error('Failed to fetch posts');
+78724e72 (teisenba 2024-10-24 11:17:43 -0400 13)         }
+78724e72 (teisenba 2024-10-24 11:17:43 -0400 14)         const data = await res.json();
+78724e72 (teisenba 2024-10-24 11:17:43 -0400 15)         setPosts(data.data || []); // Ensure that data is an array
+78724e72 (teisenba 2024-10-24 11:17:43 -0400 16)       } catch (error) {
+78724e72 (teisenba 2024-10-24 11:17:43 -0400 17)         console.error('Error fetching posts:', error);
+78724e72 (teisenba 2024-10-24 11:17:43 -0400 18)       }
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 19)     };
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 20)     fetchPosts();
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 21)   }, []);
+8e8ece2f (teisenba 2024-10-22 12:41:29 -0400 22) 
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 23)   return (
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 24)     <div className="flex justify-center mt-8 w-full">
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 25)       <div className="flex flex-col items-center max-w-2xl w-full">
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 26)         {posts.map((post) => (
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 27)           <div key={post._id} className="relative post bg-white border border-gray-300 mb-5 rounded-lg w-full">
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 28)             <div className="post-header flex items-center p-3">
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 29)               <img src="https://via.placeholder.com/40" alt="User Profile" className="rounded-full mr-2" />
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 30)               <h3 className="text-lg">@{post.author}</h3>
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 31)             </div>
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 32)             <div className="post-content p-3">
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 33)               <h4 className="text-xl">{post.title}</h4>
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 34)               <p className="text-gray-700">{post.body}</p>
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 35)             </div>
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 36)             <div className="post-actions flex justify-around mb-3">
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 37)               <button className="hover:underline">Like</button>
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 38)               <button className="hover:underline" onClick={() => toggleComments(post._id)}>Comment</button>
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 39)               <button className="hover:underline">Share</button>
+5c1ee495 (teisenba 2024-10-10 12:24:03 -0400 40)             </div>
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 41)             {visibleComments === post._id && <Comments comments={post.comments} />}
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 42)           </div>
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 43)         ))}
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 44)       </div>
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 45)     </div>
+d0b0bafd (teisenba 2024-10-23 20:56:02 -0400 46)   );
+5c1ee495 (teisenba 2024-10-10 12:24:03 -0400 47) }
+64375b55 (teisenba         2024-10-24 15:55:09 -0400   2) 
+64375b55 (teisenba         2024-10-24 15:55:09 -0400   3) import Navbar from '../../../components/Navbar'
+64375b55 (teisenba         2024-10-24 15:55:09 -0400  99)         <div className="min-h-screen flex flex-col overflow-hidden">
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 100)             <Navbar /> 
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 101)             <div className="max-w-2xl mx-auto p-4">
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 102)                 <h1 className="text-2xl font-bold mb-4">Create a Blog Post</h1>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 103)                 <form onSubmit={handleSubmit}>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 104)                     <ReactQuill
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 105)                         value={postContent}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 106)                         onChange={handleChange}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 107)                         placeholder="Write your blog post..."
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 108)                         modules={{
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 109)                             toolbar: [
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 110)                                 [{ 'header': [1, 2, false] }],
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 111)                                 ['bold', 'italic', 'underline', 'strike'],
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 112)                                 [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 113)                                 ['link', 'image'],
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 114)                                 ['clean']
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 115)                             ],
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 116)                         }}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 117)                         formats={[
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 118)                             'header', 'bold', 'italic', 'underline', 'strike',
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 119)                             'list', 'bullet', 'link', 'image',
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 120)                         ]}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 121)                         className="mb-4"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 122)                     />
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 123)                     <button
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 124)                         type="submit"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 125)                         className={`bg-blue-500 text-white px-4 py-2 rounded-lg ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 126)                         disabled={loading} 
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 127)                     >
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 128)                         {loading ? 'Submitting...' : 'Submit Post'}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 129)                     </button>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 130)                 </form>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 132)                 {success && <p className="text-green-500 mt-4">{success}</p>}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 133)                 {error && <p className="text-red-500 mt-4">{error}</p>}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 134)             </div>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400   3) import Navbar from '../../../components/Navbar'
+64375b55 (teisenba         2024-10-24 15:55:09 -0400  94)                 <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-4xl">
+64375b55 (teisenba         2024-10-24 15:55:09 -0400  95)                     <h1 className="text-3xl font-bold mb-6 text-center">Post Meals / Recipes</h1>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400  96)                     <table className="min-w-full bg-white border border-gray-300">
+64375b55 (teisenba         2024-10-24 15:55:09 -0400  97)                         <thead>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400  98)                             <tr>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400  99)                                 <th className="border px-4 py-2">Meal / Recipe</th>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 100)                                 <th className="border px-4 py-2">Calories</th>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 102)                                 <th className="border px-4 py-2">Carbohydrates (g)</th>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 103)                                 <th className="border px-4 py-2">Fats (g)</th>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 105)                         </thead>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 106)                         <tbody>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 157)                         </tbody>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 158)                     </table>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 159)                     <button
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 160)                         onClick={handleSubmitMeal}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 161)                         className="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 162)                     >
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 163)                         Submit Meal
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 164)                     </button>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 165)                 </div>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400   2) import Navbar from '../../../components/Navbar'
+64375b55 (teisenba         2024-10-24 15:55:09 -0400   3) 
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 109)                     <h1 className="text-3xl font-bold mb-6 text-center">Post Workouts</h1>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 110)                     <input
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 111)                         type="text"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 112)                         value={title}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 113)                         onChange={(e) => setTitle(e.target.value)}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 114)                         className="border w-full px-2 py-1 mb-4 rounded"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 115)                         placeholder="Enter workout title"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 116)                     />
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 117)                     <table className="min-w-full bg-white border border-gray-300">
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 118)                         <thead>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 119)                             <tr>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 120)                                 <th className="border px-4 py-2">Exercise</th>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 121)                                 <th className="border px-4 py-2">Sets</th>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 122)                                 <th className="border px-4 py-2">Repetitions</th>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 124)                         </thead>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 125)                         <tbody>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 126)                             {exercises.map((exercise) => (
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 127)                                 <tr key={exercise.id}>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 128)                                     <td className="border px-4 py-2">
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 129)                                         <input
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 130)                                             type="text"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 131)                                             value={exercise.name}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 132)                                             onChange={(e) => handleChange(exercise.id, 'name', e.target.value)}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 133)                                             className="border w-full px-2 py-1 rounded"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 134)                                             placeholder="Enter exercise"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 135)                                         />
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 136)                                     </td>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 137)                                     <td className="border px-4 py-2">
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 138)                                         <input
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 139)                                             type="number"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 140)                                             value={exercise.repetitions}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 141)                                             onChange={(e) => handleChange(exercise.id, 'repetitions', e.target.value)}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 142)                                             className="border w-full px-2 py-1 rounded"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 143)                                             placeholder="Enter sets"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 144)                                         />
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 145)                                     </td>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 146)                                     <td className="border px-4 py-2">
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 147)                                         <input
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 148)                                             type="number"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 149)                                             value={exercise.set}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 150)                                             onChange={(e) => handleChange(exercise.id, 'set', e.target.value)}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 151)                                             className="border w-full px-2 py-1 rounded"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 152)                                             placeholder="Enter reps"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 153)                                         />
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 154)                                     </td>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 155)                                 </tr>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 156)                             ))}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 157)                         </tbody>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 158)                     </table>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 159)                     <div className="flex justify-between mt-4">
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 160)                         <button
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 161)                             onClick={addExercise}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 162)                             className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 163)                         >
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 164)                             Add Exercise
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 165)                         </button>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 166)                         <button
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 167)                             onClick={handleSubmit}
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 168)                             className="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 169)                         >
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 170)                             Submit Workout
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 171)                         </button>
+64375b55 (teisenba         2024-10-24 15:55:09 -0400 172)                     </div>
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400  1) import {Post} from '../../../../utils/postModels/Post';
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400  3) 
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400  4) // Fetch all posts
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400  5) const fetchPosts = async () => {
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400  6)   try {
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400  7)     const client = await clientPromise; // Ensure you have access to the client
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400  8)     const db = client.db(); // Access the database
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400  9)     const posts = await db
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 10)       .collection('posts')
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 11)       .find()
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 12)       //.project({ title: 1, body: 1, author: 1, dateCreated: 1 })
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 13)       .toArray();
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 14) 
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 15)     return { success: true, posts };
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 16)   } 
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 17)   catch (error) {
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 18)     console.error('Error fetching posts:', error);
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 19)     return { success: false, message: 'Error fetching posts' };
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 20)   }
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 21) };
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 22) 
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 23) // Fetch user posts
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 24) const fetchUserPosts = async () => {
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 25)   try {
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 26)     const client = await clientPromise; // Ensure you have access to the client
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 27)     const db = client.db(); // Access the database
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 28)     const posts = await db
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 29)       .collection('posts')
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 30)       .find({})
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 31)       .project({ title: 1, body: 1, author: 1, dateCreated: 1 })
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 32)       .toArray();
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 33) 
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 34)     return { success: true, posts };
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 35)   } 
+2e0ae25c gain-grain/src/app/api/posts/get-posts/route.js (teisenba 2024-10-28 18:10:28 -0400 36)   catch (error) {
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 37)     console.error('Error fetching posts:', error);
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 38)     return { success: false, message: 'Error fetching posts' };
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 39)   }
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 40) };
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 41) 
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 42) // Handle GET requests
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 43) export const GET = async (req) => {
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 44)   try {
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 45)     const { success, posts, message } = await fetchPosts(); // Fetch all posts
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 46) 
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 47)     if (success) {
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 48)       return new Response(JSON.stringify(posts), { status: 200 });
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 49)     } else {
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 50)       return new Response(JSON.stringify({ message }), { status: 500 });
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 51)     }
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 52)   } catch (error) {
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 53)     console.error("Error fetching posts:", error); // Log the error
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 54)     return new Response('Error fetching posts', { status: 500 });
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 55)   }
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 56) };
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 57) 
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 58) // Handle POST requests
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 59) export const POST = async (req) => {
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 60)   const { title, body, author } = await req.json(); // Get the request body
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 61) 
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 62)   try {
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 63)     const newPost = new Post({ title, body, author });
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 64)     await newPost.save(); // Save the new post
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 65)     return new Response(JSON.stringify(newPost), { status: 201 });
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 66)   } catch (error) {
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 67)     console.error('Error creating post:', error); // Log the error
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 68)     return new Response('Error creating post', { status: 500 });
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 69)   }
+d0b0bafd gain-grain/src/app/api/posts/route.js           (teisenba 2024-10-23 20:56:02 -0400 70) };
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400  1) "use client";
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400  3) import { useEffect, useState } from "react";
+7c198c14 (teisenba           2024-10-10 13:20:26 -0400  4) import Navbar from "../components/Navbar";
+5c1ee495 (teisenba           2024-10-10 12:24:03 -0400  5) import Feed from "../components/Feed";
+8e8ece2f (teisenba           2024-10-22 12:41:29 -0400  6) import './homepage.css';
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400  9)   // State for managing posts and which post's comments are visible
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 10)   const [user, setUser] = useState('');
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 11)   const [posts, setPosts] = useState([]);
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 12)   const [followedUserPosts, setFollowedUserPosts] = useState([]);
+8e8ece2f (teisenba           2024-10-22 12:41:29 -0400 13)   const [visibleComments, setVisibleComments] = useState(null);
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 15)   useEffect(() => {
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 16)     if (!user._id) return;
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 17) 
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 18)     const fetchFollowedUserPosts = async () => {
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 19)       try {
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 20)         const response = await fetch(`/api/posts/get-followed-user-posts/${user._id}`);
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 21)         const data = await response.json();
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 22)         
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 23)         if (response.ok) {
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 24)           setFollowedUserPosts(data); // Set posts if fetch is successful
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 25)         } 
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 26)         else {
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 27)           console.error("Error fetching posts:", data.message);
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 28)         }
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 29)       } 
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 30)       catch (error) {
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 31)         console.error("Error:", error);
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 32)       }
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 33)     };
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 34)     console.log("User", user);
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 35)     fetchFollowedUserPosts();
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 36)   }, [user]);
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 37) 
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 38)   // Fetch posts on component mount
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 39)   useEffect(() => {
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 40)     const fetchPosts = async () => {
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 41)       try {
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 43)         const data = await response.json();
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 44)         
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 45)         if (response.ok) {
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 46)           setPosts(data); // Set posts if fetch is successful
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 47)         } 
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 48)         else {
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 49)           console.error("Error fetching posts:", data.message);
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 50)         }
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 51)       } 
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 52)       catch (error) {
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 53)         console.error("Error:", error);
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 54)       }
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 55)     };
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 56) 
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 57)     fetchPosts();
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 58)   }, []);
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 59) 
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 60)   useEffect(() => {
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 61)     const fetchUserData = async () => {
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 62)       try {
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 63)         const response = await fetch('/api/profile/get-user-from-session', {
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 64)           method: 'GET',
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 65)           headers: {
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 66)               'Content-Type': 'application/json',
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 67)           },
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 68)         });
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 69) 
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 70)         const data = await response.json();
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 71) 
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 72)         if (data.success) {
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 73)           setUser(data.user);
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 74)         }
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 75)       } catch (error) {
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 76)         console.error(error);
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 77)       }
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 78)     };
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 79) 
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 80)     fetchUserData();
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 81)   }, []);
+2e0ae25c (teisenba           2024-10-28 18:10:28 -0400 82) 
+8e8ece2f (teisenba           2024-10-22 12:41:29 -0400 83)   // Toggle comments for the specific post
+8e8ece2f (teisenba           2024-10-22 12:41:29 -0400 84)   const toggleComments = (postId) => {
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 85)     setVisibleComments((currentId) => (currentId === postId ? null : postId));
+f5d0beb8 (teisenba           2024-10-10 19:09:46 -0400 86)   };
+c9dac84c (teisenba           2024-10-14 19:00:33 -0400 89)     <main className="homepage-main flex min-h-screen flex-col bg-gray-50">
+8e8ece2f (teisenba           2024-10-22 12:41:29 -0400 90)       {/* Navbar */}
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 91)       <Navbar />
+f5d0beb8 (teisenba           2024-10-10 19:09:46 -0400 92) 
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 93)       {/* Feed Section, passing posts and toggle functionality */}
+e7a4ad05 (teisenba           2024-10-27 10:07:38 -0400 94)       <Feed posts={posts} toggleComments={toggleComments} visibleComments={visibleComments} />
+8e8ece2f (teisenba           2024-10-22 12:41:29 -0400 97) }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  13)   const [posts, setPosts] = useState([]);
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  17)   const [expandedWorkouts, setExpandedWorkouts] = useState({});
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  18) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  19)   useEffect(() => {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  20)     const fetchPosts = async () => {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  21)       try {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  22)         const response = await fetch("/api/posts/get-posts"); // Adjust route as needed
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  23)         const data = await response.json();
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  24)         
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  25)         if (response.ok) {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  26)           setPosts(data); // Set posts if fetch is successful
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  27)         } 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  28)         else {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  29)           console.error("Error fetching posts:", data.message);
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  30)         }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  31)       } 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  32)       catch (error) {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  33)         console.error("Error:", error);
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  34)       }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  35)     };
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  36) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  37)     fetchPosts();
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  38)   }, []);
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 157)         {/* {activeTab === 'posts' && user.posts && user.posts.length > 0 ? ( */}
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 158)         {activeTab === 'posts' && posts.length > 0 ? (
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 160) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 161)             {posts.map((post) => (
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 166)             
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  8)                    '/api/reset-password/remove-token', '/api/blogs', '/api/posts/get-posts', '/api/posts/get-followed-user-posts'];
+2e0ae25c (teisenba         2024-10-28 18:10:28 -0400 66)     
+2e0ae25c (teisenba         2024-10-28 18:10:28 -0400 73)   } 
+2e0ae25c (teisenba         2024-10-28 18:10:28 -0400 74)   catch (error) {
+2e0ae25c (teisenba         2024-10-28 18:10:28 -0400 81)   console.log("User ID", userId);
+2e0ae25c (teisenba         2024-10-28 18:10:28 -0400 89)   } 
+2e0ae25c (teisenba         2024-10-28 18:10:28 -0400 90)   catch (error) {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  1) import { getPostById } from '../../../../../utils/userPosts';
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  2) import clientPromise from '../../../../../utils/mongodb';
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  3) import { ObjectId } from 'mongodb';
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  4) import { NextResponse } from 'next/server';
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  5) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  6) // GET request handler to retrieve a post by ID
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  7) export async function GET(req, { params }) {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  8)     try {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  9)         const { id } = params; // Extract post ID from route parameters
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 10)         //const post = await getPostById(id); // Fetch the post using the ID
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 11)         console.log("ID", id);
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 12)         const client = await clientPromise;
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 13)         const db  = client.db();
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 14) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 15)         try {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 16)             const user = await db.collection('users').findOne({ _id: new ObjectId(id) });
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 17) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 18)             if(!user)  {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 19)                 return NextResponse.json({ success: false, message: 'Error retrieving user' });
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 20)             }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 21) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 22)             const followingIds = user.following.map((id)=> new ObjectId(id));
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 23)             console.log("Following ids", followingIds);
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 24)             const posts = await db
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 25)                 .collection('posts')
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 26)                 .find({userId : {$in : followingIds}})
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 27)                 .toArray();
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 28)             
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 29)             if(!posts)  {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 30)                 return NextResponse.json({ success: false, message: 'Error retrieving post' });
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 31)             }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 32) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 33)             return NextResponse.json({ success: true, posts});
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 34)         }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 35)         catch(error) {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 36)             console.error('Error retrieving user: ', error);
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 37)             return NextResponse.json({ success: false, message: 'Error retrieving user' });
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 38)         }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 39)         // if (!post) {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 40)         //     return new Response('Post not found', { status: 404 });
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 41)         // }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 42) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 43)         // Respond with the post data in JSON format if found
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 44)         // return new Response(JSON.stringify(post), {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 45)         //     status: 200,
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 46)         //     headers: { 'Content-Type': 'application/json' },
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 47)         // });
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 48)     } 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 49)     catch (error) {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 50)         console.error("Error fetching post:", error); // Log any errors for debugging
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 51)         return new Response('Error fetching post', { status: 500 });
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 52)     }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 53) }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  1) import {Post} from '../../../../utils/postModels/Post';
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  2) import clientPromise from '../../../../utils/mongodb';
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  3) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  4) // Fetch all posts
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  5) const fetchFollowedUserPosts = async () => {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  6)   try {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  7)     const client = await clientPromise; // Ensure you have access to the client
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  8)     const db = client.db(); // Access the database
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400  9)     const posts = await db
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 10)       .collection('posts')
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 11)       .find()
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 12)       .toArray();
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 13) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 14)     return { success: true, posts };
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 15)   } 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 16)   catch (error) {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 17)     console.error('Error fetching posts:', error);
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 18)     return { success: false, message: 'Error fetching posts' };
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 19)   }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 20) };
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 21) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 22) // Handle GET requests
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 23) export const GET = async (req) => {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 24)   try {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 25)     const { success, posts, message } = await fetchFollowedUserPosts(); // Fetch all posts
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 26) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 27)     if (success) {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 28)       return new Response(JSON.stringify(posts), { status: 200 });
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 29)     } else {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 30)       return new Response(JSON.stringify({ message }), { status: 500 });
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 31)     }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 32)   } catch (error) {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 33)     console.error("Error fetching posts:", error); // Log the error
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 34)     return new Response('Error fetching posts', { status: 500 });
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 35)   }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 36) };
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 37) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 38) // Handle POST requests
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 39) export const POST = async (req) => {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 40)   const { title, body, author } = await req.json(); // Get the request body
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 41) 
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 42)   try {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 43)     const newPost = new Post({ title, body, author });
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 44)     await newPost.save(); // Save the new post
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 45)     return new Response(JSON.stringify(newPost), { status: 201 });
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 46)   } catch (error) {
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 47)     console.error('Error creating post:', error); // Log the error
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 48)     return new Response('Error creating post', { status: 500 });
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 49)   }
+2e0ae25c (teisenba 2024-10-28 18:10:28 -0400 50) };
+2e0ae25c (teisenba         2024-10-28 18:10:28 -0400 23) }

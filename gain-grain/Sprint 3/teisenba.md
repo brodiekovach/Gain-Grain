@@ -25,7 +25,7 @@ Gain-Grain
 * gain-grain/src/app/profile/page.js
 * gain-grain/src/middleware.js
 * gain-grain/src/utils/userPosts.js
-* .../posts/get-followed-user-posts/[id]/route.js
+* gain-grain\src\app\api\posts\get-followed-user-posts\[id]\route.js
 * .../app/api/posts/get-followed-user-posts/route.js
 * .../src/app/api/posts/get-posts/[id]/route.js
 
