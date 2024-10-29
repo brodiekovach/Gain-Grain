@@ -9,7 +9,7 @@ export default function PostPage() {
         <div className="flex flex-col items-center">
             <Navbar/>
             {/* background grey */}
-            <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gray-100 p-6">
+            <div className="min-h-screen w-screen flex flex-col items-center justify-center bg-gray-100 p-6">
                 
                 {/* white pane in center screen */}
                 <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
