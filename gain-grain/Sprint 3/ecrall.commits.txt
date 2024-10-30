@@ -1,0 +1,1975 @@
+gain-grain/src/app/profile/page.js
+033c0c21 (Ethan    2024-10-22 21:10:50 -0400   7) import Image from 'next/image';
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400  14)   const [activeTab, setActiveTab] = useState('posts');
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400  43)         const response = await fetch('/api/profile/get-user-from-session', {
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400  44)           method: 'GET',
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400  56)         console.error(error);
+fa832264 (Ethan    2024-10-28 14:47:20 -0400  60)     fetchUserData();
+fa832264 (Ethan    2024-10-28 14:47:20 -0400  61)   }, []);
+fa832264 (Ethan    2024-10-28 14:47:20 -0400  62) 
+fa832264 (Ethan    2024-10-28 14:47:20 -0400  63)   useEffect(() => {
+fa832264 (Ethan    2024-10-28 14:47:20 -0400  79)     };
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400  94)         <div className="flex flex-col items-center p-4">
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400  95)           <div className="w-24 h-24">
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400  96)             {user.profilePic ? (
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400  97)               <Image src={user.profilePic} width={150} height={150} className="rounded-full w-full h-full object-cover"/>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400  98)             ) : (
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400  99)               <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" viewBox="0 0 16 16">
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 100)               <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 101)               <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 102)               </svg>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 103)             )}
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 105)           <div className={styles.profile}>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 106)             <h1 className={styles.username}>{user.username} </h1>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 107)             <div className="flex justify-between space-x-4 mt-2">
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 108)             <p>Followers: <strong>{user.numFollowers}</strong></p>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 109)             <p>Following: <strong>{user.numFollowing}</strong></p>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 110)           </div>
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400 111)             {user.bio ? (
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400 112)               <p className="mt-4 text-center">{user.bio}</p>
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400 113)             ) : (
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400 114)               <p></p>
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400 115)             )}
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 116)             <div className="flex flex-col items-center w-full mt-6">
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 117)             <Link href="/edit-profile">
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 118)             <button className={styles.editButton}>Edit profile</button>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 119)             </Link>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 123)         </div>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 124) 
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 125)         {/* Navigation Bar for Switching Tabs */}
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 126)         <div className="mt-4">
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 127)           <div className="flex justify-around border-b">
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 128)             <button
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 129)               className={`py-2 px-4 ${activeTab === 'posts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 130)               onClick={() => setActiveTab('posts')}
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 131)             >
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 132)               Posts
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 133)             </button>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 134)             <button
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 135)               className={`py-2 px-4 ${activeTab === 'savedWorkouts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 136)               onClick={() => setActiveTab('savedWorkouts')}
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 137)             >
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 138)               Saved Workouts
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 139)             </button>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 140)             <button
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 141)               className={`py-2 px-4 ${activeTab === 'savedMeals' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 142)               onClick={() => setActiveTab('savedMeals')}
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 143)             >
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 144)               Saved Meals
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 145)             </button>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 146)             <button
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 147)               className={`py-2 px-4 ${activeTab === 'likedPosts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 148)               onClick={() => setActiveTab('likedPosts')}
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 149)             >
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 150)               Liked Posts
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 152)           </div>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 153)         </div>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 154) 
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 155)         {/* Posts Grid or No Posts Message */}
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 156)         <div className="mt-8">
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 211)               </svg>
+9e61a221 (Ethan    2024-10-23 21:46:32 -0400 216)               <p>{`Showing ${activeTab.replace(/([A-Z])/g, ' $1').toLowerCase()}...`}</p>
+
+gain-grain/src/app/profile/profile.module.css
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400  2)     background-color: white;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400  5)     color: var(--vol-orange);
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400  8) .editButton {
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400  9)     background-color: var(--vol-orange);
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 10)     border-radius: 100px;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 11)     color: white;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 12)     width: 120px;
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 13)     font-size: 18px;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 14) }
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 15) 
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 16) .loginWrapper {
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 17)     display: flex;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 18)     align-items: center;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 19)     justify-content: center;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 20) }
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 21) 
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 22) .loginButton {
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 23)     margin-top: 70px;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 24)     background-color: var(--vol-orange);
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 25)     border-radius: 100px;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 26)     color: white;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 27)     width: 400px;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 28)     font-size: 40px;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 29) }
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 30) 
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 31) .savedPostsButton {
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 32)     background-color: var(--vol-orange);
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 33)     border-radius: 100px;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 34)     color: white;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 35)     width: 120px;
+2edd6454 (Ethan  2024-10-23 11:37:16 -0400 36) }
+2edd6454 (Ethan  2024-10-23 11:37:16 -0400 37) 
+2edd6454 (Ethan  2024-10-23 11:37:16 -0400 38) .username {
+2edd6454 (Ethan  2024-10-23 11:37:16 -0400 39)     font-size: 30px;
+2edd6454 (Ethan  2024-10-23 11:37:16 -0400 40)     font-weight: bold;
+2edd6454 (Ethan  2024-10-23 11:37:16 -0400 41)     text-align: center;
+23b1c98d (Ethan  2024-10-21 19:26:00 -0400 42) }
+
+gain-grain/src/app/api/search-accounts/route.js
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  1) import { NextResponse } from 'next/server';
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  2) import { searchAccounts } from '../../../utils/userModel';
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  3) 
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  4) export async function GET(req) {
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  5)     try {
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  6)         const { searchParams } = new URL(req.url);
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  7)         const query = searchParams.get('query');
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  8) 
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  9)         if(!query) {
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 10)             return NextResponse.json({ success: false, message: 'Query parameter is missing' }, { status: 400 });
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 11)         }
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 12) 
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 13)         const accounts = await searchAccounts(query);
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 14) 
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 15)         if(accounts.success) {
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 16)             return NextResponse.json({ success: true, accounts: accounts.accounts });
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 17)         } else {
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 18)             return NextResponse.json({ success: true, message: accounts.message });
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 19)         }
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 20)     } catch (error) {
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 21)         console.error('Error fetching accounts:', error);
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 22)         return NextResponse.json({ success: false, message: 'Error fetching accounts' }, { status: 500 });
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 23)     }
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 24) }
+
+gain-grain/src/app/search/profile/page.js
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400   1) "use client";
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400   2) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400   3) import React, { useEffect, useState} from "react"; 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400   4) import styles from './profile.module.css'
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400   5) import Navbar from "@/components/Navbar";
+fc670488 (Ethan  2024-10-23 00:24:42 -0400   6) import Image from 'next/image';
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400   7) import { useSearchParams } from 'next/navigation';
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  10) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  11) export default function profile() {
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  12)   const [user, setUser] = useState('');
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  13)   const [currentUser, setCurrentUser] = useState('');
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  15)   const [following, setFollowing] = useState(false);
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  19) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  20)   const searchParams = useSearchParams();
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  21)   const userId = searchParams.get('userId');
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  22) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  23)   useEffect(() => {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  24)     const fetchUserData = async () => {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  25)       try {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  26)         const response = await fetch('/api/profile/get-user-by-id', {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  27)           method: 'POST',
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  28)           headers: {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  29)               'Content-Type': 'application/json',
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  30)           },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  31)           body: JSON.stringify({ userId })
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  32)         });
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  33) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  34)         const data = await response.json();
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  35) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  36)         if (data.success) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  37)           setUser(data.user);
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  38)         }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  39)       } catch (error) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  40)         console.error(error);
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  41)       }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  42)     };
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  43) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  44)     fetchUserData();
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  45)   }, [userId]);
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  46) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  47)   useEffect(() => {
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  48)     const fetchUserData = async () => {
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  49)       try {
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400  50)         const response = await fetch('/api/profile/get-user-from-session', {
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400  51)           method: 'GET',
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  52)           headers: {
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  53)               'Content-Type': 'application/json',
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  54)           },
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  55)         });
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  56) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  57)         const data = await response.json();
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  58) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  59)         if (data.success) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  60)           setCurrentUser(data.user);
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  61)         }
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  62)       } catch (error) {
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400  63)         console.error(error);
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  64)       }
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  65)     };
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  66) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  67)     fetchUserData();
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400  68)   }, []);
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  69) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  70)   useEffect(() => {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  71)     const fetchUserData = async () => {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  72)       try {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  73)         const followingResponse = await fetch('/api/profile/following', {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  74)           method: 'POST',
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  75)           headers: {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  76)               'Content-Type': 'application/json',
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  77)           },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  78)           body: JSON.stringify({ currentUser, user })
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  79)         });
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  80) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  81)         const result = await followingResponse.json();
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  82) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  83)         if(result.following) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  84)           setFollowing(true);
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  85)         } else {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  86)           setFollowing(false);
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  87)         }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  88)       } catch (error) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  89)         console.error(error);
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  90)       }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  91)     };
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  92) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  93)     fetchUserData();
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  94)   }, [user, currentUser]);
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400  95) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 128)   const handleFollowUnfollow = async() => {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 129)     try {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 130)       const response = await fetch('/api/profile/follow-unfollow-user', {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 131)         method: 'POST',
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 132)         headers: {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 133)             'Content-Type': 'application/json',
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 134)         },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 135)         body: JSON.stringify({ user, currentUser, following })
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 136)       });
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 137) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 138)       const data = await response.json();
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 139) 
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 140)       if (data.success) {
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 141)         setFollowing(!following);
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 142)         showAlert(data.message);
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 143)       }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 144)     } catch (error) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 145)       console.error(error);
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 146)     }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 147)   };
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 148) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 149)   const showAlert = (message) => {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 150)     const alertContainer = document.getElementById('alert-container');
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 151)     const alertMessage = document.getElementById('alert-message');
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 152) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 153)     alertMessage.textContent = message;
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 154)     alertContainer.classList.remove('hidden');
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 155) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 156)     setTimeout(() => {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 157)       alertContainer.classList.add('hidden');
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 158)     }, 10000);
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 159) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 160)     document.getElementById('alert-close').addEventListener('click', () => {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 161)       alertContainer.classList.add('hidden');
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 162)     });
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 163) };
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 164) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 173)   return (
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 174)     <div className={styles.wrapper}>
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 175)       <Navbar />
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 176)       <div id="alert-container" className={`${styles.alert} hidden`}>
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 177)           <span id="alert-message"></span>
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 178)           <button id="alert-close">
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 179)               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 180)                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 181)               </svg>
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 182)           </button> {}
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 183)       </div>
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 184)       <div className="flex flex-col items-center p-4">
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 185)         <div className="w-24 h-24">
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 186)           {user.profilePic ? (
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 187)             <Image src={user.profilePic} width={150} height={150} className="rounded-full w-full h-full object-cover" />
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 188)           ) : (
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 189)             <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" viewBox="0 0 16 16">
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 190)               <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 191)               <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 192)             </svg>
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 193)           )}
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 194)         </div>
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 195)         <div className={styles.profile}>
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 196)           <h1 className={styles.username}>{user.username}</h1>
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 197)           <div className="flex flex-row justify-center space-x-4 mt-2">
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 198)             <p>Followers: <strong>{user.numFollowers}</strong></p>
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 199)             <p>Following: <strong>{user.numFollowing}</strong></p>
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 200)           </div>
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 201)           {user.bio && (
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 202)             <p className="mt-4 text-center max-w-xs overflow-hidden text-ellipsis">{user.bio}</p>
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 203)           )}
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 204)           <div className="flex flex-col items-center w-full mt-6">
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 205)             {following ? (
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 206)                 <button className={styles.followButton} onClick={() => handleFollowUnfollow()}>Unfollow</button>
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 207)               ) : (
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 208)                 <button className={styles.followButton} onClick={() => handleFollowUnfollow()}>Follow</button>
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 209)               )
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 210)             }
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 212)         </div>
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 213)       </div>
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 214) 
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 215)         {/* Navigation Bar for Switching Tabs */}
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 216)         <div className="mt-4">
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 217)           <div className="flex justify-around border-b">
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 218)             <button
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 219)               className={`py-2 px-4 ${activeTab === 'posts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 220)               onClick={() => setActiveTab('posts')}
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 221)             >
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 222)               Posts
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 223)             </button>
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 224)             <button
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 225)               className={`py-2 px-4 ${activeTab === 'savedWorkouts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 226)               onClick={() => setActiveTab('savedWorkouts')}
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 227)             >
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 228)               Saved Workouts
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 229)             </button>
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 230)             <button
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 231)               className={`py-2 px-4 ${activeTab === 'savedMeals' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 232)               onClick={() => setActiveTab('savedMeals')}
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 233)             >
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 234)               Saved Meals
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 235)             </button>
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 236)             <button
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 237)               className={`py-2 px-4 ${activeTab === 'likedPosts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 238)               onClick={() => setActiveTab('likedPosts')}
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 239)             >
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 240)               Liked Posts
+17f4d36f (Ethan  2024-10-23 01:24:14 -0400 241)             </button>
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 242)           </div>
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 243)         </div>
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 244) 
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 298)               </svg>
+b6f0e991 (Ethan  2024-10-24 13:41:30 -0400 303)               <p>{`Showing ${activeTab.replace(/([A-Z])/g, ' $1').toLowerCase()}...`}</p>
+
+gain-grain/src/app/search/profile/profile.module.css
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  1) .wrapper {
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  2)     background-color: white;
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  3)     width: 100vw;
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  4)     height: 100vh;
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  5)     color: var(--vol-orange);
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  6) }
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  7) 
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  8) .followButton {
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400  9)     background-color: var(--vol-orange);
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 10)     border-radius: 100px;
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 11)     color: white;
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 12)     width: 120px;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 13)     font-size: 18px;
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 14) }
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 15) 
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 16) .username {
+2edd6454 (Ethan 2024-10-23 11:37:16 -0400 17)     font-size: 30px;
+2edd6454 (Ethan 2024-10-23 11:37:16 -0400 18)     font-weight: bold;
+2edd6454 (Ethan 2024-10-23 11:37:16 -0400 19)     text-align: center;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 20) }
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 21) 
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 22) .hidden {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 23)     display: none;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 24) }
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 25)   
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 26) .alert {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 27)     position: fixed;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 28)     top: 30px;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 29)     right: 30px;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 30)     padding: 20px;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 31)     font-size: 17px;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 32)     background-color: #fff;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 33)     border: 2px solid #f3dac1c5;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 34)     color: var(--vol-orange);
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 35)     border-radius: 5px;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 36)     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 37)     z-index: 1000;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 38) }
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 39)   
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 40) .alert::before {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 41)     content: "";
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 42)     position: absolute;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 43)     top: 0;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 44)     left: 0;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 45)     right: 0;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 46)     bottom: 0;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 47)     background-color: #fff;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 48)     border-radius: 5px;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 49)     z-index: -1;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 50) }
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 51)   
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 52) .alert.hidden {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 53)     display: none;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 54) }
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 55)   
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 56) #alert-close {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 57)     background: transparent;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 58)     border: none;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 59)     color: var(--vol-orange);
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 60)     font-size: 16px;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 61)     cursor: pointer;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 62)     padding-right: 0px;
+a7cbed5a (Ethan 2024-10-21 23:58:39 -0400 63) }
+
+gain-grain/src/components/Navbar.js
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400   7) import { useState, useEffect } from "react";
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  16)     const [searchResults, setSearchResults] = useState([]);
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400  18)     const [user, setUser] = useState(null);
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  46)     useEffect(() => {
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  47)         if (searchText.length > 0) {
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  48)             fetch(`/api/search-accounts?query=${searchText}`)
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  49)                 .then((res) => res.json())
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  50)                 .then((data) => {
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  51)                     if(data.success) {
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  52)                         setSearchResults(data.accounts);
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  53)                     } else {
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  54)                         setSearchResults([]);
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  55)                     }
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  56)                 })
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  57)                 .catch((error) => {
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  58)                     console.error('Error fetching search results:', error);
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  59)                     setSearchResults([]);
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  60)                 }); 
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  61)         } else {
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  62)             setSearchResults([]);
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  63)         }
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  64)     }, [searchText]);
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400  65) 
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  67)         const fetchUserData = async () => {
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  69)             const response = await fetch('/api/profile/get-user-from-session', {
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  70)               method: 'GET',
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  71)               headers: {
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  72)                   'Content-Type': 'application/json',
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  73)               },
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  74)             });
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  75)     
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  77)     
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  79)                 setUser(data.user);
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  80)                 setNotifications(data.user.notifications);
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  83)             console.error(error);
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  86)     
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  87)         fetchUserData();
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400  90)     const toggleNotificationDropdown = () => {
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400  92)     };
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400  94)     const handleDismissNotification = async(index, notif) => {
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  95)         setNotifications(notifications.filter((_, i) => i !== index));
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  96) 
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  97)         try {
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  98)             const response = await fetch('/api/notifications/dismiss-notifications', {
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400  99)               method: 'POST',
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 100)               headers: {
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 101)                   'Content-Type': 'application/json',
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 102)               },
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 103)               body: JSON.stringify({ userId: user._id, notif })
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 104)             });
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 105)     
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 106)             const data = await response.json();
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 107)     
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 108)             if (data.success) {
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 109)                 setNotifications(data.user.notifications);
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 110)             }
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 111)           } catch (error) {
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 112)             console.error(error);
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 113)           }
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 114)     };
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 116)     const clearSearchText = () => {
+b54d9854 (Ethan        2024-10-25 19:33:19 -0400 117)         setSearchText('');
+b54d9854 (Ethan        2024-10-25 19:33:19 -0400 118)     };
+b54d9854 (Ethan        2024-10-25 19:33:19 -0400 119) 
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 120)     const handleLogout = async() => {
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 121)         try {
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 122)             const response = await fetch('/api/delete-cookie', { method: 'POST' });
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 123) 
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 124)             const data = await response.json();
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 125) 
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 126)             if(data.success) {
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 127)                 console.log('User logged out');
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 128)                 window.location.href = '/login';
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 129)             } else {
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 130)                 alert('Unable to logout');
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 131)             }
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 132)         } catch (error) {
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 133)             console.error(error);
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 134)         }
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 135)     };
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 136) 
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 152)                     placeholder="Search for accounts..."
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 154)                     value={searchText}
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 155)                     onChange={(e) => setSearchText(e.target.value)}
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 156)                     aria-label="Search for accounts"
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 158)                 
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 159)                 {searchResults.length > 0 && (
+b54d9854 (Ethan        2024-10-25 19:33:19 -0400 160)                     <div className={styles.searchDropdownContainer}>
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 161)                         <ul className={styles.searchDropdown}>
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 162)                             {searchResults.map((result) => (
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 163)                                 <li key={result._id}>
+b54d9854 (Ethan        2024-10-25 19:33:19 -0400 164)                                     <Link 
+b54d9854 (Ethan        2024-10-25 19:33:19 -0400 165)                                         href={`/search/profile?userId=${result._id}`} 
+b54d9854 (Ethan        2024-10-25 19:33:19 -0400 166)                                         onClick={clearSearchText}
+b54d9854 (Ethan        2024-10-25 19:33:19 -0400 167)                                         className="block w-full text-left"
+b54d9854 (Ethan        2024-10-25 19:33:19 -0400 168)                                     >
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 169)                                         {result.username}
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 170)                                     </Link>
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 171)                                 </li>
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 172)                             ))}
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 173)                         </ul>
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 174)                     </div>
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 175)                 )}
+9e61a221 (Ethan        2024-10-23 21:46:32 -0400 179)                 <Link href="/calendar">
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 206)               notifications.map((notif, index) => (
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 207)                 <div key={index} className="p-4 border-b">
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 209)                     <span>{notif}</span>
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 212)                       onClick={() => handleDismissNotification(index, notif)}
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 229)                         {user ? (
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 230)                             <div className="w-full flex justify-center">
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 231)                                 <button 
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 232)                                     className="w-[95%] bg-orange-500 text-white font- semibold py-2 px-4 rounded-lg hover:bg-orange-600 hover:text-white transition-all"
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 233)                                     onClick={handleLogout}
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 234)                                 >
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 235)                                     Logout
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 236)                                 </button>
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 237)                             </div>
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 238)                         ) : (
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 245)                         )
+a733c2a1 (Ethan        2024-10-28 15:44:13 -0400 246)                         }
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 247)                             <Link href="/notifications" className="w-full flex justify-center">
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 248)                                 {/* notifications button */}
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 249)                                 <button className="w-[95%] bg-orange-500 text-white font- semibold py-2 px-4 rounded-lg hover:bg-orange-600 hover:text-white transition-all">
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 250)                                     Notifications
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 251)                                 </button>
+4db53e08 (Ethan        2024-10-27 21:16:31 -0400 252)                             </Link>
+9e61a221 (Ethan        2024-10-23 21:46:32 -0400 259)                             <Link href="/savedMeals" className="w-full flex justify-center">
+9e61a221 (Ethan        2024-10-23 21:46:32 -0400 266)                             <Link href="/savedWorkouts" className="w-full flex justify-center">
+a7cbed5a (Ethan        2024-10-21 23:58:39 -0400 280) }
+
+gain-grain/src/components/navbar.module.css
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400   7)     height: 4rem;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400   9)     padding: 1rem;
+fc670488 (Ethan  2024-10-23 00:24:42 -0400  16)     background-image: url('../../public/images/logo.png');
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  41)     flex: 1;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  43)     justify-content: center;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  44)     align-items: center;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  45)     position: relative;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  46) }
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  47) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  48) .searchDropdownContainer {
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  49)     position: absolute;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  50)     top: 100%;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  51)     z-index: 10;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  52)     width: 3rem;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  53) }
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  54) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  55) .searchDropdown {
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  56)     border-radius: 10px;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  57)     position: absolute;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  58)     top: 100%;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  59)     margin: 0;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  60)     padding: 0;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  61)     background-color: var(--smokey-gray);
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  62)     border: 1px solid #ddd;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  63)     max-height: 200px;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  64)     overflow-y: auto;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  65)     width: 15rem;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  66)     z-index: 1000;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  67)     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  68) }
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  69) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  70) .searchDropdown li {
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  71)     padding: 8px;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  72)     cursor: pointer;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  73) }
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  74) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  75) .searchDropdown li:hover {
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400  76)     background-color: #f1f1f1;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 123) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 124)     .searchDropdown {
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 125)         width: 10rem;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 126)     }
+
+gain-grain/src/utils/userModel.js
+26cb22e7 (Ethan  2024-10-22 08:32:28 -0400   9)   email: { type: String, required: true },
+26cb22e7 (Ethan  2024-10-22 08:32:28 -0400  12)   numFollowers: { type: Number, required: true },
+26cb22e7 (Ethan  2024-10-22 08:32:28 -0400  13)   numFollowing: { type: Number, required: true },
+26cb22e7 (Ethan  2024-10-22 08:32:28 -0400  14)   followers: { type: [String], required: true },
+26cb22e7 (Ethan  2024-10-22 08:32:28 -0400  15)   following: { type: [String], required: true },
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400  17)   profilePic: { type: String, default: "" },
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400  18)   notifications: { type: [String] },
+397bb2fd (Ethan  2024-10-24 12:53:15 -0400  23)   reset_token: { type: String, required: true },
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 117) export const findUserByUsername = async (username) => {
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 118)   const client = await clientPromise;
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 119)   const db = client.db();
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 120) 
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 121)   try {
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 122)     const user = await db.collection('users').findOne({ username });
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 123) 
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 124)     if (!user) {
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 125)       return { success: false, message: 'Could not find a user with that username.' };
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 126)     }
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 127) 
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 128)     return { success: true, message: 'Found user with that username.'};
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 129)   } catch (error) {
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 130)     console.error('Error when finding user: ', error);
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 131)     return { success: false, message: 'Error when finding user' };
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 132)   }
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 133) };
+da7f745a (Ethan  2024-10-23 11:11:12 -0400 134) 
+be740380 (Ethan  2024-10-24 14:18:16 -0400 161)   const client = await clientPromise;
+be740380 (Ethan  2024-10-24 14:18:16 -0400 162)   const db = client.db();
+be740380 (Ethan  2024-10-24 14:18:16 -0400 163) 
+be740380 (Ethan  2024-10-24 14:18:16 -0400 177)     await db.collection('tokens').insertOne(newToken);
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 248) }
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 249) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 250) export const searchAccounts = async(searchQuery) => {
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 251)   try {
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 252)     const client = await clientPromise;
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 253)     const db = client.db();
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 254) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 255)     const accounts = await db
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 256)       .collection('users')
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 257)       .find({ username: { $regex: searchQuery, $options: 'i' } })
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 258)       .project({ username: 1 })
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 259)       .toArray();
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 260) 
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 261)     return { success: true, accounts};
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 262)   } catch (error) {
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 263)     console.error('Error fetching accounts:', error);
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 264)     return { success: false, message: 'Error fetching accounts' };
+a7cbed5a (Ethan  2024-10-21 23:58:39 -0400 265)   }
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 266) }
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 267) 
+17f4d36f (Ethan  2024-10-23 01:24:14 -0400 268) export const updateProfile = async(userId, username, name, bio, profilePicPath) => {
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 269)   try {
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 270)     const client = await clientPromise;
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 271)     const db = client.db();
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 272) 
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 273)     const updatedProfile = await db.collection('users').updateOne(
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 274)       { _id: new ObjectId(userId) },
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 275)       { 
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 276)         $set: { 
+17f4d36f (Ethan  2024-10-23 01:24:14 -0400 277)           username: username,
+17f4d36f (Ethan  2024-10-23 01:24:14 -0400 278)           name: name,
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 279)           bio: bio,
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 280)           profilePic: profilePicPath,
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 281)         }
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 282)       }
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 283)     );
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 284) 
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 285)     return { success: true, updatedProfile};
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 286)   } catch (error) {
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 287)     console.error('Error updating profile:', error);
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 288)     return { success: false, message: 'Error updating profile' };
+033c0c21 (Ethan  2024-10-22 21:10:50 -0400 289)   }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 290) }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 291) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 292) export const followAccount = async (user, currentUser) => {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 293)   try {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 294)     const client = await clientPromise;
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 295)     const db = client.db();
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 296) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 297)     const userId = user._id;
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 298)     const currentUserId = currentUser._id;
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 299) 
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 300)     const currentUserData = await db.collection('users').findOne({ _id: new ObjectId(currentUserId) });
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 301)     
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 302)     if (!currentUserData) {
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 303)       return { success: false, message: 'Current user does not exist' };
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 304)     }
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 305) 
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 306)     if (currentUserData.following.includes(userId)) {
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 307)       return { success: false, message: 'You are already following this user.' };
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 308)     }
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 309) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 310)     const updateCurrentUser = await db.collection('users').updateOne(
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 311)       {_id: new ObjectId(currentUserId) },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 312)       { 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 313)         $addToSet: { following: userId },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 314)         $inc: { numFollowing: 1 },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 315)       },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 316)       { new: true }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 317)     );
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 318) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 319)     if(!updateCurrentUser) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 320)       return { success: false, message: 'The user trying to follow does not exist' }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 321)     }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 323) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 324)     const updateUser = await db.collection('users').updateOne(
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 325)       {_id: new ObjectId(userId) },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 326)       { 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 327)           $addToSet: { followers: currentUserId, notifications: `${currentUser.username} started following you.` },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 328)           $inc: { numFollowers: 1 },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 329)       },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 330)       { new: true }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 331)     );
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 332) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 333)     if(!updateUser) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 334)       return { success: false, message: 'The user you\'re trying to follow does not exist' }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 335)     }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 336) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 337)     return { success: true, message: 'Successfully followed the user' };
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 338)   } catch (error) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 339)     console.error("Error in following user: ", error);
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 340)     return { success: false, message: `Error: ${error.message}` };
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 341)   }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 342) }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 343) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 344) export const unfollowAccount = async (user, currentUser) => {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 345)   try {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 346)     const client = await clientPromise;
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 347)     const db = client.db();
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 348) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 349)     const userId = user._id;
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 350)     const currentUserId = currentUser._id;
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 351) 
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 352)     const currentUserData = await db.collection('users').findOne({ _id: new ObjectId(currentUserId) });
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 353)     
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 354)     if (!currentUserData) {
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 355)       return { success: false, message: 'Current user does not exist' };
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 356)     }
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 357) 
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 358)     if (!currentUserData.following.includes(userId)) {
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 359)       return { success: false, message: 'You are already not following this user.' };
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 360)     }
+2c696654 (Ethan  2024-10-27 19:58:04 -0400 361) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 362)     const updateCurrentUser = await db.collection('users').updateOne(
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 363)       {_id: new ObjectId(currentUserId) },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 364)       { 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 365)         $pull: { following: userId },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 366)         $inc: { numFollowing: -1 },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 367)       },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 368)       { new: true }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 369)     );
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 370) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 371)     if(!updateCurrentUser) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 372)       return { success: false, message: 'The user trying to unfollow does not exist' }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 373)     }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 374) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 375)     const updateUser = await db.collection('users').updateOne(
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 376)       {_id: new ObjectId(userId) },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 377)       { 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 378)           $pull: { followers: currentUserId },
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 379)           $pull: { notifications: `${currentUser.username} started following you.` },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 380)           $inc: { numFollowers: -1 },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 381)       },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 382)       { new: true }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 383)     );
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 384) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 385)     if(!updateUser) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 386)       return { success: false, message: 'The user you\'re trying to unfollow does not exist' }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 387)     }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 388) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 389)     return { success: true, message: 'Successfully unfollowed the user' };
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 390)   } catch (error) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 391)     console.error("Error in unfollowing user: ", error);
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 392)     return { success: false, message: `Error: ${error.message}` };
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 393)   }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 394) }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 395) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 396) export const isFollowing = async(currentUser, user) => {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 397)   try {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 398)     const client = await clientPromise;
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 399)     const db = client.db();
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 400) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 401)     const currentUserId = currentUser._id;
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 402)     const userId = user._id;
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 403) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 404)     const currentUserData = await db.collection('users').findOne({ _id: new ObjectId(currentUserId) });
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 405) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 406)     if (!currentUserData) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 407)       return { following: false, message: 'Current user does not exist' };
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 408)     }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 409) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 410)     if (currentUserData.following.includes(userId)) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 411)       return { following: true };
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 412)     } else {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 413)       return { following: false };
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 414)     }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 415)   } catch (error) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 416)     console.error("Error in checking following status: ", error);
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 417)     return { following: false, message: error.message };
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 418)   }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 419) }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 420) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 421) export const updateUserSchema = async() => {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 422)   const client = await clientPromise;
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 423)   const db = client.db();
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 424) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 425)   try {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 426)     const users = await db.collection('users').find({}).toArray();
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 427) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 428)     for (const user of users) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 429)       const updates = {};
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 430) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 431)       if(user.name === undefined) updates.name = '';
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 432)       if(user.email === undefined) updates.email = '';
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 433)       if(user.username === undefined) updates.username = '';
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 434)       if(user.password === undefined) updates.password = '';
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 435)       if(user.numFollowers === undefined) updates.numFollowers = '';
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 436)       if(user.numFollowing === undefined) updates.numFollowing = 0;
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 437)       if(!Array.isArray(user.followers)) updates.followers = [];
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 438)       if(!Array.isArray(user.following)) updates.following = [];
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 439)       if(user.bio === undefined) updates.bio = '';
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 440)       if(user.profilePic === undefined) updates.profilePic = '';
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 441)       if(!Array.isArray(user.notifications)) updates.notifications = [];
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 442) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 443)       if(Object.keys(updates).length > 0) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 444)         await db.collection('users').updateOne(
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 445)           { _id: user._id },
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 446)           { $set: updates }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 447)         );
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 448)       }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 449)     }
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 450) 
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 451)     console.log('All users updated with missing fields');
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 452)   } catch (error) {
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 453)     console.error('Error updating user schema: ', error);
+b54d9854 (Ethan  2024-10-25 19:33:19 -0400 454)   }
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 455) }
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 456) 
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 457) export const removeNotification = async(userId, notif) => {
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 458)   const client = await clientPromise;
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 459)   const db = client.db();
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 460) 
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 461)   try {
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 462)     const result = await db.collection('users').updateOne(
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 463)       { _id: new ObjectId(userId) },
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 464)       { $pull: { notifications: notif } },
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 465)     );
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 466) 
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 467)     if (result.modifiedCount === 1) {
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 468)       return { success: true, message: 'Notification removed', notifications: result.notifications };
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 469)     } else {
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 470)       return { success: false, message: 'Notification not found' };
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 471)     }
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 472)   } catch (error) {
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 473)     console.error('Error removing notification', error);
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 474)     return { success: false, message: `Error: ${error.message}` };
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 475)   }
+
+gain-grain/.env.example
+263fac7e (Ethan  2024-10-22 15:59:39 -0400 2) EMAIL_USER=<g&g email>
+d42c9bc1 (Ethan  2024-10-23 19:58:54 -0400 3) EMAIL_APP_PASS=<g&g email app password>
+d42c9bc1 (Ethan  2024-10-23 19:58:54 -0400 4) AUTH_KEY=<cookie authentification key>
+
+gain-grain/src/app/api/profile/update-user/route.js
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400  1) import { NextResponse } from 'next/server';
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400  2) import { updateProfile } from '../../../../utils/userModel';
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400  3) 
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400  4) export async function POST(req) {
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400  5)     try {
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400  6)       const body = await req.json();
+17f4d36f (Ethan 2024-10-23 01:24:14 -0400  7)       const { userId, username, name, bio, profilePicPath } = body;
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400  8) 
+17f4d36f (Ethan 2024-10-23 01:24:14 -0400  9)       const updatedProfile = await updateProfile(userId, username, name, bio, profilePicPath);
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 10) 
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 11)       if (updatedProfile.success) {
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 12)         return NextResponse.json({ success: true, updatedProfile });
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 13)       } else {
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 14)         return NextResponse.json({ success: false, message: updatedProfile.message }, { status: 401 });
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 15)       }
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 16)     } catch (error) {
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 17)       console.error('Error in update-user API:', error);
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 18)       return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 19)     }
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 20)   }
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 21)   
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 22) export async function GET() {
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 23)   return NextResponse.json({ success: false, message: 'Method GET not allowed' }, { status: 405 });
+033c0c21 (Ethan 2024-10-22 21:10:50 -0400 24) }
+
+gain-grain/src/app/api/profile/upload-pic/route.js
+033c0c21 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-22 21:10:50 -0400  1) import { NextResponse } from 'next/server';
+033c0c21 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-22 21:10:50 -0400  2) import path from "path";
+033c0c21 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-22 21:10:50 -0400  3) import fs from "fs";
+033c0c21 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-22 21:10:50 -0400  4) 
+fc670488 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 00:24:42 -0400  5) const UPLOAD_DIR = "public/uploads";
+033c0c21 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-22 21:10:50 -0400  6) 
+033c0c21 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-22 21:10:50 -0400  7) export async function POST(req) {
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400  8)     try {
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400  9)         const formData = await req.formData();
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400 10)         const body = Object.fromEntries(formData);
+7c6012ae gain-grain/src/app/api/profile/upload-pic/route.js        (Ethan 2024-10-25 15:30:38 -0400 11)         const file = body.pic;
+033c0c21 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-22 21:10:50 -0400 12) 
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400 13)         const buffer = Buffer.from(await file.arrayBuffer());
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400 14)         if(!fs.existsSync(UPLOAD_DIR)) {
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400 15)             fs.mkdirSync(UPLOAD_DIR);
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400 16)         }
+033c0c21 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-22 21:10:50 -0400 17) 
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400 18)         fs.writeFileSync(
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400 19)             path.resolve(UPLOAD_DIR, file.name),
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400 20)             buffer
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400 21)         );
+033c0c21 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-22 21:10:50 -0400 22) 
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400 23)         return NextResponse.json({ success: true, fileName: file.name });
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400 24)     } catch (error) {
+7c6012ae gain-grain/src/app/api/profile/upload-pic/route.js        (Ethan 2024-10-25 15:30:38 -0400 25)         console.error('Error in update-pic API:', error);
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400 26)         return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
+17f4d36f gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-23 01:24:14 -0400 27)       }
+033c0c21 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-22 21:10:50 -0400 28) }
+033c0c21 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-22 21:10:50 -0400 29) 
+033c0c21 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-22 21:10:50 -0400 30) export async function GET() {
+033c0c21 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-22 21:10:50 -0400 31)     return NextResponse.json({ success: false, message: 'Method GET not allowed' }, { status: 405 });
+033c0c21 gain-grain/src/app/api/profile/upload-profilePic/route.js (Ethan 2024-10-22 21:10:50 -0400 32) }
+
+gain-grain/src/app/edit-profile/page.js
+9e61a221 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 21:46:32 -0400   8)   const [userId, setUserId] = useState('');
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400   9)   const [username, setUsername] = useState('');
+7c6012ae gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-25 15:30:38 -0400  12)   const [pic, setPic] = useState('');
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400  13)   const [profilePicPath, setProfilePicPath] = useState('');
+9e61a221 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 21:46:32 -0400  19)         const response = await fetch('/api/profile/get-user-from-session', {
+9e61a221 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 21:46:32 -0400  20)           method: 'GET',
+9e61a221 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 21:46:32 -0400  21)           headers: {
+9e61a221 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 21:46:32 -0400  22)               'Content-Type': 'application/json',
+9e61a221 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 21:46:32 -0400  23)           },
+9e61a221 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 21:46:32 -0400  28)         if(data.success) {
+9e61a221 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 21:46:32 -0400  30)           setUserId(data.user._id)
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400  33)           setBio(data.user.bio);
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400  34)           setProfilePicPath(data.user.profilePic);
+9e61a221 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 21:46:32 -0400  36)       } catch (error) {
+9e61a221 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 21:46:32 -0400  37)         console.error(error);
+9e61a221 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 21:46:32 -0400  41)     fetchUserData();
+9e61a221 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 21:46:32 -0400  42)   }, []);
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  44)   const handleProfileSave = async (e) => {
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  45)     e.preventDefault();
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  46) 
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  47)     try {
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  48)       const findUserResponse = await fetch('/api/profile/get-user-by-username', {
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  49)         method: 'POST',
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  50)         headers: { 'Content-Type': 'application/json' },
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  51)         body: JSON.stringify({ username }),
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  52)       });
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  53) 
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  54)       const findUserResult = await findUserResponse.json();
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  55)       if ((user.username != username) && findUserResult.success) {
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  56)         setError('Username already exists.');
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  57)         return;
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  58)       }
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  59)     } catch (err) {
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  60)       setError(err.message);
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  61)       return;
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  62)     }
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  63) 
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  64)     let updatedProfilePicPath = profilePicPath;
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  65) 
+7c6012ae gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-25 15:30:38 -0400  67)       if(pic) {
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400  68)         const formData = new FormData();
+7c6012ae gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-25 15:30:38 -0400  69)         formData.append('pic', pic);
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400  70) 
+7c6012ae gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-25 15:30:38 -0400  71)         const uploadResponse = await fetch('/api/profile/upload-pic', {
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  72)           method: 'POST',
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  73)           body: formData,
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  74)         });
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  75)   
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  76)         const uploadResult = await uploadResponse.json();
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  77)         if (!uploadResult.success) {
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  78)           setError(uploadResult.message);
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  79)           return;
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  80)         }
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  81) 
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  82)         updatedProfilePicPath = '/uploads/' + uploadResult.fileName;
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  83)       }
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  84) 
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  85)       const updateResponse = await fetch('/api/profile/update-user', {
+da7f745a gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 11:11:12 -0400  88)         body: JSON.stringify({ userId, username, name, bio, profilePicPath: updatedProfilePicPath }),
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  91)       const updateResult = await updateResponse.json();
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400  92)       if (!updateResult.success) {
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400  93)         setError(updateResult.message);
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400  94)         return;
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400  95)       }
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  96) 
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400  97)       window.location.href = `/profile/?userId=${userId}`;
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400 100)       return;
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400 110)         <form onSubmit={handleProfileSave}>
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400 114)               <label className="text-lg">Name:</label>
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400 123)           <div className="mt-4">
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400 124)             <div className="flex flex-col">
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400 125)             {/* change your username */}
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400 126)               <label className="text-lg">Username:</label>
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400 127)                 <input
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400 128)                   type="text"
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400 129)                   value={username}
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400 130)                   onChange={(e) => setUsername(e.target.value)}
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400 131)                   className="border p-2 rounded-md"
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400 132)               />
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400 133)           </div>
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400 137)               <label className="text-lg">Bio:</label>
+17f4d36f gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-23 01:24:14 -0400 148)               <label className="text-lg">Profile Picture:</label>
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400 152)                   id="profilePic"
+7c6012ae gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-25 15:30:38 -0400 153)                   onChange={(e) => setPic(e.target.files[0])}
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400 157)             <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md">
+033c0c21 gain-grain/src/app/edit-profile/page.js (Ethan  2024-10-22 21:10:50 -0400 161)         </form>
+
+gain-grain/src/app/api/profile/get-user-by-username/route.js
+da7f745a (Ethan 2024-10-23 11:11:12 -0400  1) import { NextResponse } from 'next/server';
+da7f745a (Ethan 2024-10-23 11:11:12 -0400  2) import { findUserByUsername } from '../../../../utils/userModel';
+da7f745a (Ethan 2024-10-23 11:11:12 -0400  3) 
+da7f745a (Ethan 2024-10-23 11:11:12 -0400  4) export async function POST(req) {
+da7f745a (Ethan 2024-10-23 11:11:12 -0400  5)   try {
+da7f745a (Ethan 2024-10-23 11:11:12 -0400  6)     const body = await req.json();
+da7f745a (Ethan 2024-10-23 11:11:12 -0400  7)     const { username } = body;
+da7f745a (Ethan 2024-10-23 11:11:12 -0400  8) 
+da7f745a (Ethan 2024-10-23 11:11:12 -0400  9)     const result = await findUserByUsername(username);
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 10) 
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 11)     if(result.success) {
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 12)       return NextResponse.json({ success: true })
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 13)     } else {
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 14)       return NextResponse.json({ success: false }, { status: 400 });
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 15)     }
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 16)   } catch (error) {
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 17)     console.error('Error when searching for user:', error);
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 18)     return NextResponse.json({ success: false, message: 'Server error.' }, { status: 500 });
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 19)   }
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 20) }
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 21) 
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 22) export async function GET() {
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 23)   return NextResponse.json({ success: false, message: 'Method GET not allowed.' }, { status: 405 });
+da7f745a (Ethan 2024-10-23 11:11:12 -0400 24) }
+
+gain-grain/src/app/api/login/find-user/route.js
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400  3) import { signToken } from '../../../../utils/auth';
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 15) 
+a733c2a1 (Ethan    2024-10-28 15:44:13 -0400 20)             secure: true,
+a733c2a1 (Ethan    2024-10-28 15:44:13 -0400 21)             expires: new Date(Date.now() + 7200000)
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 23) 
+
+gain-grain/src/middleware.js
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400  1) import { NextResponse } from 'next/server';
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400  2) import { verifyToken } from './utils/auth';
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400  3) 
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400  4) const publicRoutes = ['/login', '/register', '/login/forgot-password', '/reset-password'];
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400  5) const ignoredExtensions = ['.js', '.css', '.jpeg', '.jpg', '.png', '.svg',];
+be740380 (Ethan    2024-10-24 14:18:16 -0400  6) const apiRoutes = ['/api/login/find-user', '/api/register/create-user', '/api/forgot-password/send-email', 
+be740380 (Ethan    2024-10-24 14:18:16 -0400  7)                    '/api/reset-password/validate-token', '/api/reset-password/reset-password-api', 
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400  9) 
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 10) export async function middleware(req) {
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 11)     const { pathname } = req.nextUrl;
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 12) 
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 13)     if (ignoredExtensions.some(ext => pathname.endsWith(ext))) {
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 14)         return NextResponse.next();
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 15)     }
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 16) 
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 17)     if(publicRoutes.includes(pathname)) {
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 18)         return NextResponse.next();
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 19)     }
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 20) 
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 21)     if (apiRoutes.some(route => pathname.startsWith(route))) {
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 22)         return NextResponse.next();
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 23)     }
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 24) 
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 25)     const sessionCookie = req.cookies.get('session');
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 26) 
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 27)     if(!sessionCookie) {
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 28)         const url = req.nextUrl.clone();
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 29)         url.pathname = '/login';
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 30)         return NextResponse.redirect(url);
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 31)     }
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 32) 
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 33)     const isValidSession = await verifyToken(sessionCookie.value);
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 34) 
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 35)     if(!isValidSession) {
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 36)         const url = req.nextUrl.clone();
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 37)         url.pathname = '/login';
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 38)         return NextResponse.redirect(url);
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 39)     }
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 40) 
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 41)     return NextResponse.next();
+d42c9bc1 (Ethan    2024-10-23 19:58:54 -0400 42) }
+
+gain-grain/src/utils/auth.js
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400  1) import { jwtVerify, SignJWT } from 'jose'
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400  2) 
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400  3) const SECRET_KEY = new TextEncoder().encode(process.env.AUTH_KEY);
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400  4) 
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400  5) export async function signToken(payload) {
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400  6)     const token = await new SignJWT(payload)
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400  7)         .setProtectedHeader({ alg: 'HS256' })
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400  8)         .setIssuedAt()
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400  9)         .sign(SECRET_KEY);
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400 10) 
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400 11)     return token;
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400 12) }
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400 13) 
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400 14) export async function verifyToken(tokenValue) {
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400 15)     try {
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400 16)         const { payload: verify } = await jwtVerify(tokenValue, SECRET_KEY);
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400 17)         return verify;
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400 18)     } catch (error) {
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400 19)         console.error('Token verification failed:', error);
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400 20)         return null;
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400 21)     }
+d42c9bc1 (Ethan 2024-10-23 19:58:54 -0400 22) }
+
+gain-grain/src/app/api/profile/get-user-from-session/route.js
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400  1) import { NextResponse } from 'next/server';
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400  2) import { verifyToken } from '../../../../utils/auth';
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400  3) import { getUserById } from '@/utils/userModel';
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400  4) 
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400  5) export const GET = async (req) => {
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400  6)     const sessionCookie = req.cookies.get('session');
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400  7)     const isValidSession = await verifyToken(sessionCookie.value);
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400  8)     
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400  9)     if(!isValidSession) {
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400 10)         return NextResponse.json({ success: false, message: 'User not authenticated.' });
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400 11)     } 
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400 12) 
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400 13)     const userId = isValidSession.userId;
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400 14)     const result = await getUserById(userId);
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400 15) 
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400 16)     if(!result.success) {
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400 17)         return NextResponse.json({ success: false, message: 'Failed to find user.' }, { status: 400 });
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400 18)     }
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400 19) 
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400 20)     return NextResponse.json({ success: true, user: result.user });
+9e61a221 (Ethan 2024-10-23 21:46:32 -0400 21) }
+
+gain-grain/src/app/notifications/page.js
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400  1) "use client"
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400  2) import { useState, useEffect } from 'react';
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400  3) import Navbar from "@/components/Navbar";
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400  4) 
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400  5) export default function NotificationsPage() {
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400  7)   const [notifications, setNotifications] = useState([]);
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400  8) 
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400  9) 
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 10)   useEffect(() => {
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 11)     const fetchUserData = async () => {
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 12)       try {
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 14) 
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 15)         const data = await response.json();
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 16) 
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 17)         if (data.success) {
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 18)           setUser(data.user);
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 20)         }
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 21)       } catch (error) {
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 23)       }
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 24)     };
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 25) 
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 26)     fetchUserData();
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 27)   }, []);
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 28) 
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 29)   const handleDismiss = async(index, notif) => {
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 30)     setNotifications(notifications.filter((_, i) => i !== index));
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 31) 
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 32)     try {
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 33)       const response = await fetch('/api/notifications/dismiss-notifications', {
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 34)         method: 'POST',
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 35)         headers: {
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 36)             'Content-Type': 'application/json',
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 37)         },
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 38)         body: JSON.stringify({ userId: user._id, notif })
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 39)       });
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 40) 
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 41)       const data = await response.json();
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 42) 
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 43)       if (data.success) {
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 44)           setNotifications(data.user.notifications);
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 45)       }
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 46)     } catch (error) {
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 47)       console.error(error);
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 48)     }
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 49)   };
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 50) 
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 51)   return (
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 52)     <div>
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 53)       <Navbar />
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 54)       <div className="notifications-page p-4">
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 55)         <h1 className="text-2xl font-bold mb-4">Notifications</h1>
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 56)         
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 57)         {notifications.length === 0 ? (
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 58)           <p className="text-gray-500">No notifications</p>
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 59)         ) : (
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 61)             <div
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 62)               key={index}
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 63)               className={`notification-item p-4 mb-2 rounded-lg shadow-md`}
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 64)             >
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 84)                 <button
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 85)                   className="ml-4 text-red-500 font-bold"
+4db53e08 (Ethan  2024-10-27 21:16:31 -0400 86)                   onClick={() => handleDismiss(index, notif)}
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 87)                 >
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 88)                   Dismiss
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 89)                 </button>
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 90)               </div>
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 91)             </div>
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 92)           ))
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 93)         )}
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 94)       </div>
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 95)     </div>
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 96)   );
+9e61a221 (Ethan  2024-10-23 21:46:32 -0400 97) }
+
+gain-grain/src/app/savedMeals/page.js
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400   3) import './savedMeals.css';
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400   4) import Navbar from "../../components/Navbar";
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  13)             let userId = "";
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  14)             try {
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  15)                 const response = await fetch('/api/profile/get-user-from-session', {
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  16)                     method: 'GET',
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  17)                     headers: {
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  18)                         'Content-Type': 'application/json',
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  19)                     },
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  20)                 });
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  21)         
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  22)                 const data = await response.json();
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  24)                 if (data.success) {
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  25)                     userId = data.user._id;
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  26)                 }
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  27)             } catch (error) {
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  28)                 console.error(error);
+9e61a221 gain-grain/src/app/savedMeals/page.js           (Ethan        2024-10-23 21:46:32 -0400  37)                     body: JSON.stringify({ userId }),
+
+gain-grain/src/app/savedWorkouts/page.js
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400   3) import './savedWorkouts.css';
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400   4) import Navbar from "../../components/Navbar";
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  12)             let userId = "";
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  13)             try {
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  14)                 const response = await fetch('/api/profile/get-user-from-session', {
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  15)                     method: 'GET',
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  16)                     headers: {
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  17)                         'Content-Type': 'application/json',
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  18)                     },
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  19)                 });
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  20)         
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  21)                 const data = await response.json();
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  23)                 if (data.success) {
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  24)                     userId = data.user._id;
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  25)                 }
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  26)             } catch (error) {
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  27)                 console.error(error);
+9e61a221 gain-grain/src/app/savedWorkouts/page.js           (Ethan        2024-10-23 21:46:32 -0400  36)                     body: JSON.stringify({ userId }),
+
+gain-grain/src/app/post/post-blog/page.js
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400   4) import { useState, useEffect } from 'react';
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  11)     const [userId, setUserId] = useState('');
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  16) 
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  17)     useEffect(() => {
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  18)         const fetchUserData = async () => {
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  19)           try {
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  20)             const response = await fetch('/api/profile/get-user-from-session', {
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  21)               method: 'GET',
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  22)               headers: {
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  23)                   'Content-Type': 'application/json',
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  24)               },
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  25)             });
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  26)     
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  27)             const data = await response.json();
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  28)     
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  29)             if (data.success) {
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  30)               setUserId(data.user._id);
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  31)             }
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  32)           } catch (error) {
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  33)             console.error(error);
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  34)             return;
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  35)           }
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  36)         };
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  37)     
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  38)         fetchUserData();
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  39)       }, []);
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  58)             const blogResult = await response.json();
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  59) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  60)             if(!blogResult.success) {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  61)                 setError('Failed to submit blog post');
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  62)                 return;
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  63)             }
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  64) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  65)             const savedPost = await fetch('/api/posts/save-post', {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  66)                 method: 'POST',
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  67)                 headers: { 'Content-Type': 'application/json' },
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  68)                 body: JSON.stringify({ 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  69)                     userId,
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  70)                     postType: 'Blog',
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  71)                     postData: {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  72)                         content: postContent,
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  73)                         date: new Date(),
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  74)                     }
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  75)                 }),
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  76)             });
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  77) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  78)             const postResult = await savedPost.json();
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  79) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  80)             if(!postResult.success) {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  81)                 setError('Failed to submit post');
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  82)                 return;
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  83)             } else {
+397bb2fd (Ethan            2024-10-24 12:53:15 -0400  84)                 console.log('Blog post submitted');
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  87)                 await new Promise(r => setTimeout(r, 2000));
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  88)                 window.location.href = '/post';
+
+gain-grain/src/app/post/post-meals/page.js
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400   2) import { useState, useEffect } from 'react';
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400   6)     const [meal, setMeal] = useState(
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400   7)         { name: '', calories: '', protein: '', carbs: '', fats: '' },
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400   8)     );
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400   9)     const [userId, setUserId] = useState('');
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  10)     const [success, setSuccess] = useState('');
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  11)     const [error, setError] = useState('');
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  12) 
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  13)     useEffect(() => {
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  14)         const fetchUserData = async () => {
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  15)           try {
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  16)             const response = await fetch('/api/profile/get-user-from-session', {
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  17)               method: 'GET',
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  18)               headers: {
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  19)                   'Content-Type': 'application/json',
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  20)               },
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  21)             });
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  22)     
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  23)             const data = await response.json();
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  24)     
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  25)             if (data.success) {
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  26)               setUserId(data.user._id);
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  27)             }
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  28)           } catch (error) {
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  29)             console.error(error);
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  30)           }
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  31)         };
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  32)     
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  33)         fetchUserData();
+0d55aeb0 (Ethan    2024-10-24 02:06:14 -0400  34)       }, []);
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  36)     const handleChange = (e) => {
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  37)         const { name, value } = e.target;
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  38)         setMeal((prevMeal) => ({
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  39)             ...prevMeal,
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  40)             [name]: value,
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  41)         }));
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  45)     const handleSubmitMeal = async() => {
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  46)         try {
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  47)             const response = await fetch('/api/posts/post-meal', {
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  48)                 method: 'POST',
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  49)                 headers: { 'Content-Type': 'application/json' },
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  50)                 body: JSON.stringify({ userId, meal }), 
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  51)             });
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  52) 
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  53)             const mealResult = await response.json();
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  54) 
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  55)             if(!mealResult.success) {
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  56)                 setError('Failed to post meal.');
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  57)                 return;
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  58)             }
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  59) 
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  60)             const savedPost = await fetch('/api/posts/save-post', {
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  61)                 method: 'POST',
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  62)                 headers: { 'Content-Type': 'application/json' },
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  63)                 body: JSON.stringify({ 
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  64)                     userId,
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  65)                     postType: 'Meal',
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  66)                     postData: {
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  67)                         meal,
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  68)                         date: new Date(),
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  69)                     }
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  70)                 }),
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  71)             });
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  72) 
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  73)             const postResult = await savedPost.json();
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  74) 
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  75)             if(!postResult.success) {
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  76)                 setError('Failed to post meal.');
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  77)                 return;
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  78)             } else {
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  79)                 console.log('Meal posted.');
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  80)                 setSuccess('Meal posted!');
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  81)                 await new Promise(r => setTimeout(r, 2000));
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  82)                 window.location.href = '/post';
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  83)             }
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  84)         } catch (error) {
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  85)             console.error('Error posting meal:', error);
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  86)             setError('Error posting meal. Please try again.');
+7c6012ae (Ethan    2024-10-25 15:30:38 -0400  87)         }
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400  91)         <div>
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400  92)             <Navbar />
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400  93)             <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 101)                                 <th className="border px-4 py-2">Protein (g)</th>
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 107)                             <td className="border px-4 py-2">
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 108)                                 <input
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 109)                                     type="text"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 110)                                     name="name"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 111)                                     value={meal.name}
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 112)                                     onChange={handleChange}
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 113)                                     className="border w-full px-2 py-1 rounded"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 114)                                     placeholder="Meal name"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 115)                                 />
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 116)                             </td>
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 117)                             <td className="border px-4 py-2">
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 118)                                 <input
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 119)                                     type="number"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 120)                                     name="calories"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 121)                                     value={meal.calories}
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 122)                                     onChange={handleChange}
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 123)                                     className="border w-full px-2 py-1 rounded"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 124)                                     placeholder="Calories"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 125)                                 />
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 126)                             </td>
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 127)                             <td className="border px-4 py-2">
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 128)                                 <input
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 129)                                     type="number"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 130)                                     name="protein"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 131)                                     value={meal.protein}
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 132)                                     onChange={handleChange}
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 133)                                     className="border w-full px-2 py-1 rounded"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 134)                                     placeholder="Protein"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 135)                                 />
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 136)                             </td>
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 137)                             <td className="border px-4 py-2">
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 138)                                 <input
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 139)                                     type="number"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 140)                                     name="carbs"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 141)                                     value={meal.carbs}
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 142)                                     onChange={handleChange}
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 143)                                     className="border w-full px-2 py-1 rounded"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 144)                                     placeholder="Carbs"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 145)                                 />
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 146)                             </td>
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 147)                             <td className="border px-4 py-2">
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 148)                                 <input
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 149)                                     type="number"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 150)                                     name="fats"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 151)                                     value={meal.fats}
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 152)                                     onChange={handleChange}
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 153)                                     className="border w-full px-2 py-1 rounded"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 154)                                     placeholder="Fats"
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 155)                                 />
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 156)                             </td>
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 166)                 {success && <p className="text-green-500 mt-4">{success}</p>}
+0cf08aa4 (Ethan    2024-10-25 15:39:08 -0400 167)                 {error && <p className="text-red-500 mt-4">{error}</p>}
+
+gain-grain/src/utils/userBlogs.js
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  2) import { ObjectId } from 'mongodb';
+397bb2fd (Ethan            2024-10-24 12:53:15 -0400  3) 
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  8) 
+397bb2fd (Ethan            2024-10-24 12:53:15 -0400  9)     try {
+0cf08aa4 (Ethan            2024-10-25 15:39:08 -0400 12)             userId: userId,
+397bb2fd (Ethan            2024-10-24 12:53:15 -0400 13)             content,
+397bb2fd (Ethan            2024-10-24 12:53:15 -0400 14)             date: new Date(),
+397bb2fd (Ethan            2024-10-24 12:53:15 -0400 34)     } catch (error) {
+397bb2fd (Ethan            2024-10-24 12:53:15 -0400 37)     }
+
+gain-grain/src/app/api/blogs/route.js
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400  2) import { createBlogPost } from '../../../utils/userBlogs';
+0d55aeb0 (Ethan            2024-10-24 02:06:14 -0400 11) 
+397bb2fd (Ethan            2024-10-24 12:53:15 -0400 12)         if (!result.success) {
+397bb2fd (Ethan            2024-10-24 12:53:15 -0400 14)             return NextResponse.json({ success: false, message: result.message }, { status: 401 });
+397bb2fd (Ethan            2024-10-24 12:53:15 -0400 15)         }
+397bb2fd (Ethan            2024-10-24 12:53:15 -0400 16) 
+397bb2fd (Ethan            2024-10-24 12:53:15 -0400 18)         return NextResponse.json({ success: true, message: 'Blog post added!' });
+
+gain-grain/src/app/post/post-workouts/page.js
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400   4) import { useState, useEffect } from 'react';
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  11)     const [userId, setUserId] = useState('');
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  12)     const [success, setSuccess] = useState('');
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  13)     const [error, setError] = useState('');
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  14) 
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  15)     useEffect(() => {
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  16)         const fetchUserData = async () => {
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  17)           try {
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  18)             const response = await fetch('/api/profile/get-user-from-session', {
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  19)               method: 'GET',
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  20)               headers: {
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  21)                   'Content-Type': 'application/json',
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  22)               },
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  23)             });
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  24)     
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  25)             const data = await response.json();
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  26)     
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  27)             if (data.success) {
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  28)               setUserId(data.user._id);
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  29)             }
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  30)           } catch (error) {
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  31)             console.error(error);
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  32)           }
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  33)         };
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  34)     
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  35)         fetchUserData();
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  36)       }, []);
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  61)             const result = await response.json();
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  62) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  63)             if(!result.success) {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  64)                 setError('Failed to submit workout');
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  65)                 return;
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  66)             }
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  67) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  68)             const savedPost = await fetch('/api/posts/save-post', {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  69)                 method: 'POST',
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  70)                 headers: { 'Content-Type': 'application/json' },
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  71)                 body: JSON.stringify({ 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  72)                     userId,
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  73)                     postType: 'Workout',
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  74)                     postData: {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  75)                         title,
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  76)                         exercises,
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  77)                         date: new Date(),
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  78)                     }
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  79)                 }),
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  80)             });
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  81) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  82)             const postResult = await savedPost.json();
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  83) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  84)             if(!postResult.success) {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  85)                 setError('Failed to submit post');
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  86)                 return;
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  87)             } else {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  88)                 console.log('Workout posted');
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  89)                 setSuccess('Workout posted successfully!');
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  90)                 await new Promise(r => setTimeout(r, 2000));
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  91)                 window.location.href = '/post';
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  92)             }
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  93) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  94) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  96)                 setSuccess('Workout submitted successfully!');
+b6f0e991 (Ethan            2024-10-24 13:41:30 -0400  97)                 window.location.href = '/post';
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 101)             setError('Error submitting workout. Please try again.')
+14788ccc (Ethan            2024-10-25 16:35:32 -0400 106)         <div className="min-h-screen flex flex-col items-center justify-start bg-gray-100">
+14788ccc (Ethan            2024-10-25 16:35:32 -0400 107)             <Navbar /> 
+14788ccc (Ethan            2024-10-25 16:35:32 -0400 108)                 <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-4xl mt-32">
+14788ccc (Ethan            2024-10-25 16:35:32 -0400 174)             {success && <p className="text-center text-green-500 mt-4">{success}</p>}
+14788ccc (Ethan            2024-10-25 16:35:32 -0400 175)             {error && <p className="text-center text-red-500 mt-4">{error}</p>}
+
+gain-grain/src/app/api/posts/post-meal/route.js
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  1) import { NextResponse } from 'next/server';
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  2) import { saveMealPost } from '../../../../utils/userMeal';
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  3) 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  4) export async function POST(req) {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  5)     try {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  6)         const body = await req.json();
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  7)         const { userId, meal } = body;
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  8) 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  9)         await saveMealPost(userId, meal);
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 10) 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 11)         return NextResponse.json({ success: true });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 12)     } catch (error) {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 13)         console.error('Error in post-meal API:', error);
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 14)         return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 15)     }
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 16)   }
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 17)   
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 18) export async function GET() {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 19)     return NextResponse.json({ success: false, message: 'Method GET not allowed' }, { status: 405 });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 20) }
+
+gain-grain/src/app/api/posts/post-progress-pic/route.js
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  1) import { NextResponse } from 'next/server';
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  2) import { postProgressPic } from '../../../../utils/userProgressPics';
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  3) 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  4) export async function POST(req) {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  5)     try {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  6)       const body = await req.json();
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  7)       const { userId, progressPic } = body;
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  8) 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  9)       const postPic = await postProgressPic(userId, progressPic);
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 10) 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 11)       if (postPic.success) {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 12)         return NextResponse.json({ success: true });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 13)       } else {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 14)         return NextResponse.json({ success: false, message: postPic.message }, { status: 401 });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 15)       }
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 16)     } catch (error) {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 17)       console.error('Error in post-progress-pic API:', error);
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 18)       return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 19)     }
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 20)   }
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 21)   
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 22) export async function GET() {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 23)   return NextResponse.json({ success: false, message: 'Method GET not allowed' }, { status: 405 });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 24) }
+
+gain-grain/src/app/api/posts/save-post/route.js
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  1) import { NextResponse } from 'next/server';
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  2) import { savePost } from '../../../../utils/userPosts';
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  3) 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  4) export async function POST(req) {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  5)     try {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  6)         const body = await req.json();
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  7)         const { userId, postType, postData } = body;
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  8) 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  9)         await savePost(userId, postType, postData);
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 10) 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 11)         return NextResponse.json({ success: true });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 12)     } catch (error) {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 13)         console.error('Error in save-post API:', error);
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 14)         return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 15)     }
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 16)   }
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 17)   
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 18) export async function GET() {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 19)     return NextResponse.json({ success: false, message: 'Method GET not allowed' }, { status: 405 });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 20) }
+
+gain-grain/src/app/post/post-progress-pictures/page.js
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400   2) import React, { useState, useEffect } from 'react';
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400   3) import Navbar from "@/components/Navbar";
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400   6)   const [pic, setPic] = useState('');
+14788ccc (Ethan  2024-10-25 16:35:32 -0400   7)   const [user, setUser] = useState(null);
+14788ccc (Ethan  2024-10-25 16:35:32 -0400   9)   const [success, setSuccess] = useState('');
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  11)   useEffect(() => {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  12)     const fetchUserData = async () => {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  13)       try {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  14)         const response = await fetch('/api/profile/get-user-from-session', {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  15)           method: 'GET',
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  16)           headers: {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  17)               'Content-Type': 'application/json',
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  18)           },
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  19)         });
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  20) 
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  21)         const data = await response.json();
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  22) 
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  23)         if(data.success) {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  24)           setUser(data.user);
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  25)         }
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  26)       } catch (error) {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  27)         console.error(error);
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  28)       }
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  29)     };
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  30) 
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  31)     fetchUserData();
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  32)   }, []);
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  35)     if (!pic) {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  41)       const formData = new FormData();
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  42)       formData.append('pic', pic);
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  43) 
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  44)       const uploadResponse = await fetch('/api/profile/upload-pic', {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  45)         method: 'POST',
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  46)         body: formData,
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  47)       });
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  48) 
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  49)       const uploadResult = await uploadResponse.json();
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  50)       if (!uploadResult.success) {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  51)         setError(uploadResult.message);
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  52)         return;
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  53)       }
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  54) 
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  55)       const progressPicPath = '/uploads/' + uploadResult.fileName;
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  56) 
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  57)       const postResponse = await fetch('/api/posts/post-progress-pic', {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  58)         method: 'POST',
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  59)         headers: { 'Content-Type': 'application/json' },
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  60)         body: JSON.stringify({ userId: user._id, progressPic: progressPicPath }),
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  61)       });
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  62) 
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  63)       const result = await postResponse.json();
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  64)       if (!result.success) {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  65)         console.error(result.message);
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  66)         setError(result.message);
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  67)         return;
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  68)       }
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  69) 
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  70)       const savedPost = await fetch('/api/posts/save-post', {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  71)         method: 'POST',
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  72)         headers: { 'Content-Type': 'application/json' },
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  73)         body: JSON.stringify({ 
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  74)             userId: user._id,
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  75)             postType: 'ProgressPic',
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  76)             postData: {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  77)                 progressPic: progressPicPath,
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  78)                 date: new Date(),
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  79)             }
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  80)         }),
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  81)       });
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  82) 
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  83)       const postResult = await savedPost.json();
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  84) 
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  85)       if(!postResult.success) {
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  86)           setError('Failed to post progress picture.');
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  87)           return;
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  88)       }
+14788ccc (Ethan  2024-10-25 16:35:32 -0400  90)       setSuccess('Progress picture uploaded successfully!');
+14788ccc (Ethan  2024-10-25 16:35:32 -0400  91)       await new Promise(r => setTimeout(r, 2000));
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  92)       window.location.href = '/post'
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400  94)       console.log(err);
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 100)     <div>
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 101)       <Navbar />
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 102)       <div className="container mx-auto p-4">
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 103)         <h1 className="text-2xl font-bold">Upload Progress Picture</h1>
+14788ccc (Ethan  2024-10-25 16:35:32 -0400 104)         {error && <p className="text-red-500 mt-4">{error}</p>}
+14788ccc (Ethan  2024-10-25 16:35:32 -0400 105)         {success && <p className="text-green-500 mt-4">{success}</p>}
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 106)         
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 107)         <div className="mt-4">
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 108)           <label className="text-lg">Progress Picture: </label>
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 109)           <input
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 110)             type="file"
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 111)             accept="image/*"
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 112)             onChange={(e) => setPic(e.target.files[0])}
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 113)             className="border p-2 rounded-md"
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 114)           />
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 115)         </div>
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 117)         <button onClick={handleUpload} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md">
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 118)           Upload
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 119)         </button>
+7c6012ae (Ethan  2024-10-25 15:30:38 -0400 120)       </div>
+
+gain-grain/src/utils/postModels/Post.js
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  1) import mongoose from 'mongoose';
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  2) 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  3) const postSchema = new mongoose.Schema(
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  4)     {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  5)       userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  6)       postType: { type: String, required: true },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  7)     },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  8)     { discriminatorKey: 'postType', collection: 'posts' }
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  9)   );
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 10)   
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 11)   const Post = mongoose.models.Post || mongoose.model("Post", postSchema);
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 12)   
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 13)   const blogSchema = new mongoose.Schema({
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 14)     content: { type: String, required: true },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 15)     date: { type: Date, required: true },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 16)   });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 17)   
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 18)   const mealSchema = new mongoose.Schema({
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 19)     meal: [
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 20)       {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 21)         name: { type: String, required: true },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 22)         calories: { type: Number, required: true },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 23)         protein: { type: Number, required: true },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 24)         carbs: { type: Number, required: true },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 25)         fats: { type: Number, required: true },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 26)       },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 27)     ],
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 28)     date: { type: Date, required: true }
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 29)   });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 30)   
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 31)   const progressPicSchema = new mongoose.Schema({
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 32)     progressPic: { type: String, required: true },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 33)     date: { type: Date, required: true },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 34)   });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 35)   
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 36)   const workoutSchema = new mongoose.Schema({
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 37)     title: { type: String, required: true },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 38)     exercises: [
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 39)       {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 40)         name: { type: String, required: true },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 41)         sets: { type: Number },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 42)         reps: { type: Number },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 43)       },
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 44)     ],
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 45)     date: { type: Date, required: true }
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 46)   });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 47)   
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 48)   const Blog = mongoose.models.Blog || Post.discriminator('Blog', blogSchema);
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 49)   const MealPost = mongoose.models.Meal || Post.discriminator('Meal', mealSchema);
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 50)   const ProgressPic = mongoose.models.ProgressPic || Post.discriminator('ProgressPic', progressPicSchema);
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 51)   const Workout = mongoose.models.Workout || Post.discriminator('Workout', workoutSchema);
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 52) 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 53)   export { Post, Blog, MealPost, ProgressPic, Workout };
+
+gain-grain/src/utils/userMeal.js
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400  3) import MealPost from './postModels/Post'
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 61) export const saveMealPost = async(userId, meal) => {
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 62)   const client = await clientPromise;
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 63)   const db = client.db();
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 64) 
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 65)   try {
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 66)     await db.collection('mealPosts').insertOne({
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 67)       userId,
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 68)       meal,
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 69)       date: new Date(),
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 70)     });
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 71) 
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 72)     return { success: true }
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 73)   } catch (error) {
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 74)     console.error('Error posting meal:', error);
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 75)     return NextResponse.json({ success: false, message: 'Error posting meal.' });
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 76)   }
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 77) }
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 78) 
+7c6012ae (Ethan        2024-10-25 15:30:38 -0400 79) export default Meal;
+
+gain-grain/src/utils/userPosts.js
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  1) import clientPromise from './mongodb'; 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  2) import { NextResponse } from 'next/server';
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  3) import { Post, Blog, MealPost, ProgressPic, Workout } from './postModels/Post'
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  6) export const savePost = async(userId, postType, postData) => {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  7)   const client = await clientPromise;
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  8)   const db = client.db();
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400  9) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 10)   let newPost;
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 11) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 12)   try {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 13)     switch(postType) {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 14)       case 'Blog':
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 15)         newPost = new Blog({ 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 16)           userId, 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 17)           postType: "Blog",
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 18)           content: postData.content,
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 19)           date: postData.date
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 20)         });
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 21)         break;
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 22) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 23)       case 'Meal':
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 24)         newPost = new MealPost({ 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 25)           userId, 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 26)           postType: "Meal",
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 27)           meal: postData.meal,
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 28)           date: postData.date
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 29)         });
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 30)         break;
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 31) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 32)       case 'ProgressPic':
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 33)         newPost = new ProgressPic({
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 34)           userId,
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 35)           postType: "ProgressPic",
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 36)           progressPic: postData.progressPic,
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 37)           date: postData.date
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 38)         });
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 39)         break;
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 40) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 41)       case 'Workout':
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 42)         newPost = new Workout({
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 43)           userId, 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 44)           postType: "Workout",
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 45)           title: postData.title,
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 46)           exercises: postData.exercises,
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 47)           date: postData.date
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 48)         });
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 49)         break;
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 50) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 51)       default:
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 52)         return NextResponse.json({ success: false, message: 'postType does not exist' });
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 53)     }
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 54) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 55)     await db.collection('posts').insertOne(newPost);
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 56) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 57)     return NextResponse.json({ success: true, message: 'Post saved successfully.', post: newPost });
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 58)   } catch(error) {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 59)     console.error('Error saving post:', error);
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 60)     return NextResponse.json({ success: false, message: 'Error saving post.' });
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 61)   }
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 62) }
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 63) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 64) export const fetchPosts = async(userId) => {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 65)   try {
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 67)     const client = await clientPromise;
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 68)     const db = client.db();
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 69) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 70)     const posts = await db.collection('posts').findAll({ userId });
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 71) 
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 72)     return { success: true, posts };
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 75)     console.error('Error fetching posts:', error);
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 76)     return { success: false, message: 'Error fetching posts' };
+7c6012ae (Ethan            2024-10-25 15:30:38 -0400 77)   }
+
+gain-grain/src/utils/userProgressPics.js
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  1) import clientPromise from './mongodb'; 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  2) import { ProgressPic } from './postModels/Post'
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  3) 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  4) export const postProgressPic = async (userId, progressPic) => {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  5)     const client = await clientPromise;
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  6)     const db = client.db();
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  7)   
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  8)     try {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400  9)         const newProgressPic = new ProgressPic({
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 10)             userId,
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 11)             progressPic,
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 12)             date: new Date()
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 13)         });
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 14) 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 15)         await db.collection('progressPics').insertOne(newProgressPic);
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 16) 
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 17)         return { success: true, message: 'Progress pic posted.' };
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 18)     } catch (error) {
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 19)         console.error('Error posting progress pic: ', error);
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 20)         return { success: false, message: 'Error posting progress pic.' };
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 21)     }
+7c6012ae (Ethan 2024-10-25 15:30:38 -0400 22) };
+
+gain-grain/src/app/api/profile/follow-unfollow-user/route.js
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  1) import { NextResponse } from 'next/server';
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  2) import { followAccount, unfollowAccount } from '@/utils/userModel';
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  3) 
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  4) export async function POST(req) {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  5)   try {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  6)     const body = await req.json();
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  7)     const { user, currentUser, following } = body;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  8) 
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  9)     if(!following) {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 10)       const result = await followAccount(user, currentUser);
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 11) 
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 12)       if(result.success) {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 13)         return NextResponse.json({ success: true, message: `Followed ${user.username}` });
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 14)       } else {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 15)         return NextResponse.json({ success: false, message: result.message }, { status: 400 });
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 16)       }
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 17)     } else {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 18)       const result = await unfollowAccount(user, currentUser);
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 19) 
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 20)       if(result.success) {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 21)         return NextResponse.json({ success: true, message: `Unfollowed ${user.username}` });
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 22)       } else {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 23)         return NextResponse.json({ success: false, message: result.message }, { status: 400 });
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 24)       }
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 25)     }
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 26)   } catch (error) {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 27)     console.error(`Error when following ${user.username}:`, error);
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 28)     return NextResponse.json({ success: false, message: 'Server error.' }, { status: 500 });
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 29)   }
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 30) }
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 31) 
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 32) export async function GET() {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 33)   return NextResponse.json({ success: false, message: 'Method GET not allowed.' }, { status: 405 });
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 34) }
+
+gain-grain/src/app/api/profile/following/route.js
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  1) import { NextResponse } from 'next/server';
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  2) import { isFollowing } from '@/utils/userModel';
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  3) 
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  4) export async function POST(req) {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  5)   try {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  6)     const body = await req.json();
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  7)     const { currentUser, user } = body;
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  8) 
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400  9)     const result = await isFollowing(currentUser, user);
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 10) 
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 11)     return NextResponse.json({ following: result.following });
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 12)   } catch (error) {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 13)     console.error(`Error when checking following status:`, error);
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 14)     return NextResponse.json({ success: false, message: 'Server error.' }, { status: 500 });
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 15)   }
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 16) }
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 17) 
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 18) export async function GET() {
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 19)   return NextResponse.json({ success: false, message: 'Method GET not allowed.' }, { status: 405 });
+b54d9854 (Ethan 2024-10-25 19:33:19 -0400 20) }
+
+gain-grain/src/app/api/notifications/dismiss-notifications/route.js
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400  1) import { NextResponse } from 'next/server';
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400  2) import { removeNotification } from '@/utils/userModel';
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400  3) 
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400  4) export async function POST(req) {
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400  5)   try {
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400  6)     const body = await req.json();
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400  7)     const { userId, notif } = body;
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400  8) 
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400  9)     const result = await removeNotification(userId, notif);
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 10) 
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 11)     if(result.success) {
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 12)         return NextResponse.json({ success: true, result: result.notifications });
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 13)     } else {
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 14)         return NextResponse.json({ success: false, message: result.message }, { status: 400 });
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 15)     }
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 16)   } catch (error) {
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 17)     console.error(`Error when removing notification`, error);
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 18)     return NextResponse.json({ success: false, message: 'Server error.' }, { status: 500 });
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 19)   }
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 20) }
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 21) 
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 22) export async function GET() {
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 23)   return NextResponse.json({ success: false, message: 'Method GET not allowed.' }, { status: 405 });
+4db53e08 (Ethan 2024-10-27 21:16:31 -0400 24) }
+
+gain-grain/src/app/api/delete-cookie/route.js
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400  1) import { NextResponse } from 'next/server';
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400  2) 
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400  3) export async function POST(req) {
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400  4)     try {
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400  5)         const cookies = req.cookies;
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400  6)         const sessionCookie = cookies.get('session');
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400  7) 
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400  8)         if(sessionCookie) {
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400  9)             const response = NextResponse.json({ success: true, message: 'Session cookies deleted.', }, { status: 200 } );
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 10)             response.cookies.set('session', '', {
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 11)                 path: '/',
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 12)                 expires: new Date(Date.now()),
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 13)                 httpOnly: true,
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 14)                 sameSite: 'strict',
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 15)                 secure: true,
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 16)             });
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 17)             
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 18)             return response;
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 19)         } else {
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 20)             return NextResponse.json({ success: false, message: 'No session cookie found' }, { status: 404 } );
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 21)         }
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 22)     } catch (error) {
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 23)         console.error('Error in delete-cookie API:', error);
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 24)         return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 25)     }
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 26) }
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 27) 
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 28) export async function GET() {
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 29)     return NextResponse.json({ success: false, message: 'Method GET not allowed' }, { status: 405 });
+a733c2a1 (Ethan 2024-10-28 15:44:13 -0400 30) }
