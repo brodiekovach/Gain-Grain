@@ -1,0 +1,176 @@
+../gain-grain/src/utils/userBlogs.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  1) import clientPromise from './mongodb';
+../gain-grain/src/utils/userBlogs.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  4) export async function createBlogPost(userId, content) {
+../gain-grain/src/utils/userBlogs.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  5)     const client = await clientPromise;
+../gain-grain/src/utils/userBlogs.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  6)     const db = client.db();
+../gain-grain/src/utils/userBlogs.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  7)     const blogCollection = db.collection('blogs');
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 10)         // Create and insert the new blog post
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 11)         const newBlog = {
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 15)         };
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 16)         
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 17)         const result = await blogCollection.insertOne(newBlog);
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 18)         return { success: true, message: 'Blog post saved.', result };
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 19)     } catch (error) {
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 20)         console.error('Error saving blog post:', error);
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 21)         return { success: false, message: 'Error saving blog post.' };
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 22)     }
+../gain-grain/src/utils/userBlogs.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400 23) }
+../gain-grain/src/utils/userBlogs.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400 24) 
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 25) // Function to retrieve a blog post by its ID
+../gain-grain/src/utils/userBlogs.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 26) export async function getBlogById(blogId) {
+../gain-grain/src/utils/userBlogs.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 27)     const client = await clientPromise;
+../gain-grain/src/utils/userBlogs.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 28)     const db = client.db();
+../gain-grain/src/utils/userBlogs.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 29)     const blogCollection = db.collection('blogs');
+../gain-grain/src/utils/userBlogs.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400 30) 
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 31)     try {
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 32)         const blog = await blogCollection.findOne({ _id: new ObjectId(blogId) });
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 33)         return blog || { success: false, message: 'Blog not found.' };
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 35)         console.error('Error fetching blog:', error);
+../gain-grain/src/utils/userBlogs.js: 8412e18d (Peyton Pridemore 2024-10-25 11:54:41 -0400 36)         return { success: false, message: 'Error fetching blog.' };
+../gain-grain/src/utils/userBlogs.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 38) }
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400  4) import { ObjectId } from 'mongodb';
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400  5) 
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 78) };
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 79) 
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 80) export const getPostById = async (id) => {
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 82)   const client = await clientPromise;
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 83)   const db = client.db();
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 84)   const postCollection = db.collection('posts');
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 85) 
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 86)   try {
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 87)       const blog = await postCollection.findOne({ _id: new ObjectId(id) });
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 88)       return blog || { success: false, message: 'Post not found.' };
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 91)       console.error('Error fetching post:', error);
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 92)       return { success: false, message: 'Error fetching post.' };
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 93)   }
+../gain-grain/src/utils/userPosts.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 94) };
+../gain-grain/src/utils/userWorkout.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  3) // create a workout in the database
+../gain-grain/src/utils/userWorkout.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  4) export const createWorkout = async (userId, title, exercises) => {
+../gain-grain/src/utils/userWorkout.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  5)   const client = await clientPromise; 
+../gain-grain/src/utils/userWorkout.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  6)   const db = client.db(); 
+../gain-grain/src/utils/userWorkout.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  7)   const workoutsCollection = db.collection('workouts'); 
+../gain-grain/src/utils/userWorkout.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  8) 
+../gain-grain/src/utils/userWorkout.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  9)   const result = await workoutsCollection.insertOne({
+../gain-grain/src/utils/userWorkout.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 10)       userId,
+../gain-grain/src/utils/userWorkout.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 11)       title, 
+../gain-grain/src/utils/userWorkout.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 12)       exercises, 
+../gain-grain/src/utils/userWorkout.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 13)       date: new Date() 
+../gain-grain/src/utils/userWorkout.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 14)   });
+../gain-grain/src/utils/userWorkout.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 15)   
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400   5) 
+../gain-grain/src/app/post/post-workouts/page.js: feb29309 (Peyton Pridemore 2024-10-14 15:51:28 -0400   8)         { id: 1, name: '', repetitions: '', set: '' },
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  10)     const [title, setTitle] = useState(''); 
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  37) 
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  45) 
+../gain-grain/src/app/post/post-workouts/page.js: feb29309 (Peyton Pridemore 2024-10-14 15:51:28 -0400  49)             { id: prev.length + 1, name: '', repetitions: '', set: '' },
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  52) 
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  53)     const handleSubmit = async () => {
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  54)         try {
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  55)             const response = await fetch('/api/workouts/postWorkouts', {
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  56)                 method: 'POST',
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  57)                 headers: { 'Content-Type': 'application/json' },
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  58)                 body: JSON.stringify({ userId, title, exercises }),
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  59)             });
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  60) 
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  95)             if (response.ok) {
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  98)             }
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  99)         } catch (error) {
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 100)             console.error('Error submitting workout:', error);
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 102)         }
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 103)     };
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 104) 
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 173)                 </div>
+../gain-grain/src/app/post/post-workouts/page.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 178) }
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  13)     const [loading, setLoading] = useState(false);
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  14)     const [success, setSuccess] = useState('');
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  15)     const [error, setError] = useState('');
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  45)     const handleSubmit = async (e) => {
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  47)         setLoading(true);
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  48)         setSuccess('');
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  49)         setError('');
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  50) 
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  51)         try {
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  52)             const response = await fetch('/api/blogs', {
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  53)                 method: 'POST',
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  54)                 headers: { 'Content-Type': 'application/json' },
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  55)                 body: JSON.stringify({ userId, content: postContent }), 
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  56)             });
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  57) 
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  85)                 setSuccess('Blog post submitted successfully!');
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  86)                 setPostContent(''); 
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  89)             }
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  90)         } catch (error) {
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  91)             console.error('Error submitting blog post:', error);
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  92)             setError('Error submitting blog post. Please try again.');
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  93)         } finally {
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  94)             setLoading(false);
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  95)         }
+../gain-grain/src/app/post/post-blog/page.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400 131) 
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400  1) import { getPostById } from '../../../../../utils/userPosts';
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400  2) 
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400  3) // GET request handler to retrieve a post by ID
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400  4) export async function GET(req, { params }) {
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400  5)     try {
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400  6)         const { id } = params; // Extract post ID from route parameters
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400  7)         const post = await getPostById(id); // Fetch the post using the ID
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400  8) 
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400  9)         if (!post) {
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 10)             return new Response('Post not found', { status: 404 });
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 11)         }
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 12) 
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 13)         // Respond with the post data in JSON format if found
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 14)         return new Response(JSON.stringify(post), {
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 15)             status: 200,
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 16)             headers: { 'Content-Type': 'application/json' },
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 17)         });
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 18)     } 
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 19)     catch (error) {
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 20)         console.error("Error fetching post:", error); // Log any errors for debugging
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 21)         return new Response('Error fetching post', { status: 500 });
+../gain-grain/src/app/api/posts/get-posts/[id]/route.js: f6564349 (Peyton Pridemore 2024-10-27 12:43:17 -0400 22)     }
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  1) import { createWorkout } from '../../../../utils/userWorkout.js';
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  2) import { NextResponse } from 'next/server';
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  3) 
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  4) export async function POST(req) {
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  5)     try {
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  6)         const { userId, title, exercises } = await req.json();
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  7) 
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  8)        
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400  9)         const formattedExercises = exercises.map((exercise) => ({
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 10)             name: exercise.name,
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 11)             Sets: exercise.repetitions, 
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 12)             Reps: exercise.set, 
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 13)         }));
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 14) 
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 15)         // create workout with both title and formatted exercises
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 16)         const result = await createWorkout(userId, title, formattedExercises);
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 17) 
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 18)         return NextResponse.json({ success: true, data: result }, { status: 201 });
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 19)     } catch (error) {
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 20)         console.error(error);
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 21)         return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 22)     }
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 23) }
+../gain-grain/src/app/api/workouts/postWorkouts/route.js: 1afd2758 (Peyton Pridemore 2024-10-22 17:01:36 -0400 24) 
+../gain-grain/src/app/api/blogs/route.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  1) import { NextResponse } from 'next/server';
+../gain-grain/src/app/api/blogs/route.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  3) 
+../gain-grain/src/app/api/blogs/route.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  5) export async function POST(req) {
+../gain-grain/src/app/api/blogs/route.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  6)     try {
+../gain-grain/src/app/api/blogs/route.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400  9) 
+../gain-grain/src/app/api/blogs/route.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400 23)         return NextResponse.json({ success: false, message: 'Failed to save blog post' }, { status: 500 });
+../gain-grain/src/app/api/blogs/route.js: 882d7276 (Peyton Pridemore 2024-10-22 19:02:15 -0400 24)     }
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400  1) import { getBlogById } from '../../../../utils/userBlogs';
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400  2) 
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400  4) export async function GET(req, { params }) {
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400  5)     try {
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400  8) 
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400  9)         if (!blog) {
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 10)             return new Response('Blog not found', { status: 404 });
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 11)         }
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 12) 
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 14)         return new Response(JSON.stringify(blog), {
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 15)             status: 200,
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 16)             headers: { 'Content-Type': 'application/json' },
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 17)         });
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 21)         return new Response('Error fetching blog', { status: 500 });
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 22)     }
+../gain-grain/src/app/api/blogs/[id]/route.js: 8d29e6ad (Peyton Pridemore 2024-10-25 11:49:45 -0400 23) }
