@@ -1,5 +1,4 @@
-# Sprint 2
-
+# Sprint 3
 * Name: Ethan Crall
 * Github ID: ethancrall
 * Group Name: Gain & Grain
