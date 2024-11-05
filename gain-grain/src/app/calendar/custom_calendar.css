@@ -154,3 +154,144 @@
   .add-options button.active {
     border: 2px solid black; /* Black border for active button */
   }
+
+  .grocery-list-button {
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .grocery-modal-content {
+    padding: 24px;
+    max-width: 600px;
+    margin: 0 auto;
+    color: #333;
+  }
+
+  .grocery-modal-content h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+
+  .week-selector {
+    margin-bottom: 24px;
+  }
+
+  .week-selector select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    color: black;  /* Make text black */
+    background-color: white;
+    margin-bottom: 16px;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .week-selector option {
+    color: black;  /* Make dropdown options black */
+    background-color: white;
+    padding: 8px;
+  }
+
+  .grocery-list-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #f9f9f9;
+  }
+
+  .grocery-list h3 {
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #eee;
+    color: #444;
+  }
+
+  .ingredients-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .ingredient-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s ease;
+  }
+
+  .ingredient-item:hover {
+    background-color: #f0f0f0;
+  }
+
+  .ingredient-name {
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .ingredient-amount {
+    color: #666;
+    text-align: right;
+  }
+
+  .additional-amount {
+    margin-left: 8px;
+    color: #888;
+  }
+
+  .no-ingredients {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+    font-style: italic;
+  }
+
+  /* Scrollbar styling */
+  .grocery-list-container::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .grocery-list-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  .grocery-list-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+
+  .grocery-list-container::-webkit-scrollbar-thumb:hover {
+    background: #666;
+  }
+
+  .grocery-button {
+    background-color: var(--vol-orange);
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    display: inline-block; /* Ensure it doesn't take full width */
+  }
+
+  .grocery-button:hover {
+    color: black;
+    background-color: #f1965d;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .grocery-text {
+    position: relative;
+    left: 0;
+    display: inline-block;
+    padding-right: 20px;
+  }
