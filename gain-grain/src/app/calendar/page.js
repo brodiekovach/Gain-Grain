@@ -3,13 +3,38 @@
 
 import React, { useEffect, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
-import { FaAngleLeft, FaAngleRight, FaPlus } from 'react-icons/fa';
+import { FaAngleLeft, FaAngleRight, FaPlus, FaList } from 'react-icons/fa';
 import './custom_calendar.css'; 
 import './style.css';
 import ExerciseSearch from './exerciseSearch';
 import Modal from './modal';
 import TitleModal from './titleModal';
 import Navbar from "../../components/Navbar";
+
+// Helper function to get all Sundays of a month
+const getSundaysOfMonth = (date) => {
+    const sundays = [];
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    
+    // Get first day of the month
+    const firstDay = new Date(year, month, 1);
+    
+    // Get first Sunday
+    let currentDay = new Date(firstDay);
+    currentDay.setDate(1);
+    while (currentDay.getDay() !== 0) {
+        currentDay.setDate(currentDay.getDate() + 1);
+    }
+    
+    // Get all Sundays
+    while (currentDay.getMonth() === month) {
+        sundays.push(new Date(currentDay));
+        currentDay.setDate(currentDay.getDate() + 7);
+    }
+    
+    return sundays;
+};
 
 const CustomCalendar = () => {
     const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -40,17 +65,44 @@ const CustomCalendar = () => {
     const [tempweight, setTempWeight] = useState({});
     const [ingredientsExpanded, setIngredientsExpanded] = useState(false);
     const [urlParseError, setUrlParseError] = useState('');
-    
+    const [selectedSunday, setSelectedSunday] = useState(null);
+    const [groceryList, setGroceryList] = useState({});
+    const [showGroceryModal, setShowGroceryModal] = useState(false);
+
+    const sundays = getSundaysOfMonth(currentMonth);
+
     const months = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
 
     useEffect(() => {
+        // Initialize calendar and load data for current date
+        const today = new Date();
         initCalendar();
-        loadExercisesForDate(selectedDate);
-        loadMealsForDate(selectedDate);
-    }, [currentMonth, selectedDate]);
+        setSelectedDate(today); // Ensure today's date is set
+        loadExercisesForDate(today);
+        loadMealsForDate(today);
+    }, [currentMonth]); // Only depend on currentMonth changes
+
+    useEffect(() => {
+        if (selectedDate) {
+            loadExercisesForDate(selectedDate);
+            loadMealsForDate(selectedDate);
+        }
+    }, [selectedDate]);
+
+    useEffect(() => {
+        if (selectedDate) {
+            saveExercisesToLocalStorage(selectedExercises);
+        }
+    }, [selectedExercises, selectedDate]);
+
+    useEffect(() => {
+        if (selectedDate) {
+            saveMealsToLocalStorage(selectedMeals);
+        }
+    }, [selectedMeals, selectedDate]);
 
     const initCalendar = () => {
         const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
@@ -90,16 +142,24 @@ const CustomCalendar = () => {
         setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() - 1)));
     };
 
-    const loadExercisesForDate = (selectedDate) => {
-        const savedWorkouts = JSON.parse(localStorage.getItem('workouts')) || {};
-        const exercisesForDate = savedWorkouts[selectedDate.toDateString()]?.exercises || [];
-        setSelectedExercises(exercisesForDate);
+    const loadExercisesForDate = (date) => {
+        const dateKey = date.toISOString().split('T')[0];
+        const savedExercises = localStorage.getItem(`exercises_${dateKey}`);
+        if (savedExercises) {
+            setSelectedExercises(JSON.parse(savedExercises));
+        } else {
+            setSelectedExercises([]); // Reset if no data found
+        }
     };
 
-    const loadMealsForDate = (selectedDate) => {
-        const savedWorkouts = JSON.parse(localStorage.getItem('workouts')) || {};
-        const mealsForDate = savedWorkouts[selectedDate.toDateString()]?.meals || [];
-        setSelectedMeals(mealsForDate);
+    const loadMealsForDate = (date) => {
+        const dateKey = date.toISOString().split('T')[0];
+        const savedMeals = localStorage.getItem(`meals_${dateKey}`);
+        if (savedMeals) {
+            setSelectedMeals(JSON.parse(savedMeals));
+        } else {
+            setSelectedMeals([]); // Reset if no data found
+        }
     };
 
     const handleDayClick = (day, isPrevMonth, isNextMonth) => {
@@ -126,26 +186,46 @@ const CustomCalendar = () => {
     };
 
     const saveExercisesToLocalStorage = (exercises) => {
-        const savedWorkouts = JSON.parse(localStorage.getItem('workouts')) || {};
-        savedWorkouts[selectedDate.toDateString()] = { ...savedWorkouts[selectedDate.toDateString()], exercises };
-        localStorage.setItem('workouts', JSON.stringify(savedWorkouts));
+        const dateKey = selectedDate.toISOString().split('T')[0];
+        localStorage.setItem(`exercises_${dateKey}`, JSON.stringify(exercises));
     };
 
     const saveMealsToLocalStorage = (meals) => {
-        const savedWorkouts = JSON.parse(localStorage.getItem('workouts')) || {};
-        savedWorkouts[selectedDate.toDateString()] = { ...savedWorkouts[selectedDate.toDateString()], meals };
-        localStorage.setItem('workouts', JSON.stringify(savedWorkouts));
+        const dateKey = selectedDate.toISOString().split('T')[0];
+        localStorage.setItem(`meals_${dateKey}`, JSON.stringify(meals));
     };
+    
 
     const handleAddMeal = () => {
-        if (mealName && mealCalories && mealIngredients) {
-            const newMeal = { name: mealName, calories: mealCalories, ingredients: mealIngredients, link:mealUrl, };
+        if (mealName && mealCalories) {
+            // Convert mealIngredients string to array format if it's not already an array
+            let ingredients = mealIngredients;
+            if (typeof mealIngredients === 'string' && mealIngredients) {
+                ingredients = [{
+                    name: mealIngredients,
+                    amount: {
+                        quantity: 1,
+                        unit: 'unit'
+                    }
+                }];
+            }
+
+            const newMeal = {
+                name: mealName,
+                calories: mealCalories,
+                ingredients: ingredients,
+                link: mealUrl,
+            };
+
             const updatedMeals = [...selectedMeals, newMeal];
             setSelectedMeals(updatedMeals);
             saveMealsToLocalStorage(updatedMeals);
+            
+            // Reset form
             setMealName('');
             setMealCalories('');
             setMealIngredients([]);
+            setMealUrl('');
             setMealOption('');
             setAddingType('');
             setShowModal(false);
@@ -420,19 +500,133 @@ const CustomCalendar = () => {
         toggleModal(); // Close the modal after adding
     };
     
-    const handleSelectMeal = (meal) => {
-
-        const mealToAdd = {
-            name: meal.meal.name,
-            ingredients: meal.ingredients,
-            calories: meal.meal.calories,
+    const handleSelectMeal = (savedMeal) => {
+        const newMeal = {
+            name: savedMeal.meal.name,
+            calories: savedMeal.meal.calories,
+            ingredients: savedMeal.meal.ingredients, // Make sure to include ingredients
+            link: savedMeal.meal.link
         };
 
-        setSelectedMeals((prevMeals) => [...prevMeals, mealToAdd]);
-        setMealOption('');
-        toggleModal();
-    }
-    
+        const updatedMeals = [...selectedMeals, newMeal];
+        setSelectedMeals(updatedMeals);
+        saveMealsToLocalStorage(updatedMeals);
+        setShowModal(false);
+    };
+
+    // Helper function to get all meals for a week
+    const getMealsForWeek = (sundayDate) => {
+        if (!sundayDate) return [];
+        
+        const meals = [];
+        for (let i = 0; i < 7; i++) {
+            const currentDate = new Date(sundayDate);
+            currentDate.setDate(sundayDate.getDate() + i);
+            const dateKey = currentDate.toISOString().split('T')[0];
+            const savedMeals = localStorage.getItem(`meals_${dateKey}`);
+            if (savedMeals) {
+                try {
+                    const parsedMeals = JSON.parse(savedMeals);
+                    if (Array.isArray(parsedMeals)) {
+                        meals.push(...parsedMeals);
+                    }
+                } catch (error) {
+                    console.error('Error parsing meals:', error);
+                }
+            }
+        }
+        return meals;
+    };
+
+    // Modified handleSundayChange function
+    const handleSundayChange = (event) => {
+        if (!event.target.value) {
+            setSelectedSunday(null);
+            setGroceryList({});
+            return;
+        }
+
+        const selectedSundayDate = new Date(event.target.value);
+        setSelectedSunday(selectedSundayDate);
+
+        const weeklyMeals = getMealsForWeek(selectedSundayDate);
+        
+        if (!weeklyMeals.length) {
+            setGroceryList({});
+            return;
+        }
+
+        // Standardized ingredient combination logic
+        const combinedGroceryList = {};
+        
+        weeklyMeals.forEach(meal => {
+            if (meal?.ingredients && Array.isArray(meal.ingredients)) {
+                meal.ingredients.forEach(ingredient => {
+                    if (!ingredient?.name) return;
+                    
+                    const name = ingredient.name.trim();
+                    const amountStr = ingredient.amount || '';
+                    
+                    // Handle "as needed" case
+                    if (amountStr === 'as needed') {
+                        if (!combinedGroceryList[name]) {
+                            combinedGroceryList[name] = {
+                                amounts: ['as needed']
+                            };
+                        }
+                        return;
+                    }
+
+                    // Parse amount string (e.g., "2 pounds" -> { value: 2, unit: "pounds" })
+                    const amountMatch = amountStr.match(/^(\d+(?:\.\d+)?)\s*(.*)$/);
+                    
+                    if (!combinedGroceryList[name]) {
+                        combinedGroceryList[name] = {
+                            amounts: []
+                        };
+                    }
+
+                    if (amountMatch) {
+                        const value = parseFloat(amountMatch[1]);
+                        const unit = amountMatch[2].trim();
+                        
+                        // Find existing amount with same unit
+                        const existingAmount = combinedGroceryList[name].amounts.find(
+                            a => a.unit === unit
+                        );
+
+                        if (existingAmount) {
+                            existingAmount.value += value;
+                        } else {
+                            combinedGroceryList[name].amounts.push({
+                                value,
+                                unit
+                            });
+                        }
+                    } else {
+                        // If amount format doesn't match, store as is
+                        combinedGroceryList[name].amounts.push({
+                            raw: amountStr
+                        });
+                    }
+                });
+            }
+        });
+
+        setGroceryList(combinedGroceryList);
+    };
+
+    // Effect to update grocery list when meals change
+    useEffect(() => {
+        if (selectedSunday) {
+            handleSundayChange({ 
+                target: { 
+                    value: selectedSunday.toISOString() 
+                } 
+            });
+        }
+    }, [selectedMeals]); // Update when meals change
+
     const renderDays = () => {
         return days.map((dayObj, index) => (
             <div
@@ -547,11 +741,13 @@ const CustomCalendar = () => {
                     </div>
 
                     <div className="add-section">
+                        <button className="grocery-button" onClick={() => setShowGroceryModal(true)}>
+                            Generate Grocery List
+                        </button>
                         <button className="add-button" onClick={toggleModal}>
                             <FaPlus />
                         </button>
                     </div>
-                </div>
 
                 <Modal show={showModal} onClose={toggleModal}>
                     <div className="modal-body">
@@ -679,11 +875,19 @@ const CustomCalendar = () => {
                                         onChange={(e) => setMealCalories(e.target.value)}
                                         placeholder="Calories"
                                     />
-                                    <input
-                                        type="text"
-                                        value={mealIngredients}
-                                        onChange={(e) => setMealIngredients(e.target.value)}
-                                        placeholder="Ingredients (optional)"
+                                    <textarea // Changed to textarea for better input
+                                        value={Array.isArray(mealIngredients) ? mealIngredients.map(i => i.name).join(', ') : mealIngredients}
+                                        onChange={(e) => {
+                                            const ingredientsArray = e.target.value.split(',').map(item => ({
+                                                name: item.trim(),
+                                                amount: {
+                                                    quantity: 1,
+                                                    unit: 'unit'
+                                                }
+                                            })).filter(item => item.name);
+                                            setMealIngredients(ingredientsArray);
+                                        }}
+                                        placeholder="Ingredients (comma-separated)"
                                     />
                                     <button onClick={handleAddMeal}>Add Meal</button>
                                 </div>
@@ -766,8 +970,54 @@ const CustomCalendar = () => {
                         </div>
                     </div>
                 </Modal>
+
+                <Modal show={showGroceryModal} onClose={() => setShowGroceryModal(false)}>
+                    <div className="modal-content">
+                        <div className="week-selector">
+                            <select 
+                                value={selectedSunday ? selectedSunday.toISOString() : ''} 
+                                onChange={handleSundayChange}
+                            >
+                                <option value="">Select Week</option>
+                                {sundays.map((sunday) => (
+                                    <option key={sunday.toISOString()} value={sunday.toISOString()}>
+                                        Week of {sunday.toLocaleDateString()}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        
+                        <div className="grocery-list-container">
+                            {Object.keys(groceryList).length > 0 ? (
+                                <div className="grocery-list">
+                                    <h3>Ingredients for Week of {selectedSunday?.toLocaleDateString()}</h3>
+                                    <ul className="ingredients-list">
+                                        {Object.entries(groceryList).map(([ingredient, details]) => (
+                                            <li key={ingredient} className="ingredient-item">
+                                                <span className="ingredient-name">{ingredient}</span>
+                                                <span className="ingredient-amount">
+                                                    {details.amounts.map((amount, index) => (
+                                                        <span key={index}>
+                                                            {index > 0 && ' + '}
+                                                            {amount === 'as needed' ? 'as needed' :
+                                                             amount.raw ? amount.raw :
+                                                             `${amount.value} ${amount.unit}`}
+                                                        </span>
+                                                    ))}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ) : (
+                                <p className="no-ingredients">No ingredients found for this week.</p>
+                            )}
+                        </div>
+                    </div>
+                </Modal>
+                </div>
             </div>
-        </main>
+        </main>  
     );
 };
 

@@ -642,31 +642,32 @@ body {
 }
 
 .add-section {
-    position: absolute; /* Position the add-section absolutely */
-    bottom: 20px; /* Adjust the distance from the bottom as needed */
-    right: 20px; /* Adjust the distance from the right as needed */
-}
-
-.add-button {
-    position: absolute; /* Position it relative to the parent container */
-    bottom: 15px; /* Distance from the bottom of the container */
-    right: 15px; /* Distance from the right of the container */
-    background-color: var(--vol-orange); /* Button background color */
-    color: white; /* Text color */
-    border: none; /* Remove border */
-    border-radius: 50%; /* Make it circular */
-    width: 60px; /* Width of the button */
-    height: 60px; /* Height of the button */
-    font-size: 30px; /* Icon size */
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
-    cursor: pointer; /* Pointer cursor on hover */
-}
+    gap: 15px; /* Space between buttons */
+  }
+
+  .add-button {
+    font-size: 1.5rem;
+    padding: 10px;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--vol-orange);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
 
 .add-button:hover {
-    background-color: var(--powder-blue); /* Darken color on hover */
+    color: black;
+    background-color: #f1965d; /* Darken color on hover */
 }
 
 .add-options button, .meal-form button {
