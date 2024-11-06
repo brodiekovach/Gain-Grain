@@ -83,16 +83,10 @@ const SavedMealsPage = () => {
                             <h3>{meal.meal.name}</h3>
                             <p>Calories: {meal.meal.calories}</p>
 
-                            {/* Conditionally render buttons */}
                             <div className="meal-buttons">
-                                {/* Only show "View Details" if the meal has valid details */}
-                                {meal.meal.link && meal.meal.link.trim() !== '' ? (
-                                    <button className="meal-action-button" onClick={() => toggleDetails(meal._id)}>
-                                        {meal.showDetails ? 'Hide Details' : 'View Details'}
-                                    </button>
-                                ) : (
-                                    <p className="manual-meal-label">Manually Added</p> // Display a message for manual meals
-                                )}
+                                <button className="meal-action-button" onClick={() => toggleDetails(meal._id)}>
+                                    {meal.showDetails ? 'Hide Details' : 'View Details'}
+                                </button>
                                 <button className="meal-action-button">Edit</button>
                             </div>
 
@@ -100,14 +94,18 @@ const SavedMealsPage = () => {
                             {meal.showDetails && (
                                 <div className="meal-details">
                                     <h4>Ingredients:</h4>
-                                    <ul>
-                                        {meal.meal.ingredients.map((ingredient, index) => (
-                                            <li key={index}>
-                                                {ingredient.amount} {ingredient.name}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                    {/* Conditionally render the link if it's not an empty string */}
+                                    {Array.isArray(meal.meal.ingredients) && meal.meal.ingredients.length > 0 ? (
+                                        <ul>
+                                            {meal.meal.ingredients.map((ingredient, index) => (
+                                                <li key={index}>
+                                                    {ingredient.amount} {ingredient.name}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <p>No ingredients listed</p>
+                                    )}
+                                    {/* Only show recipe link if one exists */}
                                     {meal.meal.link && meal.meal.link.trim() !== '' && (
                                         <p>
                                             <a href={meal.meal.link} target="_blank" rel="noopener noreferrer">

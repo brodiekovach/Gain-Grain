@@ -198,22 +198,16 @@ const CustomCalendar = () => {
 
     const handleAddMeal = () => {
         if (mealName && mealCalories) {
-            // Convert mealIngredients string to array format if it's not already an array
-            let ingredients = mealIngredients;
-            if (typeof mealIngredients === 'string' && mealIngredients) {
-                ingredients = [{
-                    name: mealIngredients,
-                    amount: {
-                        quantity: 1,
-                        unit: 'unit'
-                    }
-                }];
-            }
+            // Format ingredients to match the expected structure
+            const formattedIngredients = mealIngredients.map(ingredient => ({
+                name: ingredient.name,
+                amount: `${ingredient.amount.quantity} ${ingredient.amount.unit}`
+            }));
 
             const newMeal = {
                 name: mealName,
                 calories: mealCalories,
-                ingredients: ingredients,
+                ingredients: formattedIngredients,
                 link: mealUrl,
             };
 
@@ -565,7 +559,14 @@ const CustomCalendar = () => {
                     if (!ingredient?.name) return;
                     
                     const name = ingredient.name.trim();
-                    const amountStr = ingredient.amount || '';
+                    
+                    // Handle both string amounts and object amounts
+                    let amountStr = '';
+                    if (typeof ingredient.amount === 'string') {
+                        amountStr = ingredient.amount;
+                    } else if (typeof ingredient.amount === 'object') {
+                        amountStr = `${ingredient.amount.quantity} ${ingredient.amount.unit}`;
+                    }
                     
                     // Handle "as needed" case
                     if (amountStr === 'as needed') {
@@ -578,7 +579,7 @@ const CustomCalendar = () => {
                     }
 
                     // Parse amount string (e.g., "2 pounds" -> { value: 2, unit: "pounds" })
-                    const amountMatch = amountStr.match(/^(\d+(?:\.\d+)?)\s*(.*)$/);
+                    const amountMatch = amountStr ? amountStr.match(/^(\d+(?:\.\d+)?)\s*(.*)$/): null;
                     
                     if (!combinedGroceryList[name]) {
                         combinedGroceryList[name] = {
@@ -603,7 +604,7 @@ const CustomCalendar = () => {
                                 unit
                             });
                         }
-                    } else {
+                    } else if (amountStr) {
                         // If amount format doesn't match, store as is
                         combinedGroceryList[name].amounts.push({
                             raw: amountStr
@@ -875,20 +876,55 @@ const CustomCalendar = () => {
                                         onChange={(e) => setMealCalories(e.target.value)}
                                         placeholder="Calories"
                                     />
-                                    <textarea // Changed to textarea for better input
-                                        value={Array.isArray(mealIngredients) ? mealIngredients.map(i => i.name).join(', ') : mealIngredients}
-                                        onChange={(e) => {
-                                            const ingredientsArray = e.target.value.split(',').map(item => ({
-                                                name: item.trim(),
+                                    <div className="ingredients-list">
+                                        {mealIngredients.map((ingredient, index) => (
+                                            <div key={index} className="ingredient-item">
+                                                <input
+                                                    type="text"
+                                                    value={ingredient.name}
+                                                    onChange={(e) => {
+                                                        const newIngredients = [...mealIngredients];
+                                                        newIngredients[index].name = e.target.value;
+                                                        setMealIngredients(newIngredients);
+                                                    }}
+                                                    placeholder="Ingredient name"
+                                                />
+                                                <input
+                                                    type="number"
+                                                    value={ingredient.amount.quantity}
+                                                    onChange={(e) => {
+                                                        const newIngredients = [...mealIngredients];
+                                                        newIngredients[index].amount.quantity = parseFloat(e.target.value);
+                                                        setMealIngredients(newIngredients);
+                                                    }}
+                                                    placeholder="Amount"
+                                                />
+                                                <input
+                                                    type="text"
+                                                    value={ingredient.amount.unit}
+                                                    onChange={(e) => {
+                                                        const newIngredients = [...mealIngredients];
+                                                        newIngredients[index].amount.unit = e.target.value;
+                                                        setMealIngredients(newIngredients);
+                                                    }}
+                                                    placeholder="Unit"
+                                                />
+                                                <button onClick={() => {
+                                                    const newIngredients = mealIngredients.filter((_, i) => i !== index);
+                                                    setMealIngredients(newIngredients);
+                                                }}>Remove</button>
+                                            </div>
+                                        ))}
+                                        <button onClick={() => {
+                                            setMealIngredients([...mealIngredients, {
+                                                name: '',
                                                 amount: {
-                                                    quantity: 1,
-                                                    unit: 'unit'
+                                                    quantity: 0,
+                                                    unit: ''
                                                 }
-                                            })).filter(item => item.name);
-                                            setMealIngredients(ingredientsArray);
-                                        }}
-                                        placeholder="Ingredients (comma-separated)"
-                                    />
+                                            }]);
+                                        }}>Add Ingredient</button>
+                                    </div>
                                     <button onClick={handleAddMeal}>Add Meal</button>
                                 </div>
                             )}
