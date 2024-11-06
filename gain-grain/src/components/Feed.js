@@ -1,24 +1,58 @@
-import { useState, useEffect } from 'react';
+export default function Feed({ posts, toggleComments, visibleComments }) {
+  const renderPostContent = (post) => {
+    switch (post.postType) {
+      case "Workout":
+        return (
+          <div className="post-content p-3">
+            <h4 className="text-xl">{post.title}</h4>
+            {post.exercises?.map((exercise) => (
+              <div key={exercise._id} className="exercise-info mt-1">
+                <p>{exercise.name}</p>
+              </div>
+            ))}
+          </div>
+        );
 
-export default function Feed({ toggleComments, visibleComments }) {
-  const [posts, setPosts] = useState([]); // To store posts fetched from the server
+      case "Meal":
+        return (
+          <div className="post-content p-3">
+            <h4 className="text-xl">Meal</h4>
+            {post.meal?.map((item) => (
+              <div key={item._id} className="meal-info mt-1">
+                <p>{item.name}</p>
+                <p>Calories: {item.calories} kcal</p>
+                <p>Protein: {item.protein}g</p>
+                <p>Carbs: {item.carbs}g</p>
+                <p>Fats: {item.fats}g</p>
+              </div>
+            ))}
+          </div>
+        );
 
-  // Fetch posts from the API
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch('/api/posts');
-        if (!res.ok) {
-          throw new Error('Failed to fetch posts');
-        }
-        const data = await res.json();
-        setPosts(data.data || []); // Ensure that data is an array
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      }
-    };
-    fetchPosts();
-  }, []);
+      case "Blog":
+        return (
+          <div className="post-content p-3">
+            <h4 className="text-xl">Blog</h4>
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          </div>
+        );
+
+      case "ProgressPic":
+        return (
+          <div className="post-content p-3">
+            <h4 className="text-xl">Progress Picture</h4>
+            <img
+              src={post.progressPic}
+              alt="User Progress"
+              className="w-full h-auto object-cover rounded-lg"
+            />
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="flex justify-center mt-8 w-full">
@@ -29,10 +63,7 @@ export default function Feed({ toggleComments, visibleComments }) {
               <img src="https://via.placeholder.com/40" alt="User Profile" className="rounded-full mr-2" />
               <h3 className="text-lg">@{post.author}</h3>
             </div>
-            <div className="post-content p-3">
-              <h4 className="text-xl">{post.title}</h4>
-              <p className="text-gray-700">{post.body}</p>
-            </div>
+            {renderPostContent(post)}
             <div className="post-actions flex justify-around mb-3">
               <button className="hover:underline">Like</button>
               <button className="hover:underline" onClick={() => toggleComments(post._id)}>Comment</button>
