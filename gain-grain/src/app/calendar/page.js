@@ -68,6 +68,15 @@ const CustomCalendar = () => {
     const [selectedSunday, setSelectedSunday] = useState(null);
     const [groceryList, setGroceryList] = useState({});
     const [showGroceryModal, setShowGroceryModal] = useState(false);
+    const [workoutStatus, setWorkoutStatus] = useState(() => {
+        // Load saved workout status from localStorage
+        const savedStatus = localStorage.getItem('workoutStatus');
+        return savedStatus ? JSON.parse(savedStatus) : {};
+    });
+    const [workoutTimer, setWorkoutTimer] = useState(0); // Timer for the workout
+    const [isWorkoutActive, setIsWorkoutActive] = useState(false); // Track if workout is active
+    const [workoutModalVisible, setWorkoutModalVisible] = useState(false); // Control workout modal visibility
+    const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0); // Track current exercise in modal
 
     const sundays = getSundaysOfMonth(currentMonth);
 
@@ -628,6 +637,59 @@ const CustomCalendar = () => {
         }
     }, [selectedMeals]); // Update when meals change
 
+    const handleStartWorkout = (day) => {
+        if (selectedExercises.length > 0 && selectedExercises.every(exercise => exercise.Weight)) {
+            setActiveDay(day);
+            setWorkoutTimer(0); // Reset timer
+            setIsWorkoutActive(true);
+            setWorkoutModalVisible(true);
+            setCurrentExerciseIndex(0); // Start from the first exercise
+        } else {
+            alert("Please add exercises and weights to start the workout.");
+        }
+    };
+
+    const handleNextExercise = () => {
+        if (currentExerciseIndex < selectedExercises.length - 1) {
+            setCurrentExerciseIndex(currentExerciseIndex + 1);
+        }
+    };
+
+    const handlePreviousExercise = () => {
+        if (currentExerciseIndex > 0) {
+            setCurrentExerciseIndex(currentExerciseIndex - 1);
+        }
+    };
+
+    const handleEndWorkout = () => {
+        setIsWorkoutActive(false);
+        setWorkoutModalVisible(false);
+        const updatedStatus = {
+            ...workoutStatus,
+            [activeDay]: { completed: true, time: workoutTimer },
+        };
+        setWorkoutStatus(updatedStatus);
+        // Save updated workout status to localStorage
+        localStorage.setItem('workoutStatus', JSON.stringify(updatedStatus));
+    };
+
+    const handleResetWorkout = (day) => {
+        const updatedStatus = { ...workoutStatus };
+        delete updatedStatus[day]; // Remove the workout status for the specific day
+        setWorkoutStatus(updatedStatus);
+        localStorage.setItem('workoutStatus', JSON.stringify(updatedStatus));
+    };
+
+    useEffect(() => {
+        let timer;
+        if (isWorkoutActive) {
+            timer = setInterval(() => {
+                setWorkoutTimer((prev) => prev + 1);
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [isWorkoutActive]);
+
     const renderDays = () => {
         return days.map((dayObj, index) => (
             <div
@@ -639,6 +701,12 @@ const CustomCalendar = () => {
             </div>
         ));
     };
+
+    // Debugging: Log the selectedExercises and currentExerciseIndex
+    useEffect(() => {
+        console.log('Selected Exercises:', selectedExercises);
+        console.log('Current Exercise Index:', currentExerciseIndex);
+    }, [selectedExercises, currentExerciseIndex]);
 
     return (
         <main className="calendar-main">
@@ -674,6 +742,34 @@ const CustomCalendar = () => {
                         <div className="event-date">{selectedDate.toDateString()}</div>
                     </div>
                     
+                    {activeDay && (
+                        <div className="workout-status">
+                            <span>
+                                {workoutStatus[activeDay]?.completed ? 
+                                    `Workout Completed: ${workoutStatus[activeDay].time} seconds` : 
+                                    "Workout Not Completed"}
+                            </span>
+                            {!workoutStatus[activeDay]?.completed && (
+                                <button 
+                                    className="start-workout-btn" 
+                                    onClick={() => handleStartWorkout(activeDay)}
+                                    disabled={selectedExercises.length === 0 || !selectedExercises.every(exercise => exercise.Weight)}
+                                    title={selectedExercises.length === 0 ? "Add exercises to start workout" : "Add weights to all exercises to start workout"}
+                                >
+                                    Start Workout
+                                </button>
+                            )}
+                            {workoutStatus[activeDay]?.completed && (
+                                <button 
+                                    className="reset-workout-btn" 
+                                    onClick={() => handleResetWorkout(activeDay)}
+                                >
+                                    Reset Workout
+                                </button>
+                            )}
+                        </div>
+                    )}
+
                     <div className="exercise-section">
                         <h3>Exercises</h3>
                         <button className='save-btn' onClick={() => setShowTitleForSaving(true)}>Save Workout to Profile</button>
@@ -698,7 +794,7 @@ const CustomCalendar = () => {
                                         <span>{exercise.Weight} lbs</span> // Show weight if already set
                                     ) : (
                                         <input
-                                        className='weight-input'
+                                            className='weight-input'
                                             type="number"
                                             placeholder="Weight (lbs)"
                                             onKeyDown={(e) => {
@@ -1049,6 +1145,37 @@ const CustomCalendar = () => {
                                 <p className="no-ingredients">No ingredients found for this week.</p>
                             )}
                         </div>
+                    </div>
+                </Modal>
+
+                <Modal show={workoutModalVisible} onClose={handleEndWorkout}>
+                    <div className="workout-modal">
+                        <h3>Workout for {selectedDate.toDateString()}</h3>
+                        <div className="timer-display">Timer: {new Date(workoutTimer * 1000).toISOString().substr(11, 8)}</div>
+                        <div className="exercise-display">
+                            {selectedExercises[currentExerciseIndex] ? (
+                                <>
+                                    <span>{selectedExercises[currentExerciseIndex].name}</span>
+                                    <div>{selectedExercises[currentExerciseIndex].sets} sets x {selectedExercises[currentExerciseIndex].reps} reps</div>
+                                    <span>{selectedExercises[currentExerciseIndex].Weight} lbs</span>
+                                </>
+                            ) : (
+                                <span>No exercise selected</span>
+                            )}
+                        </div>
+                        <div className="exercise-progress">
+                            {selectedExercises.map((_, index) => (
+                                <span
+                                    key={index}
+                                    className={`progress-circle ${index === currentExerciseIndex ? 'active' : ''}`}
+                                ></span>
+                            ))}
+                        </div>
+                        <div className="exercise-navigation">
+                            <button onClick={handlePreviousExercise} disabled={currentExerciseIndex === 0}>Previous</button>
+                            <button onClick={handleNextExercise} disabled={currentExerciseIndex === selectedExercises.length - 1}>Next</button>
+                        </div>
+                        <button onClick={handleEndWorkout}>End Workout</button>
                     </div>
                 </Modal>
                 </div>

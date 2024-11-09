@@ -1,7 +1,3 @@
-:root {
-    --primary-clr: #FF8200;
-}
-
 * {
     margin: 0;
     padding: 0;
@@ -728,4 +724,165 @@ body {
 
 .exercise-name {
     font-size: 1.3rem;
+}
+
+/* Add styles for workout status and start button */
+.workout-status {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 15px 20px; /* Increased padding for better spacing */
+    background: linear-gradient(135deg, #f0f0f0, #e0e0e0); /* Subtle gradient for depth */
+    border-radius: 12px; /* Slightly more rounded corners */
+    color: #333;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a floating effect */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for hover effects */
+}
+
+.workout-status:hover {
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+.workout-status span {
+    flex-grow: 1;
+    text-align: left;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.start-workout-btn {
+    background-color: var(--primary-clr);
+    color: #333;
+    border: 3px inset #ccc;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); /* Inner shadow for depth */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.start-workout-btn:disabled {
+    background-color: var(--smokey-grey);
+    cursor: not-allowed;
+}
+
+.start-workout-btn:hover:not(:disabled) {
+    background-color: var(--vol-orange);
+    transform: translateY(-2px);
+}
+
+/* Modal styling for exercise display */
+.workout-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 500px;
+    margin: 0 auto;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.workout-modal h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: black;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.timer-display {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: black;
+}
+
+.exercise-display {
+    margin: 20px 0;
+    text-align: center;
+    font-size: 1.2rem;
+    color: black;
+}
+
+.exercise-navigation {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.exercise-navigation button,
+.workout-modal button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--vol-orange);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.exercise-navigation button:disabled,
+.workout-modal button:disabled {
+    background-color: var(--smokey-grey);
+    cursor: not-allowed;
+}
+
+.exercise-navigation button:hover:not(:disabled),
+.workout-modal button:hover:not(:disabled) {
+    background-color: var(--powder-blue);
+    transform: translateY(-2px);
+}
+
+.exercise-navigation button:active:not(:disabled),
+.workout-modal button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.exercise-progress {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.progress-circle {
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    background-color: var(--smokey-grey);
+    border-radius: 50%;
+    border: 1px solid black; /* Add black outline */
+    transition: background-color 0.3s ease;
+}
+
+.progress-circle.active {
+    background-color: var(--vol-orange);
+    border: 1px solid var(--vol-orange); /* Match border to active color */
+}
+
+.reset-workout-btn {
+    background-color: #ccc;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-left: 10px; /* Add some space between buttons */
+}
+
+.reset-workout-btn:hover {
+    background-color: var(--vol-orange);
+    transform: translateY(-2px);
 }
