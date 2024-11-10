@@ -22,3 +22,27 @@
 .transition-all {
     transition: all 0.3s ease; /* Smooth sliding effect */
 }
+
+.post {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+  
+.post:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.post.expanded {
+    max-width: 1600px; /* Set the expanded width */
+    min-height: 1200px; /* Adjust the height */
+    position: absolute;
+    top: 10%;  /* Adjust the top position to center it */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for better visibility */
+}
+  
+.post-header {
+    cursor: pointer; /* Add pointer cursor to make it interactive */
+}

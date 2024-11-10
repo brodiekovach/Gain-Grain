@@ -1,7 +1,7 @@
 import { FaDumbbell, FaCameraRetro, FaPencilAlt } from 'react-icons/fa';
 import { MdOutlineFastfood } from "react-icons/md";
 
-export default function Post({ post, toggleComments, visibleComments }) {
+export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick  }) {
   const renderPostContent = (post) => {
     switch (post.postType) {
       case "Workout":
@@ -79,9 +79,18 @@ export default function Post({ post, toggleComments, visibleComments }) {
   const postColor = getPostColor(post.postType);
 
   return (
+    <div className="relative" style={{ width: '100%', maxWidth: '400px' }}>
+      {isExpanded && (
+        <div
+          className="fixed inset-0 bg-black opacity-50 z-9"
+          style={{
+            transition: 'opacity 0.3s ease', // Smooth transition for the dimming effect
+          }}
+        ></div>
+      )}
     <div
       key={post._id}
-      className="relative post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0"
+      className={`relative post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0 ${isExpanded ? 'expanded' : ''}`}
       style={{
         maxWidth: '400px',  // Set max width for the post
         minHeight: '450px',  // Set minimum height to maintain consistency
@@ -90,7 +99,15 @@ export default function Post({ post, toggleComments, visibleComments }) {
         flexDirection: 'column',
         borderColor: postColor, // Apply the color dynamically
         borderWidth: '3px', // Increase the border width here
+        zIndex: isExpanded ? 10 : 1,
+        position: isExpanded ? 'fixed' : 'relative', // Use absolute positioning for expansion
+        top: isExpanded ? '50%' : 'auto', // Center vertically
+        left: isExpanded ? '50%' : 'auto', // Center horizontally
+        transform: isExpanded ? 'translate(-50%, -50%) scale(1.1)' : 'none', // Scale up when expanded
+        transformOrigin: 'center',
+        transition: 'transform 0.2s ease, z-index 0s', // Smooth transition for expansion
       }}
+      onClick={() => handlePostClick(post._id)}
     >
       <div className="post-header flex items-center p-3">
         <img
@@ -121,6 +138,7 @@ export default function Post({ post, toggleComments, visibleComments }) {
         <button className="hover:underline">Share</button>
       </div>
       {visibleComments === post._id && <Comments comments={post.comments} />}
+    </div>
     </div>
   );
 }
