@@ -1,10 +1,11 @@
 import { FaDumbbell, FaCameraRetro, FaPencilAlt } from 'react-icons/fa';
 import { MdOutlineFastfood } from "react-icons/md";
 import { useState, useEffect } from 'react';
+import Link from "next/link";
 
 export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, onSavePost, isSaved }) {
   const [userId, setUserId] = useState('');
-  const [username, setUsername] = useState('');
+  const [user, setUser] = useState('');
   const [date, setDate] = useState('');
   const [liked, setLiked] = useState(false);
 
@@ -38,7 +39,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
         });
         const data = await response.json();
         if (data.success) {
-          setUsername(data.user.username);
+          setUser(data.user);
         }
       } catch (error) {
         console.error(error);
@@ -122,7 +123,11 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
       case "Blog":
         return <div dangerouslySetInnerHTML={{ __html: post.content }} />;
       case "ProgressPic":
-        return <img src={post.progressPic} alt="Progress" className="w-full max-w-xs rounded-lg" />;
+        return (
+          <div className="post-content p-3 flex justify-center items-center">
+            <img src={post.progressPic} alt="Progress" className="w-full max-w-xs rounded-lg object-cover" style={{ maxHeight: '300px' }} />
+          </div>
+        );
       default:
         return null;
     }
@@ -139,13 +144,17 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
     <div className="relative" style={{ width: '100%', maxWidth: '400px' }}>
       {isExpanded && <div className="fixed inset-0 bg-black opacity-50 z-9"></div>}
       <div
-        className="post bg-white mb-5 rounded-lg w-full"
+        className={`post bg-white mb-5 rounded-lg w-full`}
         style={{ borderColor: postColor, borderWidth: '3px' }}
         onClick={() => handlePostClick(post._id)}
       >
         <div className="post-header flex items-center p-3">
-          <img src="https://via.placeholder.com/40" alt="User Profile" className="rounded-full mr-2" />
-          <h3 className="text-lg">@{username}</h3>
+          <Link href={`/search/profile?userId=${user._id}`}>
+            <img src={user.profilePic} alt="User Profile" className="rounded-full mr-2" style={{ width: '40px', height: '40px' }} />
+          </Link>
+          <h3 className="text-2xl font-bold hover:underline">
+            <Link href={`/search/profile?userId=${user._id}`}>@{user.username}</Link>
+          </h3>
           <span className="text-sm">{date}</span>
         </div>
         {renderPostContent(post)}
