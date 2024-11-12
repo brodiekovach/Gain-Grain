@@ -5,7 +5,8 @@ const publicRoutes = ['/login', '/register', '/login/forgot-password', '/reset-p
 const ignoredExtensions = ['.js', '.css', '.jpeg', '.jpg', '.png', '.svg',];
 const apiRoutes = ['/api/login/find-user', '/api/register/create-user', '/api/forgot-password/send-email', 
                    '/api/reset-password/validate-token', '/api/reset-password/reset-password-api', 
-                   '/api/reset-password/remove-token', '/api/blogs', '/api/posts/get-posts', '/api/posts/get-followed-user-posts'];
+                   '/api/reset-password/remove-token', '/api/blogs', '/api/posts/get-posts', '/api/posts/get-followed-user-posts',
+                   '/api/posts/save-posts-to-profile', '/api/profile/get-user-from-session'];
 
 export async function middleware(req) {
     const { pathname } = req.nextUrl;
