@@ -1,70 +1,97 @@
 import { FaDumbbell, FaCameraRetro, FaPencilAlt } from 'react-icons/fa';
 import { MdOutlineFastfood } from "react-icons/md";
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import Link from "next/link";
 
 export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, onSavePost, isSaved }) {
+  const [userId, setUserId] = useState('');
   const [user, setUser] = useState('');
   const [date, setDate] = useState('');
+  const [liked, setLiked] = useState(false);
 
+  // Fetch the user data
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        const response = await fetch('/api/profile/get-user-from-session', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await response.json();
+        if (data.success) {
+          setUserId(data.user._id);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUserData();
+  }, []);
+
+  // Fetch the user data for the post
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
         const response = await fetch('/api/profile/get-user-by-id', {
           method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId: post.userId })
         });
-
         const data = await response.json();
-
         if (data.success) {
           setUser(data.user);
         }
       } catch (error) {
         console.error(error);
       }
-    }
-
-    fetchUserData();
+    };
+    fetchUsername();
   }, [post.userId]);
 
+  // Set the date in a human-readable format
   useEffect(() => {
     const parsePostDate = () => {
-      const date = new Date(post.date);
+      const postDate = new Date(post.date);
       const now = new Date();
-      const diffInSeconds = Math.floor((now - date) / 1000);
-
+      const diffInSeconds = Math.floor((now - postDate) / 1000);
       const secondsInMinute = 60;
       const secondsInHour = 3600;
       const secondsInDay = 86400;
-      const secondsInMonth = 2592000;
-      const secondsInYear = 31536000;
 
-      if(diffInSeconds < secondsInMinute) {
-        setDate(`${diffInSeconds} seconds ago`);
-      } else if (diffInSeconds < secondsInHour) {
-        const minutes = Math.floor(diffInSeconds / secondsInMinute);
-        setDate(`${minutes} minute${minutes !== 1 ? 's' : ''} ago`);
-      } else if (diffInSeconds < secondsInDay) {
-        const hours = Math.floor(diffInSeconds / secondsInHour);
-        setDate(`${hours} hour${hours !== 1 ? 's' : ''} ago`);
-      } else if (diffInSeconds < secondsInMonth) {
-        const days = Math.floor(diffInSeconds / secondsInDay);
-        setDate(`${days} day${days !== 1 ? 's' : ''} ago`);
-      } else if (diffInSeconds < secondsInYear) {
-        const months = Math.floor(diffInSeconds / secondsInMonth);
-        setDate(`${months} month${months !== 1 ? 's' : ''} ago`);
-      } else {
-        const years = Math.floor(diffInSeconds / secondsInYear);
-        setDate(`${years} year${years !== 1 ? 's' : ''} ago`);
-      }
-    }
-      
+      if (diffInSeconds < secondsInMinute) setDate(`${diffInSeconds} seconds ago`);
+      else if (diffInSeconds < secondsInHour) setDate(`${Math.floor(diffInSeconds / secondsInMinute)} minutes ago`);
+      else if (diffInSeconds < secondsInDay) setDate(`${Math.floor(diffInSeconds / secondsInHour)} hours ago`);
+      else setDate(postDate.toLocaleDateString());
+    };
     parsePostDate();
   }, [post.date]);
+
+  useEffect(() => {
+    if (userId && post?.likeCount) {
+      setLiked(post.likeCount.includes(userId));
+    }
+  }, [userId, post.likeCount]);
+
+  // Functions to like/unlike posts
+  const likePost = async (e) => {
+    e.stopPropagation();
+    setLiked(true);
+    await fetch('/api/posts', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, postId: post._id, like: true })
+    });
+  };
+
+  const unlikePost = async (e) => {
+    e.stopPropagation();
+    setLiked(false);
+    await fetch('/api/posts', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, postId: post._id, like: false })
+    });
+  };
 
   const renderPostContent = (post) => {
     switch (post.postType) {
@@ -79,68 +106,43 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
             ))}
           </div>
         );
-
       case "Meal":
         return (
           <div className="post-content p-3">
             {post.meal?.map((item) => (
-              <>
+              <div key={item._id} className="meal-info mt-1">
                 <h4 className="text-3xl font-semibold">{item.name}</h4>
-                <div key={item._id} className="meal-info mt-1">
-                  <p className="indent-[20px] text-xl"><span className="font-bold">Calories: </span>{item.calories} kcal</p>
-                  <p className="indent-[20px] text-xl"><span className="font-bold">Protein: </span>{item.protein}g</p>
-                  <p className="indent-[20px] text-xl"><span className="font-bold">Carbs: </span>{item.carbs}g</p>
-                  <p className="indent-[20px] text-xl"><span className="font-bold">Fats: </span>{item.fats}g</p>
-                </div>
-              </>
+                <p className="indent-[20px] text-xl"><span className="font-bold">Calories: </span>{item.calories} kcal</p>
+                <p className="indent-[20px] text-xl"><span className="font-bold">Protein: </span>{item.protein}g</p>
+                <p className="indent-[20px] text-xl"><span className="font-bold">Carbs: </span>{item.carbs}g</p>
+                <p className="indent-[20px] text-xl"><span className="font-bold">Fats: </span>{item.fats}g</p>
+              </div>
             ))}
           </div>
         );
-
       case "Blog":
         return (
           <div className="post-content p-3 text-xl font-bold">
             <div dangerouslySetInnerHTML={{ __html: post.content }} />
           </div>
         );
-
       case "ProgressPic":
         return (
           <div className="post-content p-3 flex justify-center items-center">
-            <div className="text-center">
-              <img
-                src={post.progressPic}
-                alt="User Progress"
-                className="w-full max-w-xs h-fill object-cover rounded-lg"
-                style={{ maxHeight: '300px' }}
-              />
-            </div>
+            <img src={post.progressPic} alt="Progress" className="w-full max-w-xs rounded-lg object-cover" style={{ maxHeight: '300px' }} />
           </div>
         );
-
       default:
         return null;
     }
   };
 
-  // Determine the post color based on post type
-  const getPostColor = (postType) => {
-    switch (postType) {
-      case "Workout":
-        return "#4CAF50"; // Green for Workout
-      case "Meal":
-        return "#FF5722"; // Orange for Meal
-      case "ProgressPic":
-        return "#3F51B5"; // Blue for Progress Pictures
-      case "Blog":
-        return "#FFC107"; // Yellow for Blog
-      default:
-        return "#FFFFFF"; // Default white color for unknown types
-    }
-  };
-
-  // Get the color for the border based on post type
-  const postColor = getPostColor(post.postType);
+  const postColor = {
+    Workout: "#4CAF50",
+    Meal: "#FF5722",
+    ProgressPic: "#3F51B5",
+    Blog: "#FFC107",
+  }[post.postType] || "#FFFFFF";
 
   return (
     <div className="relative flex justify-center mx-auto" style={{ 
@@ -172,52 +174,37 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
         }}
         onClick={() => handlePostClick(post._id)}
       >
-      <div className="post-header flex items-center p-3">
-        <Link href={`/search/profile?userId=${user._id}`}>
-        <img
-          src={user.profilePic}
-          alt="User Profile"
-          className="rounded-full mr-2"
-          style={{ width: '40px', height: '40px' }}
-        />
-        </Link>
-        <h3 className="text-3xl font-bold hover:underline">
-          <Link href={`/search/profile?userId=${user._id}`}>@{user.username}</Link>
-        </h3>
-
-        {/* Icon in the top right */}
-        <div
-          className="absolute top-3 right-3 text-2xl cursor-pointer"
-          style={{ color: postColor }}
-        >
-          {post.postType === "Workout" && <FaDumbbell />}
-          {post.postType === "Meal" && <MdOutlineFastfood />}
-          {post.postType === "ProgressPic" && <FaCameraRetro />}
-          {post.postType === "Blog" && <FaPencilAlt />}
+        <div className="post-header flex items-center p-3">
+          <Link href={`/search/profile?userId=${user._id}`}>
+            <img
+              src={user.profilePic}
+              alt="User Profile"
+              className="rounded-full mr-2"
+              style={{ width: '40px', height: '40px' }}
+            />
+          </Link>
+          <h3 className="text-3xl font-bold hover:underline">
+            <Link href={`/search/profile?userId=${user._id}`}>@{user.username}</Link>
+          </h3>
+          {/* Icon in the top right */}
+          <div className="absolute top-3 right-3 text-2xl cursor-pointer" style={{ color: postColor }}>
+            {post.postType === "Workout" && <FaDumbbell />}
+            {post.postType === "Meal" && <MdOutlineFastfood />}
+            {post.postType === "ProgressPic" && <FaCameraRetro />}
+            {post.postType === "Blog" && <FaPencilAlt />}
+          </div>
+        </div>
+        <div className="space-x-2">
+          <h5 className="text-right pr-5 text-m">{date}</h5>
+          {renderPostContent(post)}
+          <div className="post-actions flex justify-around mt-auto">
+            <button onClick={(e) => (liked ? unlikePost(e) : likePost(e))}>{liked ? "Unlike" : "Like"}</button>
+            <button onClick={() => toggleComments(post._id)}>Comment</button>
+            <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }}>{isSaved ? "Saved" : "Save"}</button>
+          </div>
+          {visibleComments === post._id && <Comments comments={post.comments} />}
         </div>
       </div>
-      <div className="space-x-2">
-        <h5 className="text-right pr-5 text-m">{date}</h5>
-        {renderPostContent(post)}
-      </div>
-      <div className="post-actions flex justify-around mb-3 mt-auto">
-        <button className="hover:underline">Like</button>
-        <button className="hover:underline" onClick={() => toggleComments(post._id)}>
-          Comment
-        </button>
-        <button className="hover:underline">Share</button>
-        <button 
-          className={`hover:underline ${isSaved ? 'text-orange-500' : ''}`}
-          onClick={(e) => {
-            e.stopPropagation(); // Prevent post expansion when clicking save
-            onSavePost(post._id);
-          }}
-        >
-          {isSaved ? 'Saved' : 'Save'}
-        </button>
-      </div>
-      {visibleComments === post._id && <Comments comments={post.comments} />}
-    </div>
     </div>
   );
 }
