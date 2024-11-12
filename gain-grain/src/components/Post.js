@@ -1,9 +1,10 @@
 import { FaDumbbell, FaCameraRetro, FaPencilAlt } from 'react-icons/fa';
 import { MdOutlineFastfood } from "react-icons/md";
 import { useState, useEffect } from 'react'
+import Link from "next/link";
 
 export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, onSavePost, isSaved }) {
-  const [username, setUsername] = useState('');
+  const [user, setUser] = useState('');
   const [date, setDate] = useState('');
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
         const data = await response.json();
 
         if (data.success) {
-          setUsername(data.user.username);
+          setUser(data.user);
         }
       } catch (error) {
         console.error(error);
@@ -112,8 +113,8 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
               <img
                 src={post.progressPic}
                 alt="User Progress"
-                className="w-full max-w-xs h-auto object-cover rounded-lg"
-                style={{ maxHeight: '350px' }}
+                className="w-full max-w-xs h-fill object-cover rounded-lg"
+                style={{ maxHeight: '300px' }}
               />
             </div>
           </div>
@@ -175,13 +176,17 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
       onClick={() => handlePostClick(post._id)}
     >
       <div className="post-header flex items-center p-3">
+        <Link href={`/search/profile?userId=${user._id}`}>
         <img
-          src="https://via.placeholder.com/40"
+          src={user.profilePic}
           alt="User Profile"
           className="rounded-full mr-2"
           style={{ width: '40px', height: '40px' }}
         />
-        <h3 className="text-2xl font-bold">@{username}</h3>
+        </Link>
+        <h3 className="text-2xl font-bold hover:underline">
+          <Link href={`/search/profile?userId=${user._id}`}>@{user.username}</Link>
+        </h3>
 
         {/* Icon in the top right */}
         <div

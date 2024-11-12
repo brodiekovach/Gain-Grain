@@ -62,7 +62,6 @@ export default function UploadProgressPicture() {
 
       const result = await postResponse.json();
       if (!result.success) {
-        console.error(result.message);
         setError(result.message);
         return;
       }
