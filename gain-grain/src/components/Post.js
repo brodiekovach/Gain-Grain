@@ -1,13 +1,77 @@
 import { FaDumbbell, FaCameraRetro, FaPencilAlt } from 'react-icons/fa';
 import { MdOutlineFastfood } from "react-icons/md";
+import { useState, useEffect } from 'react'
 
 export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, onSavePost, isSaved }) {
+  const [username, setUsername] = useState('');
+  const [date, setDate] = useState('');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('/api/profile/get-user-by-id', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId: post.userId })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          setUsername(data.user.username);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchUserData();
+  }, [post.userId]);
+
+  useEffect(() => {
+    const parsePostDate = () => {
+      const date = new Date(post.date);
+      const now = new Date();
+      const diffInSeconds = Math.floor((now - date) / 1000);
+
+      const secondsInMinute = 60;
+      const secondsInHour = 3600;
+      const secondsInDay = 86400;
+      const secondsInMonth = 2592000;
+      const secondsInYear = 31536000;
+
+      if(diffInSeconds < secondsInMinute) {
+        setDate(`${diffInSeconds} seconds ago`);
+      } else if (diffInSeconds < secondsInHour) {
+        const minutes = Math.floor(diffInSeconds / secondsInMinute);
+        setDate(`${minutes} minute${minutes !== 1 ? 's' : ''} ago`);
+      } else if (diffInSeconds < secondsInDay) {
+        const hours = Math.floor(diffInSeconds / secondsInHour);
+        setDate(`${hours} hour${hours !== 1 ? 's' : ''} ago`);
+      } else if (diffInSeconds < secondsInMonth) {
+        const days = Math.floor(diffInSeconds / secondsInDay);
+        setDate(`${days} day${days !== 1 ? 's' : ''} ago`);
+      } else if (diffInSeconds < secondsInYear) {
+        const months = Math.floor(diffInSeconds / secondsInMonth);
+        setDate(`${months} month${months !== 1 ? 's' : ''} ago`);
+      } else {
+        const years = Math.floor(diffInSeconds / secondsInYear);
+        setDate(`${years} year${years !== 1 ? 's' : ''} ago`);
+      }
+    }
+      
+    parsePostDate();
+  }, [post.date]);
+
   const renderPostContent = (post) => {
+    console.log(post);
     switch (post.postType) {
       case "Workout":
         return (
           <div className="post-content p-3">
-            <h4 className="text-xl">{post.title}</h4>
+            <h4 className="text-xl font-semibold">{post.title}</h4>
             {post.exercises?.map((exercise) => (
               <div key={exercise._id} className="exercise-info mt-1">
                 <p>{exercise.name}</p>
@@ -19,15 +83,17 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
       case "Meal":
         return (
           <div className="post-content p-3">
-            <h4 className="text-xl">Meal</h4>
             {post.meal?.map((item) => (
-              <div key={item._id} className="meal-info mt-1">
-                <p>{item.name}</p>
-                <p>Calories: {item.calories} kcal</p>
-                <p>Protein: {item.protein}g</p>
-                <p>Carbs: {item.carbs}g</p>
-                <p>Fats: {item.fats}g</p>
-              </div>
+              <>
+                <h4 className="text-xl font-semibold">{item.name}</h4>
+                <div key={item._id} className="meal-info mt-1">
+                  <p>{item.name}</p>
+                  <p>Calories: {item.calories} kcal</p>
+                  <p>Protein: {item.protein}g</p>
+                  <p>Carbs: {item.carbs}g</p>
+                  <p>Fats: {item.fats}g</p>
+                </div>
+              </>
             ))}
           </div>
         );
@@ -35,7 +101,6 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
       case "Blog":
         return (
           <div className="post-content p-3">
-            <h4 className="text-xl">Blog</h4>
             <div dangerouslySetInnerHTML={{ __html: post.content }} />
           </div>
         );
@@ -116,7 +181,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
           className="rounded-full mr-2"
           style={{ width: '40px', height: '40px' }}
         />
-        <h3 className="text-lg">@{post.author}</h3>
+        <h3 className="text-2xl font-bold">@{username}</h3>
 
         {/* Icon in the top right */}
         <div
@@ -129,7 +194,10 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
           {post.postType === "Blog" && <FaPencilAlt />}
         </div>
       </div>
-      {renderPostContent(post)}
+      <div className="space-x-2">
+        <h5 className="text-right pr-5 text-sm">{date}</h5>
+        {renderPostContent(post)}
+      </div>
       <div className="post-actions flex justify-around mb-3 mt-auto">
         <button className="hover:underline">Like</button>
         <button className="hover:underline" onClick={() => toggleComments(post._id)}>
