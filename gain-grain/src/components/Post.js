@@ -28,7 +28,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
     fetchUserData();
   }, []);
 
-  // Fetch the username
+  // Fetch the user data for the post
   useEffect(() => {
     const fetchUsername = async () => {
       try {
@@ -70,7 +70,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
     if (userId && post?.likeCount) {
       setLiked(post.likeCount.includes(userId));
     }
-  }, [userId]);
+  }, [userId, post.likeCount]);
 
   // Functions to like/unlike posts
   const likePost = async (e) => {
@@ -98,10 +98,10 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
       case "Workout":
         return (
           <div className="post-content p-3">
-            <h4 className="text-xl font-semibold">{post.title}</h4>
+            <h4 className="text-3xl font-semibold">{post.title}</h4>
             {post.exercises?.map((exercise) => (
               <div key={exercise._id} className="exercise-info mt-1">
-                <p>{exercise.name}</p>
+                <p className="indent-[20px] text-xl">{exercise.name}</p>
               </div>
             ))}
           </div>
@@ -111,17 +111,21 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
           <div className="post-content p-3">
             {post.meal?.map((item) => (
               <div key={item._id} className="meal-info mt-1">
-                <p>{item.name}</p>
-                <p>Calories: {item.calories} kcal</p>
-                <p>Protein: {item.protein}g</p>
-                <p>Carbs: {item.carbs}g</p>
-                <p>Fats: {item.fats}g</p>
+                <h4 className="text-3xl font-semibold">{item.name}</h4>
+                <p className="indent-[20px] text-xl"><span className="font-bold">Calories: </span>{item.calories} kcal</p>
+                <p className="indent-[20px] text-xl"><span className="font-bold">Protein: </span>{item.protein}g</p>
+                <p className="indent-[20px] text-xl"><span className="font-bold">Carbs: </span>{item.carbs}g</p>
+                <p className="indent-[20px] text-xl"><span className="font-bold">Fats: </span>{item.fats}g</p>
               </div>
             ))}
           </div>
         );
       case "Blog":
-        return <div dangerouslySetInnerHTML={{ __html: post.content }} />;
+        return (
+          <div className="post-content p-3 text-xl font-bold">
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          </div>
+        );
       case "ProgressPic":
         return (
           <div className="post-content p-3 flex justify-center items-center">
@@ -141,29 +145,48 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
   }[post.postType] || "#FFFFFF";
 
   return (
-    <div className="relative" style={{ width: '100%', maxWidth: '400px' }}>
-      {isExpanded && <div className="fixed inset-0 bg-black opacity-50 z-9"></div>}
+    <div className="relative flex justify-center mx-auto" style={{ width: '100%', maxWidth: '60vw' }}>
       <div
-        className={`post bg-white mb-5 rounded-lg w-full`}
-        style={{ borderColor: postColor, borderWidth: '3px' }}
-        onClick={() => handlePostClick(post._id)}
+        key={post._id}
+        className="post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0"
+        style={{
+          width: '60vw',
+          minHeight: '350px',
+          boxSizing: 'border-box',
+          borderColor: postColor,
+          borderWidth: '3px',
+        }}
       >
         <div className="post-header flex items-center p-3">
           <Link href={`/search/profile?userId=${user._id}`}>
-            <img src={user.profilePic} alt="User Profile" className="rounded-full mr-2" style={{ width: '40px', height: '40px' }} />
+            <img
+              src={user.profilePic}
+              alt="User Profile"
+              className="rounded-full mr-2"
+              style={{ width: '40px', height: '40px' }}
+            />
           </Link>
-          <h3 className="text-2xl font-bold hover:underline">
+          <h3 className="text-3xl font-bold hover:underline">
             <Link href={`/search/profile?userId=${user._id}`}>@{user.username}</Link>
           </h3>
-          <span className="text-sm">{date}</span>
+          {/* Icon in the top right */}
+          <div className="absolute top-3 right-3 text-2xl cursor-pointer" style={{ color: postColor }}>
+            {post.postType === "Workout" && <FaDumbbell />}
+            {post.postType === "Meal" && <MdOutlineFastfood />}
+            {post.postType === "ProgressPic" && <FaCameraRetro />}
+            {post.postType === "Blog" && <FaPencilAlt />}
+          </div>
         </div>
-        {renderPostContent(post)}
-        <div className="post-actions flex justify-around mt-auto">
-          <button onClick={(e) => (liked ? unlikePost(e) : likePost(e))}>{liked ? "Unlike" : "Like"}</button>
-          <button onClick={() => toggleComments(post._id)}>Comment</button>
-          <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }}>{isSaved ? "Saved" : "Save"}</button>
+        <div className="space-x-2">
+          <h5 className="text-right pr-5 text-m">{date}</h5>
+          {renderPostContent(post)}
+          <div className="post-actions flex justify-around mt-auto">
+            <button onClick={(e) => (liked ? unlikePost(e) : likePost(e))}>{liked ? "Unlike" : "Like"}</button>
+            <button onClick={() => toggleComments(post._id)}>Comment</button>
+            <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }}>{isSaved ? "Saved" : "Save"}</button>
+          </div>
+          {visibleComments === post._id && <Comments comments={post.comments} />}
         </div>
-        {visibleComments === post._id && <Comments comments={post.comments} />}
       </div>
     </div>
   );
