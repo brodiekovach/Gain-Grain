@@ -199,7 +199,7 @@ export default function Navbar() {
 
         {/* Notification Dropdown */}
         {showNotificationDropdown && (
-          <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg overflow-hidden">
+          <div className="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg overflow-hidden z-50">
             {notifications.length === 0 ? (
               <div className="p-4 text-gray-500">No notifications</div>
             ) : (

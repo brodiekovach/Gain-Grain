@@ -90,6 +90,7 @@
     padding-left: 20px;
     padding-right: 20px;
     cursor: pointer;
+    z-index: 49;
 }
 
 .hamburgerButton .hamburgerMenu {
