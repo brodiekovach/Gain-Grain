@@ -3,7 +3,7 @@ import { MdOutlineFastfood } from "react-icons/md";
 import { useState, useEffect } from 'react'
 import Link from "next/link";
 
-export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, onSavePost, isSaved }) {
+export default function Post({ post, toggleComments, visibleComments, onSavePost, isSaved }) {
   const [user, setUser] = useState('');
   const [date, setDate] = useState('');
 
@@ -67,15 +67,14 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
   }, [post.date]);
 
   const renderPostContent = (post) => {
-    console.log(post);
     switch (post.postType) {
       case "Workout":
         return (
           <div className="post-content p-3">
-            <h4 className="text-xl font-semibold">{post.title}</h4>
+            <h4 className="text-3xl font-semibold">{post.title}</h4>
             {post.exercises?.map((exercise) => (
               <div key={exercise._id} className="exercise-info mt-1">
-                <p>{exercise.name}</p>
+                <p className="indent-[20px] text-xl">{exercise.name}</p>
               </div>
             ))}
           </div>
@@ -86,13 +85,12 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
           <div className="post-content p-3">
             {post.meal?.map((item) => (
               <>
-                <h4 className="text-xl font-semibold">{item.name}</h4>
+                <h4 className="text-3xl font-semibold">{item.name}</h4>
                 <div key={item._id} className="meal-info mt-1">
-                  <p>{item.name}</p>
-                  <p>Calories: {item.calories} kcal</p>
-                  <p>Protein: {item.protein}g</p>
-                  <p>Carbs: {item.carbs}g</p>
-                  <p>Fats: {item.fats}g</p>
+                  <p className="indent-[20px] text-xl"><span className="font-bold">Calories: </span>{item.calories} kcal</p>
+                  <p className="indent-[20px] text-xl"><span className="font-bold">Protein: </span>{item.protein}g</p>
+                  <p className="indent-[20px] text-xl"><span className="font-bold">Carbs: </span>{item.carbs}g</p>
+                  <p className="indent-[20px] text-xl"><span className="font-bold">Fats: </span>{item.fats}g</p>
                 </div>
               </>
             ))}
@@ -101,7 +99,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
 
       case "Blog":
         return (
-          <div className="post-content p-3">
+          <div className="post-content p-3 text-xl font-bold">
             <div dangerouslySetInnerHTML={{ __html: post.content }} />
           </div>
         );
@@ -145,36 +143,21 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
   const postColor = getPostColor(post.postType);
 
   return (
-    <div className="relative" style={{ width: '100%', maxWidth: '400px' }}>
-      {isExpanded && (
-        <div
-          className="fixed inset-0 bg-black opacity-50 z-9"
-          style={{
-            transition: 'opacity 0.3s ease', // Smooth transition for the dimming effect
-          }}
-        ></div>
-      )}
-    <div
-      key={post._id}
-      className={`relative post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0 ${isExpanded ? 'expanded' : ''}`}
-      style={{
-        maxWidth: '400px',  // Set max width for the post
-        minHeight: '450px',  // Set minimum height to maintain consistency
-        boxSizing: 'border-box',
-        display: 'flex',
-        flexDirection: 'column',
-        borderColor: postColor, // Apply the color dynamically
-        borderWidth: '3px', // Increase the border width here
-        zIndex: isExpanded ? 10 : 1,
-        position: isExpanded ? 'fixed' : 'relative', // Use absolute positioning for expansion
-        top: isExpanded ? '50%' : 'auto', // Center vertically
-        left: isExpanded ? '50%' : 'auto', // Center horizontally
-        transform: isExpanded ? 'translate(-50%, -50%) scale(1.1)' : 'none', // Scale up when expanded
-        transformOrigin: 'center',
-        transition: 'transform 0.2s ease, z-index 0s', // Smooth transition for expansion
-      }}
-      onClick={() => handlePostClick(post._id)}
-    >
+    <div className="relative flex justify-center mx-auto" style={{ 
+      width: '100%', 
+      maxWidth: '60vw',
+    }}>
+      <div
+        key={post._id}
+        className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0`}
+        style={{
+          width: '60vw',  // Set max width for the post
+          minHeight: '350px',  // Set minimum height to maintain consistency
+          boxSizing: 'border-box',
+          borderColor: postColor, // Apply the color dynamically
+          borderWidth: '3px', // Increase the border width here
+        }}
+      >
       <div className="post-header flex items-center p-3">
         <Link href={`/search/profile?userId=${user._id}`}>
         <img
@@ -184,7 +167,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
           style={{ width: '40px', height: '40px' }}
         />
         </Link>
-        <h3 className="text-2xl font-bold hover:underline">
+        <h3 className="text-3xl font-bold hover:underline">
           <Link href={`/search/profile?userId=${user._id}`}>@{user.username}</Link>
         </h3>
 
@@ -200,7 +183,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
         </div>
       </div>
       <div className="space-x-2">
-        <h5 className="text-right pr-5 text-sm">{date}</h5>
+        <h5 className="text-right pr-5 text-m">{date}</h5>
         {renderPostContent(post)}
       </div>
       <div className="post-actions flex justify-around mb-3 mt-auto">
