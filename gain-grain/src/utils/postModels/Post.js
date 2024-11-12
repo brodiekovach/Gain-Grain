@@ -4,6 +4,7 @@ const postSchema = new mongoose.Schema(
     {
       userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
       postType: { type: String, required: true },
+      likeCount: [{ type: String }]
     },
     { discriminatorKey: 'postType', collection: 'posts' }
   );
