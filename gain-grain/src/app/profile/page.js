@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from 'next/image';
 import dumbbell from '../../../public/images/dumbbell.png'
 import foodicon from '../../../public/images/foodicon.png'
+import Post from '@/components/Post';
 
 export default function profile() {
   const [user, setUser] = useState('');
@@ -15,6 +16,10 @@ export default function profile() {
   const [savedWorkouts, setSavedWorkouts] = useState([]);
   const [loadingWorkouts, setLoadingWorkouts] = useState(true);
   const [expandedWorkouts, setExpandedWorkouts] = useState({});
+  const [savedPosts, setSavedPosts] = useState([]);
+  const [loadingSavedPosts, setLoadingSavedPosts] = useState(true);
+  const [visibleComments, setVisibleComments] = useState(null);
+  const [expandedPostId, setExpandedPostId] = useState(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -81,12 +86,57 @@ export default function profile() {
     if (user) fetchSavedWorkouts();
   }, [user]);
 
+  useEffect(() => {
+    const fetchSavedPosts = async () => {
+      if (!user._id) return;
+      
+      try {
+        setLoadingSavedPosts(true);
+        const response = await fetch('/api/posts/fetch-posts-from-profile', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch saved posts');
+        }
+
+        const data = await response.json();
+        if (data.success) {
+          setSavedPosts(data.savedPosts);
+        }
+      } catch (error) {
+        console.error('Error fetching saved posts:', error);
+      } finally {
+        setLoadingSavedPosts(false);
+      }
+    };
+
+    if (user) {
+      fetchSavedPosts();
+    }
+  }, [user]);
+
   const toggleWorkoutExpand = (workoutId) => {
     setExpandedWorkouts((prev) => ({
         ...prev,
         [workoutId]: !prev[workoutId],
     }));
 };
+
+  const handlePostClick = (postId) => {
+    if (expandedPostId === postId) {
+      setExpandedPostId(null);
+    } else {
+      setExpandedPostId(postId);
+    }
+  };
+
+  const toggleComments = (postId) => {
+    setVisibleComments(currentId => currentId === postId ? null : postId);
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -148,6 +198,12 @@ export default function profile() {
               onClick={() => setActiveTab('likedPosts')}
             >
               Liked Posts
+            </button>
+            <button
+              className={`py-2 px-4 ${activeTab === 'savedPosts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+              onClick={() => setActiveTab('savedPosts')}
+            >
+              Saved Posts
             </button>
           </div>
         </div>
@@ -211,6 +267,32 @@ export default function profile() {
               </svg>
               <p>No liked posts.</p>
           </div>
+      ) : activeTab === 'savedPosts' && loadingSavedPosts ? (
+        <div className="text-center mt-4">
+          <p>Loading saved posts...</p>
+        </div>
+      ) : activeTab === 'savedPosts' && (!savedPosts || savedPosts.length === 0) ? (
+        <div className="flex flex-col items-center mt-4 text-center text-gray-500">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-bookmark mb-2" viewBox="0 0 16 16">
+            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+          </svg>
+          <p>No saved posts yet</p>
+        </div>
+      ) : activeTab === 'savedPosts' ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          {savedPosts.map((post) => (
+            <Post
+              key={post._id}
+              post={post}
+              toggleComments={toggleComments}
+              visibleComments={visibleComments}
+              isExpanded={expandedPostId === post._id}
+              handlePostClick={handlePostClick}
+              onSavePost={() => {}}
+              isSaved={true}
+            />
+          ))}
+        </div>
       ) : (
           <div className="mt-4 text-center">
               <p>{`Showing ${activeTab.replace(/([A-Z])/g, ' $1').toLowerCase()}...`}</p>

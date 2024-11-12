@@ -1,7 +1,7 @@
 import { FaDumbbell, FaCameraRetro, FaPencilAlt } from 'react-icons/fa';
 import { MdOutlineFastfood } from "react-icons/md";
 
-export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick  }) {
+export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, onSavePost, isSaved }) {
   const renderPostContent = (post) => {
     switch (post.postType) {
       case "Workout":
@@ -136,6 +136,15 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
           Comment
         </button>
         <button className="hover:underline">Share</button>
+        <button 
+          className={`hover:underline ${isSaved ? 'text-orange-500' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent post expansion when clicking save
+            onSavePost(post._id);
+          }}
+        >
+          {isSaved ? 'Saved' : 'Save'}
+        </button>
       </div>
       {visibleComments === post._id && <Comments comments={post.comments} />}
     </div>
