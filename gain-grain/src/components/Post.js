@@ -3,7 +3,7 @@ import { MdOutlineFastfood } from "react-icons/md";
 import { useState, useEffect } from 'react'
 import Link from "next/link";
 
-export default function Post({ post, toggleComments, visibleComments, onSavePost, isSaved }) {
+export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, onSavePost, isSaved }) {
   const [user, setUser] = useState('');
   const [date, setDate] = useState('');
 
@@ -147,16 +147,30 @@ export default function Post({ post, toggleComments, visibleComments, onSavePost
       width: '100%', 
       maxWidth: '60vw',
     }}>
+      {isExpanded && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 pointer-events-none">
+        </div>
+      )}
       <div
         key={post._id}
-        className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0`}
+        className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0  ${isExpanded ? 'expanded' : ''}`}
         style={{
           width: '60vw',  // Set max width for the post
           minHeight: '350px',  // Set minimum height to maintain consistency
+          flexDirection: 'column',
           boxSizing: 'border-box',
           borderColor: postColor, // Apply the color dynamically
           borderWidth: '3px', // Increase the border width here
+          zIndex: isExpanded ? 40 : 1,
+          position: isExpanded ? 'fixed' : 'relative', // Use absolute positioning for expansion
+          top: isExpanded ? '50%' : 'auto', // Center vertically
+          left: isExpanded ? '50%' : 'auto', // Center horizontally
+          transform: isExpanded ? 'translate(-50%, -50%) scale(1.1)' : 'none', // Scale up when expanded
+          transformOrigin: 'center',
+          transition: 'transform 0.2s ease, z-index 0s', // Smooth transition for expansion
         }}
+        onClick={() => handlePostClick(post._id)}
       >
       <div className="post-header flex items-center p-3">
         <Link href={`/search/profile?userId=${user._id}`}>
