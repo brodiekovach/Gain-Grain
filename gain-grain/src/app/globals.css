@@ -29,6 +29,10 @@ body {
   font-family: 'poppins', sans-serif;
 }
 
+h1 {
+  font-weight: bold;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

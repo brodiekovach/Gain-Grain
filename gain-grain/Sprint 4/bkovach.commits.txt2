@@ -1,0 +1,1084 @@
+Git blame was showing pretty much every file in the project was changed during this sprint so I will just show the commits for the files that I changed manually.
+
+*******************************************
+********gain-grain/src/app/calendar/custom_calendar.css:
+*******************************************
+  }
+
+  .grocery-list-button {
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .grocery-modal-content {
+    padding: 24px;
+    max-width: 600px;
+    margin: 0 auto;
+    color: #333;
+  }
+
+  .grocery-modal-content h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+
+  .week-selector {
+    margin-bottom: 24px;
+  }
+
+  .week-selector select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    color: black;  /* Make text black */
+    background-color: white;
+    margin-bottom: 16px;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .week-selector option {
+    color: black;  /* Make dropdown options black */
+    background-color: white;
+    padding: 8px;
+  }
+
+  .grocery-list-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #f9f9f9;
+  }
+
+  .grocery-list h3 {
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #eee;
+    color: #444;
+  }
+
+  .ingredients-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .ingredient-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s ease;
+  }
+
+  .ingredient-item:hover {
+    background-color: #f0f0f0;
+  }
+
+  .ingredient-name {
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .ingredient-amount {
+    color: #666;
+    text-align: right;
+  }
+
+  .additional-amount {
+    margin-left: 8px;
+    color: #888;
+  }
+
+  .no-ingredients {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+    font-style: italic;
+  }
+
+  /* Scrollbar styling */
+  .grocery-list-container::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .grocery-list-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  .grocery-list-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+
+  .grocery-list-container::-webkit-scrollbar-thumb:hover {
+    background: #666;
+  }
+
+  .grocery-button {
+    background-color: var(--vol-orange);
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    display: inline-block; /* Ensure it doesn't take full width */
+  }
+
+  .grocery-button:hover {
+    color: black;
+    background-color: #f1965d;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .grocery-text {
+    position: relative;
+    left: 0;
+    display: inline-block;
+    padding-right: 20px;
+
+*******************************************
+********gain-grain/src/app/calendar/page.js
+*******************************************
+    
+    import { FaAngleLeft, FaAngleRight, FaPlus, FaList } from 'react-icons/fa';
+
+    // Helper function to get all Sundays of a month
+const getSundaysOfMonth = (date) => {
+    const sundays = [];
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    
+    // Get first day of the month
+    const firstDay = new Date(year, month, 1);
+    
+    // Get first Sunday
+    let currentDay = new Date(firstDay);
+    currentDay.setDate(1);
+    while (currentDay.getDay() !== 0) {
+        currentDay.setDate(currentDay.getDate() + 1);
+    }
+    
+    // Get all Sundays
+    while (currentDay.getMonth() === month) {
+        sundays.push(new Date(currentDay));
+        currentDay.setDate(currentDay.getDate() + 7);
+    }
+    
+    return sundays;
+};
+
+    const [selectedSunday, setSelectedSunday] = useState(null);
+    const [groceryList, setGroceryList] = useState({});
+    const [showGroceryModal, setShowGroceryModal] = useState(false);
+
+    const sundays = getSundaysOfMonth(currentMonth);
+
+        // Initialize calendar and load data for current date
+        const today = new Date();
+
+    
+        setSelectedDate(today); // Ensure today's date is set
+        loadExercisesForDate(today);
+        loadMealsForDate(today);
+    }, [currentMonth]); // Only depend on currentMonth changes
+
+    useEffect(() => {
+        if (selectedDate) {
+            loadExercisesForDate(selectedDate);
+            loadMealsForDate(selectedDate);
+        }
+    }, [selectedDate]);
+
+    useEffect(() => {
+        if (selectedDate) {
+            saveExercisesToLocalStorage(selectedExercises);
+        }
+    }, [selectedExercises, selectedDate]);
+
+    useEffect(() => {
+        if (selectedDate) {
+            saveMealsToLocalStorage(selectedMeals);
+        }
+    }, [selectedMeals, selectedDate]);  
+
+    const loadExercisesForDate = (date) => {
+        const dateKey = date.toISOString().split('T')[0];
+        const savedExercises = localStorage.getItem(`exercises_${dateKey}`);
+        if (savedExercises) {
+            setSelectedExercises(JSON.parse(savedExercises));
+        } else {
+            setSelectedExercises([]); // Reset if no data found
+        }
+
+    const loadMealsForDate = (date) => {
+        const dateKey = date.toISOString().split('T')[0];
+        const savedMeals = localStorage.getItem(`meals_${dateKey}`);
+        if (savedMeals) {
+            setSelectedMeals(JSON.parse(savedMeals));
+        } else {
+            setSelectedMeals([]); // Reset if no data found
+        }
+
+        const dateKey = selectedDate.toISOString().split('T')[0];
+        localStorage.setItem(`exercises_${dateKey}`, JSON.stringify(exercises));
+
+        const dateKey = selectedDate.toISOString().split('T')[0];
+        localStorage.setItem(`meals_${dateKey}`, JSON.stringify(meals));
+};
+    
+        if (mealName && mealCalories) {
+            // Convert mealIngredients string to array format if it's not already an array
+            let ingredients = mealIngredients;
+            if (typeof mealIngredients === 'string' && mealIngredients) {
+                ingredients = [{
+                    name: mealIngredients,
+                    amount: {
+                        quantity: 1,
+                        unit: 'unit'
+                    }
+                }];
+            }
+
+            const newMeal = {
+                name: mealName,
+                calories: mealCalories,
+                ingredients: ingredients,
+                link: mealUrl,
+            };
+
+const updatedMeals = [...selectedMeals, newMeal];
+setSelectedMeals(updatedMeals);
+saveMealsToLocalStorage(updatedMeals);
+            
+            // Reset form
+setMealName('');
+setMealCalories('');
+setMealIngredients([]);
+            setMealUrl('');
+
+    const handleSelectMeal = (savedMeal) => {
+        const newMeal = {
+            name: savedMeal.meal.name,
+            calories: savedMeal.meal.calories,
+            ingredients: savedMeal.meal.ingredients, // Make sure to include ingredients
+            link: savedMeal.meal.link
+
+        const updatedMeals = [...selectedMeals, newMeal];
+        setSelectedMeals(updatedMeals);
+        saveMealsToLocalStorage(updatedMeals);
+        setShowModal(false);
+    };
+
+    // Helper function to get all meals for a week
+    const getMealsForWeek = (sundayDate) => {
+        if (!sundayDate) return [];
+        
+        const meals = [];
+        for (let i = 0; i < 7; i++) {
+            const currentDate = new Date(sundayDate);
+            currentDate.setDate(sundayDate.getDate() + i);
+            const dateKey = currentDate.toISOString().split('T')[0];
+            const savedMeals = localStorage.getItem(`meals_${dateKey}`);
+            if (savedMeals) {
+                try {
+                    const parsedMeals = JSON.parse(savedMeals);
+                    if (Array.isArray(parsedMeals)) {
+                        meals.push(...parsedMeals);
+                    }
+                } catch (error) {
+                    console.error('Error parsing meals:', error);
+                }
+            }
+        }
+        return meals;
+    };
+
+    // Modified handleSundayChange function
+    const handleSundayChange = (event) => {
+        if (!event.target.value) {
+            setSelectedSunday(null);
+            setGroceryList({});
+            return;
+        }
+
+        const selectedSundayDate = new Date(event.target.value);
+        setSelectedSunday(selectedSundayDate);
+
+        const weeklyMeals = getMealsForWeek(selectedSundayDate);
+        
+        if (!weeklyMeals.length) {
+            setGroceryList({});
+            return;
+        }
+
+        // Standardized ingredient combination logic
+        const combinedGroceryList = {};
+        
+        weeklyMeals.forEach(meal => {
+            if (meal?.ingredients && Array.isArray(meal.ingredients)) {
+                meal.ingredients.forEach(ingredient => {
+                    if (!ingredient?.name) return;
+                    
+                    const name = ingredient.name.trim();
+                    const amountStr = ingredient.amount || '';
+                    
+                    // Handle "as needed" case
+                    if (amountStr === 'as needed') {
+                        if (!combinedGroceryList[name]) {
+                            combinedGroceryList[name] = {
+                                amounts: ['as needed']
+                            };
+                        }
+                        return;
+                    }
+
+                    // Parse amount string (e.g., "2 pounds" -> { value: 2, unit: "pounds" })
+                    const amountMatch = amountStr.match(/^(\d+(?:\.\d+)?)\s*(.*)$/);
+                    
+                    if (!combinedGroceryList[name]) {
+                        combinedGroceryList[name] = {
+                            amounts: []
+                        };
+                    }
+
+                    if (amountMatch) {
+                        const value = parseFloat(amountMatch[1]);
+                        const unit = amountMatch[2].trim();
+                        
+                        // Find existing amount with same unit
+                        const existingAmount = combinedGroceryList[name].amounts.find(
+                            a => a.unit === unit
+                        );
+
+                        if (existingAmount) {
+                            existingAmount.value += value;
+                        } else {
+                            combinedGroceryList[name].amounts.push({
+                                value,
+                                unit
+                            });
+                        }
+                    } else {
+                        // If amount format doesn't match, store as is
+                        combinedGroceryList[name].amounts.push({
+                            raw: amountStr
+                        });
+                    }
+                });
+            }
+        });
+
+        setGroceryList(combinedGroceryList);
+    };
+
+    // Effect to update grocery list when meals change
+    useEffect(() => {
+        if (selectedSunday) {
+            handleSundayChange({ 
+                target: { 
+                    value: selectedSunday.toISOString() 
+                } 
+            });
+        }
+    }, [selectedMeals]); // Update when meals change
+
+                        <button className="grocery-button" onClick={() => setShowGroceryModal(true)}>
+                            Generate Grocery List
+                        </button>
+
+                                    <textarea // Changed to textarea for better input
+                                        value={Array.isArray(mealIngredients) ? mealIngredients.map(i => i.name).join(', ') : mealIngredients}
+                                        onChange={(e) => {
+                                            const ingredientsArray = e.target.value.split(',').map(item => ({
+                                                name: item.trim(),
+                                                amount: {
+                                                    quantity: 1,
+                                                    unit: 'unit'
+                                                }
+                                            })).filter(item => item.name);
+                                            setMealIngredients(ingredientsArray);
+                                        }}
+                                        placeholder="Ingredients (comma-separated)"
+/>
+<button onClick={handleAddMeal}>Add Meal</button>
+</div>
+@@ -766,8 +970,54 @@ const CustomCalendar = () => {
+</div>
+</div>
+</Modal>
+
+                <Modal show={showGroceryModal} onClose={() => setShowGroceryModal(false)}>
+                    <div className="modal-content">
+                        <div className="week-selector">
+                            <select 
+                                value={selectedSunday ? selectedSunday.toISOString() : ''} 
+                                onChange={handleSundayChange}
+                            >
+                                <option value="">Select Week</option>
+                                {sundays.map((sunday) => (
+                                    <option key={sunday.toISOString()} value={sunday.toISOString()}>
+                                        Week of {sunday.toLocaleDateString()}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        
+                        <div className="grocery-list-container">
+                            {Object.keys(groceryList).length > 0 ? (
+                                <div className="grocery-list">
+                                    <h3>Ingredients for Week of {selectedSunday?.toLocaleDateString()}</h3>
+                                    <ul className="ingredients-list">
+                                        {Object.entries(groceryList).map(([ingredient, details]) => (
+                                            <li key={ingredient} className="ingredient-item">
+                                                <span className="ingredient-name">{ingredient}</span>
+                                                <span className="ingredient-amount">
+                                                    {details.amounts.map((amount, index) => (
+                                                        <span key={index}>
+                                                            {index > 0 && ' + '}
+                                                            {amount === 'as needed' ? 'as needed' :
+                                                             amount.raw ? amount.raw :
+                                                             `${amount.value} ${amount.unit}`}
+                                                        </span>
+                                                    ))}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ) : (
+                                <p className="no-ingredients">No ingredients found for this week.</p>
+                            )}
+                        </div>
+                    </div>
+                </Modal>
+                </div>
+</div>
+        </main>
+        </main>  
+
+    const [workoutStatus, setWorkoutStatus] = useState(() => {
+        // Load saved workout status from localStorage
+        const savedStatus = localStorage.getItem('workoutStatus');
+        return savedStatus ? JSON.parse(savedStatus) : {};
+    });
+    const [workoutTimer, setWorkoutTimer] = useState(0); // Timer for the workout
+    const [isWorkoutActive, setIsWorkoutActive] = useState(false); // Track if workout is active
+    const [workoutModalVisible, setWorkoutModalVisible] = useState(false); // Control workout modal visibility
+    const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0); // Track current exercise in modal
+
+    const handleStartWorkout = (day) => {
+        if (selectedExercises.length > 0 && selectedExercises.every(exercise => exercise.Weight)) {
+            setActiveDay(day);
+            setWorkoutTimer(0); // Reset timer
+            setIsWorkoutActive(true);
+            setWorkoutModalVisible(true);
+            setCurrentExerciseIndex(0); // Start from the first exercise
+        } else {
+            alert("Please add exercises and weights to start the workout.");
+        }
+    };
+
+    const handleNextExercise = () => {
+        if (currentExerciseIndex < selectedExercises.length - 1) {
+            setCurrentExerciseIndex(currentExerciseIndex + 1);
+        }
+    };
+
+    const handlePreviousExercise = () => {
+        if (currentExerciseIndex > 0) {
+            setCurrentExerciseIndex(currentExerciseIndex - 1);
+        }
+    };
+
+    const handleEndWorkout = () => {
+        setIsWorkoutActive(false);
+        setWorkoutModalVisible(false);
+        const updatedStatus = {
+            ...workoutStatus,
+            [activeDay]: { completed: true, time: workoutTimer },
+        };
+        setWorkoutStatus(updatedStatus);
+        // Save updated workout status to localStorage
+        localStorage.setItem('workoutStatus', JSON.stringify(updatedStatus));
+    };
+
+    const handleResetWorkout = (day) => {
+        const updatedStatus = { ...workoutStatus };
+        delete updatedStatus[day]; // Remove the workout status for the specific day
+        setWorkoutStatus(updatedStatus);
+        localStorage.setItem('workoutStatus', JSON.stringify(updatedStatus));
+    };
+
+    useEffect(() => {
+        let timer;
+        if (isWorkoutActive) {
+            timer = setInterval(() => {
+                setWorkoutTimer((prev) => prev + 1);
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [isWorkoutActive]);
+
+const renderDays = () => {
+return days.map((dayObj, index) => (
+<div
+@@ -640,6 +702,12 @@ const CustomCalendar = () => {
+));
+};
+
+    // Debugging: Log the selectedExercises and currentExerciseIndex
+    useEffect(() => {
+        console.log('Selected Exercises:', selectedExercises);
+        console.log('Current Exercise Index:', currentExerciseIndex);
+    }, [selectedExercises, currentExerciseIndex]);
+
+return (
+<main className="calendar-main">
+<Navbar/>
+@@ -674,6 +742,34 @@ const CustomCalendar = () => {
+<div className="event-date">{selectedDate.toDateString()}</div>
+</div>
+
+                    {activeDay && (
+                        <div className="workout-status">
+                            <span>
+                                {workoutStatus[activeDay]?.completed ? 
+                                    `Workout Completed: ${workoutStatus[activeDay].time} seconds` : 
+                                    "Workout Not Completed"}
+                            </span>
+                            {!workoutStatus[activeDay]?.completed && (
+                                <button 
+                                    className="start-workout-btn" 
+                                    onClick={() => handleStartWorkout(activeDay)}
+                                    disabled={selectedExercises.length === 0 || !selectedExercises.every(exercise => exercise.Weight)}
+                                    title={selectedExercises.length === 0 ? "Add exercises to start workout" : "Add weights to all exercises to start workout"}
+                                >
+                                    Start Workout
+                                </button>
+                            )}
+                            {workoutStatus[activeDay]?.completed && (
+                                <button 
+                                    className="reset-workout-btn" 
+                                    onClick={() => handleResetWorkout(activeDay)}
+                                >
+                                    Reset Workout
+                                </button>
+                            )}
+                        </div>
+                    )}
+
+
+                <Modal show={workoutModalVisible} onClose={handleEndWorkout}>
+                    <div className="workout-modal">
+                        <h3>Workout for {selectedDate.toDateString()}</h3>
+                        <div className="timer-display">Timer: {new Date(workoutTimer * 1000).toISOString().substr(11, 8)}</div>
+                        <div className="exercise-display">
+                            {selectedExercises[currentExerciseIndex] ? (
+                                <>
+                                    <span>{selectedExercises[currentExerciseIndex].name}</span>
+                                    <div>{selectedExercises[currentExerciseIndex].sets} sets x {selectedExercises[currentExerciseIndex].reps} reps</div>
+                                    <span>{selectedExercises[currentExerciseIndex].Weight} lbs</span>
+                                </>
+                            ) : (
+                                <span>No exercise selected</span>
+                            )}
+                        </div>
+                        <div className="exercise-progress">
+                            {selectedExercises.map((_, index) => (
+                                <span
+                                    key={index}
+                                    className={`progress-circle ${index === currentExerciseIndex ? 'active' : ''}`}
+                                ></span>
+                            ))}
+                        </div>
+                        <div className="exercise-navigation">
+                            <button onClick={handlePreviousExercise} disabled={currentExerciseIndex === 0}>Previous</button>
+                            <button onClick={handleNextExercise} disabled={currentExerciseIndex === selectedExercises.length - 1}>Next</button>
+                        </div>
+                        <button onClick={handleEndWorkout}>End Workout</button>
+                    </div>
+                </Modal>
+
+
+
+
+*******************************************
+*********gain-grain/src/app/calendar/style.css
+*******************************************
+
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+
+    gap: 15px; /* Space between buttons */
+  }
+
+  .add-button {
+    font-size: 1.5rem;
+    padding: 10px;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--vol-orange);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+.add-button:hover {
+    background-color: var(--powder-blue); /* Darken color on hover */
+    color: black;
+    background-color: #f1965d; /* Darken color on hover */
+
+
+/* Add styles for workout status and start button */
+.workout-status {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 15px 20px; /* Increased padding for better spacing */
+    background: linear-gradient(135deg, #f0f0f0, #e0e0e0); /* Subtle gradient for depth */
+    border-radius: 12px; /* Slightly more rounded corners */
+    color: #333;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a floating effect */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for hover effects */
+}
+
+.workout-status:hover {
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+.workout-status span {
+    flex-grow: 1;
+    text-align: left;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.start-workout-btn {
+    background-color: var(--primary-clr);
+    color: #333;
+    border: 3px inset #ccc;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); /* Inner shadow for depth */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.start-workout-btn:disabled {
+    background-color: var(--smokey-grey);
+    cursor: not-allowed;
+}
+
+.start-workout-btn:hover:not(:disabled) {
+    background-color: var(--vol-orange);
+    transform: translateY(-2px);
+}
+
+/* Modal styling for exercise display */
+.workout-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 500px;
+    margin: 0 auto;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.workout-modal h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: black;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.timer-display {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: black;
+}
+
+.exercise-display {
+    margin: 20px 0;
+    text-align: center;
+    font-size: 1.2rem;
+    color: black;
+}
+
+.exercise-navigation {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.exercise-navigation button,
+.workout-modal button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--vol-orange);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.exercise-navigation button:disabled,
+.workout-modal button:disabled {
+    background-color: var(--smokey-grey);
+    cursor: not-allowed;
+}
+
+.exercise-navigation button:hover:not(:disabled),
+.workout-modal button:hover:not(:disabled) {
+    background-color: var(--powder-blue);
+    transform: translateY(-2px);
+}
+
+.exercise-navigation button:active:not(:disabled),
+.workout-modal button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.exercise-progress {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.progress-circle {
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    background-color: var(--smokey-grey);
+    border-radius: 50%;
+    border: 1px solid black; /* Add black outline */
+    transition: background-color 0.3s ease;
+}
+
+.progress-circle.active {
+    background-color: var(--vol-orange);
+    border: 1px solid var(--vol-orange); /* Match border to active color */
+}
+
+.reset-workout-btn {
+    background-color: #ccc;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-left: 10px; /* Add some space between buttons */
+}
+
+.reset-workout-btn:hover {
+    background-color: var(--vol-orange);
+    transform: translateY(-2px);
+}
+
+
+*******************************************
+********gain-grain/src/app/api/posts/fetch-posts-from-profile/route.js
+*******************************************
+
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  1) import { NextResponse } from 'next/server';
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  2) import clientPromise from '@/utils/mongodb';
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  3) import { ObjectId } from 'mongodb';
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  4) import { verifyToken } from '@/utils/auth';
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  5) import { cookies } from 'next/headers';
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  6) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  7) export async function GET() {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  8)     try {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  9)         const cookieStore = cookies();
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 10)         const sessionToken = cookieStore.get('session');
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 11) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 12)         if (!sessionToken) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 13)             return NextResponse.json({ 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 14)                 success: false, 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 15)                 message: 'No session found' 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 16)             }, { status: 401 });
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 17)         }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 18) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 19)         const tokenData = await verifyToken(sessionToken.value);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 20)         console.log('Token data:', tokenData);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 21)         
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 22)         if (!tokenData || !tokenData.userId) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 23)             return NextResponse.json({ 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 24)                 success: false, 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 25)                 message: 'Invalid session' 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 26)             }, { status: 401 });
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 27)         }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 28) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 29)         const client = await clientPromise;
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 30)         const db = client.db();
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 31) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 32)         // Get the user document
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 33)         const user = await db.collection('users').findOne(
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 34)             { _id: new ObjectId(tokenData.userId) }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 35)         );
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 36)         console.log('User document:', user);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 37) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 38)         // Initialize savedPosts array if it doesn't exist
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 39)         if (!user.savedPosts) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 40)             await db.collection('users').updateOne(
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 41)                 { _id: new ObjectId(tokenData.userId) },
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 42)                 { $set: { savedPosts: [] } }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 43)             );
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 44)             return NextResponse.json({ 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 45)                 success: true, 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 46)                 savedPosts: [] 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 47)             });
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 48)         }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 49) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 50)         // Fetch the actual posts
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 51)         const savedPosts = await db.collection('posts').find({
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 52)             _id: { $in: user.savedPosts.map(id => 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 53)                 typeof id === 'string' ? new ObjectId(id) : id
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 54)             )}
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 55)         }).toArray();
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 56)         console.log('Saved posts:', savedPosts);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 57) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 58)         return NextResponse.json({ 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 59)             success: true,
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 60)             savedPosts 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 61)         });
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 62) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 63)     } catch (error) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 64)         console.error('Error fetching saved posts:', error);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 65)         return NextResponse.json({ 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 66)             success: false, 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 67)             message: error.message 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 68)         }, { status: 500 });
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 69)     }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 70) }
+
+
+*******************************************
+********gain-grain/src/app/api/posts/save-posts-to-profile/route.js
+*******************************************
+
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  1) import { NextResponse } from 'next/server';
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  2) import clientPromise from '@/utils/mongodb';
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  3) import { ObjectId } from 'mongodb';
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  4) import { verifyToken } from '@/utils/auth';
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  5) import { cookies } from 'next/headers';
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  6) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  7) export async function POST(request) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  8)     try {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  9)         const { postId } = await request.json();
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 10)         if (!postId) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 11)             return NextResponse.json({ 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 12)                 success: false, 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 13)                 message: 'No postId provided' 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 14)             }, { status: 400 });
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 15)         }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 16) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 17)         // Get and verify session token
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 18)         const cookieStore = cookies();
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 19)         const sessionToken = cookieStore.get('session');
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 20) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 21)         if (!sessionToken) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 22)             return NextResponse.json({ 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 23)                 success: false, 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 24)                 message: 'No session found' 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 25)             }, { status: 401 });
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 26)         }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 27) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 28)         const tokenData = await verifyToken(sessionToken.value);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 29)         
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 30)         if (!tokenData || !tokenData.userId) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 31)             return NextResponse.json({ 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 32)                 success: false, 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 33)                 message: 'Invalid session' 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 34)             }, { status: 401 });
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 35)         }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 36) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 37)         // Save the post using the userId from the verified token
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 38)         const client = await clientPromise;
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 39)         const db = client.db();
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 40) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 41)         const result = await db.collection('users').updateOne(
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 42)             { _id: new ObjectId(tokenData.userId) },
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 43)             { $addToSet: { savedPosts: postId } }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 44)         );
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 45) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 46)         if (result.matchedCount === 0) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 47)             return NextResponse.json({ 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 48)                 success: false, 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 49)                 message: 'User not found' 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 50)             }, { status: 404 });
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 51)         }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 52) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 53)         return NextResponse.json({ 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 54)             success: true,
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 55)             message: 'Post saved successfully' 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 56)         });
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 57) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 58)     } catch (error) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 59)         console.error('Error in save-posts-to-profile:', error);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 60)         return NextResponse.json({ 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 61)             success: false, 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 62)             message: error.message 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 63)         }, { status: 500 });
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 64)     }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 65) }
+
+*******************************************
+********gain-grain/src/app/profile/page.js
+*******************************************
+
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  10) import Post from '@/components/Post';
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  19)   const [savedPosts, setSavedPosts] = useState([]);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  20)   const [loadingSavedPosts, setLoadingSavedPosts] = useState(true);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  21)   const [visibleComments, setVisibleComments] = useState(null);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  22)   const [expandedPostId, setExpandedPostId] = useState(null);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  89)   useEffect(() => {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  90)     const fetchSavedPosts = async () => {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  91)       if (!user._id) return;
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  92)       
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  93)       try {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  94)         setLoadingSavedPosts(true);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  95)         const response = await fetch('/api/posts/fetch-posts-from-profile', {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  96)           method: 'GET',
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  97)           headers: {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  98)             'Content-Type': 'application/json',
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500  99)           },
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 100)         });
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 101) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 102)         if (!response.ok) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 103)           throw new Error('Failed to fetch saved posts');
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 104)         }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 105) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 106)         const data = await response.json();
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 107)         if (data.success) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 108)           setSavedPosts(data.savedPosts);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 109)         }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 110)       } catch (error) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 111)         console.error('Error fetching saved posts:', error);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 112)       } finally {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 113)         setLoadingSavedPosts(false);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 114)       }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 115)     };
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 116) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 117)     if (user) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 118)       fetchSavedPosts();
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 119)     }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 120)   }, [user]);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 121) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 129)   const handlePostClick = (postId) => {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 130)     if (expandedPostId === postId) {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 131)       setExpandedPostId(null);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 132)     } else {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 133)       setExpandedPostId(postId);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 134)     }
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 135)   };
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 136) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 137)   const toggleComments = (postId) => {
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 138)     setVisibleComments(currentId => currentId === postId ? null : postId);
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 139)   };
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 140) 
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 202)             <button
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 203)               className={`py-2 px-4 ${activeTab === 'savedPosts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 204)               onClick={() => setActiveTab('savedPosts')}
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 205)             >
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 206)               Saved Posts
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 207)             </button>
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 270)       ) : activeTab === 'savedPosts' && loadingSavedPosts ? (
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 271)         <div className="text-center mt-4">
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 272)           <p>Loading saved posts...</p>
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 273)         </div>
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 274)       ) : activeTab === 'savedPosts' && (!savedPosts || savedPosts.length === 0) ? (
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 275)         <div className="flex flex-col items-center mt-4 text-center text-gray-500">
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 276)           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-bookmark mb-2" viewBox="0 0 16 16">
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 277)             <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 278)           </svg>
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 279)           <p>No saved posts yet</p>
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 280)         </div>
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 281)       ) : activeTab === 'savedPosts' ? (
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 282)         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 283)           {savedPosts.map((post) => (
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 284)             <Post
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 285)               key={post._id}
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 286)               post={post}
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 287)               toggleComments={toggleComments}
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 288)               visibleComments={visibleComments}
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 289)               isExpanded={expandedPostId === post._id}
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 290)               handlePostClick={handlePostClick}
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 291)               onSavePost={() => {}}
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 292)               isSaved={true}
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 293)             />
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 294)           ))}
+a56e7e71 (brodiekovach 2024-11-12 14:51:15 -0500 295)         </div>
+
+*******************************************
+********gain-grain/src/components/Feed.js
+*******************************************
+
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500  6)   const [savedPosts, setSavedPosts] = useState([]);
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 16)   const handleSavePost = async (postId) => {
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 17)     try {
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 18)       console.log('Attempting to save post:', postId);
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 19) 
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 20)       const response = await fetch('/api/posts/save-posts-to-profile', {
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 21)         method: 'POST',
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 22)         headers: {
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 23)           'Content-Type': 'application/json',
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 24)         },
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 25)         body: JSON.stringify({ postId }),
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 26)       });
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 27) 
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 28)       console.log('Response status:', response.status);
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 29)       console.log('Response status text:', response.statusText);
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 30) 
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 31)       if (!response.ok) {
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 32)         const errorText = await response.text();
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 33)         console.error('Error response:', errorText);
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 34)         throw new Error(`HTTP error! status: ${response.status}`);
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 35)       }
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 36) 
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 37)       const data = await response.json();
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 38) 
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 39)       if (data.success) {
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 40)         setSavedPosts(prev => [...prev, postId]);
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 41)         alert('Post saved successfully!');
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 42)       } else {
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 43)         alert(data.message || 'Failed to save post');
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 44)       }
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 45)     } catch (error) {
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 46)       console.error('Full error:', error);
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 47)       alert(`Error saving post: ${error.message}`);
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 48)     }
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 49)   };
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 50) 
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 62)             onSavePost={handleSavePost}
+a56e7e71 (brodiekovach     2024-11-12 14:51:15 -0500 63)             isSaved={savedPosts.includes(post._id)}
+
+

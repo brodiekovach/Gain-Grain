@@ -46,3 +46,21 @@
 .post-header {
     cursor: pointer; /* Add pointer cursor to make it interactive */
 }
+
+.save-button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: var(--vol-orange);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.save-button:hover {
+    background-color: var(--powder-blue);
+}
+
+.save-button.saved {
+    background-color: var(--smokey-grey);
+}
