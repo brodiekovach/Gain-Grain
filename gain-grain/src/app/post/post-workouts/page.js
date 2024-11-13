@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 export default function PostWorkouts() {
     const [exercises, setExercises] = useState([
-        { id: 1, name: '', repetitions: '', set: '' },
+        { id: 1, name: '', reps: '', sets: '' },
     ]);
     const [title, setTitle] = useState(''); 
     const [userId, setUserId] = useState('');
@@ -46,25 +46,12 @@ export default function PostWorkouts() {
     const addExercise = () => {
         setExercises((prev) => [
             ...prev,
-            { id: prev.length + 1, name: '', repetitions: '', set: '' },
+            { id: prev.length + 1, name: '', reps: '', sets: '' },
         ]);
     };
 
     const handleSubmit = async () => {
         try {
-            const response = await fetch('/api/workouts/postWorkouts', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId, title, exercises }),
-            });
-
-            const result = await response.json();
-
-            if(!result.success) {
-                setError('Failed to submit workout');
-                return;
-            }
-
             const savedPost = await fetch('/api/posts/save-post', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -137,8 +124,8 @@ export default function PostWorkouts() {
                                     <td className="border px-4 py-2">
                                         <input
                                             type="number"
-                                            value={exercise.repetitions}
-                                            onChange={(e) => handleChange(exercise.id, 'repetitions', e.target.value)}
+                                            value={exercise.reps}
+                                            onChange={(e) => handleChange(exercise.id, 'reps', e.target.value)}
                                             className="border w-full px-2 py-1 rounded"
                                             placeholder="Enter sets"
                                         />
@@ -146,8 +133,8 @@ export default function PostWorkouts() {
                                     <td className="border px-4 py-2">
                                         <input
                                             type="number"
-                                            value={exercise.set}
-                                            onChange={(e) => handleChange(exercise.id, 'set', e.target.value)}
+                                            value={exercise.sets}
+                                            onChange={(e) => handleChange(exercise.id, 'sets', e.target.value)}
                                             className="border w-full px-2 py-1 rounded"
                                             placeholder="Enter reps"
                                         />

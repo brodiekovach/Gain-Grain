@@ -2,6 +2,7 @@ import { FaDumbbell, FaCameraRetro, FaPencilAlt } from 'react-icons/fa';
 import { MdOutlineFastfood } from "react-icons/md";
 import { useState, useEffect } from 'react';
 import Link from "next/link";
+import Comments from './Comments'
 
 export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, onSavePost, isSaved }) {
   const [userId, setUserId] = useState('');
@@ -102,6 +103,8 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
             {post.exercises?.map((exercise) => (
               <div key={exercise._id} className="exercise-info mt-1">
                 <p className="indent-[20px] text-xl">{exercise.name}</p>
+                <p className="indent-[45px] text-xl">Sets: {exercise.sets}</p>
+                <p className="indent-[45px] text-xl">Reps: {exercise.reps}</p>
               </div>
             ))}
           </div>
@@ -194,13 +197,13 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
             {post.postType === "Blog" && <FaPencilAlt />}
           </div>
         </div>
-        <div className="space-x-2">
-          <h5 className="text-right pr-5 text-m">{date}</h5>
-          {renderPostContent(post)}
-          <div className="post-actions flex justify-around mt-auto">
-            <button onClick={(e) => (liked ? unlikePost(e) : likePost(e))}>{liked ? "Unlike" : "Like"}</button>
-            <button onClick={() => toggleComments(post._id)}>Comment</button>
-            <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }}>{isSaved ? "Saved" : "Save"}</button>
+        <div className="space-x-2 flex flex-col h-full">
+          <h5 className="text-right pr-5 text-m mb-[-10px]">{date}</h5>
+          <div className="flex-grow max-w-[100%] break-words whitespace-normal">{renderPostContent(post)}</div>
+          <div className="post-actions flex justify-around mt-auto pb-5">
+            <button onClick={(e) => (liked ? unlikePost(e) : likePost(e))} className="text-xl font-semibold">{liked ? "Unlike" : "Like"}</button>
+            <button onClick={() => toggleComments(post._id)} className="text-xl font-semibold">Comment</button>
+            <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }} className="text-xl font-semibold">{isSaved ? "Saved" : "Save"}</button>
           </div>
           {visibleComments === post._id && <Comments comments={post.comments} />}
         </div>
