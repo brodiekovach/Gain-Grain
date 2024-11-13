@@ -21,6 +21,7 @@ const postSchema = new mongoose.Schema(
 const Post = mongoose.models.Post || mongoose.model("Post", postSchema);
 
 const blogSchema = new mongoose.Schema({
+    title: { type: String, required: true },
     content: { type: String, required: true },
     date: { type: Date, required: true },
 });

@@ -1,7 +1,7 @@
 import clientPromise from './mongodb';
 import { ObjectId } from 'mongodb';
 
-export async function createBlogPost(userId, content) {
+export async function createBlogPost(userId, title, content) {
     const client = await clientPromise;
     const db = client.db();
     const blogCollection = db.collection('blogs');
@@ -10,6 +10,7 @@ export async function createBlogPost(userId, content) {
         // Create and insert the new blog post
         const newBlog = {
             userId: userId,
+            title,
             content,
             date: new Date(),
         };

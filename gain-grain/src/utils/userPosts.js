@@ -16,6 +16,7 @@ export const savePost = async (userId, postType, postData) => {
                 newPost = new Blog({
                     userId,
                     postType: "Blog",
+                    title: postData.title,
                     content: postData.content,
                     date: postData.date
                 });

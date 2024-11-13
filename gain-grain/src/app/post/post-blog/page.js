@@ -13,6 +13,7 @@ const CreateBlogPost = () => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
+    const [title, setTitle] = useState('');
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -52,7 +53,7 @@ const CreateBlogPost = () => {
             const response = await fetch('/api/blogs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId, content: postContent }), 
+                body: JSON.stringify({ userId, title, content: postContent }), 
             });
 
             const blogResult = await response.json();
@@ -69,6 +70,7 @@ const CreateBlogPost = () => {
                     userId,
                     postType: 'Blog',
                     postData: {
+                        title, 
                         content: postContent,
                         date: new Date(),
                     }
@@ -101,6 +103,13 @@ const CreateBlogPost = () => {
             <div className="max-w-2xl mx-auto p-4">
                 <h1 className="text-2xl font-bold mb-4">Create a Blog Post</h1>
                 <form onSubmit={handleSubmit}>
+                    <label className="text-lg">:</label>
+                    <input
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className="border p-2 rounded-md"
+                    />
                     <ReactQuill
                         value={postContent}
                         onChange={handleChange}

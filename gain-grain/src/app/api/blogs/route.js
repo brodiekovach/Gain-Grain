@@ -5,9 +5,9 @@ import { createBlogPost } from '../../../utils/userBlogs';
 export async function POST(req) {
     try {
         const body = await req.json(); // Parse request body to JSON
-        const { userId, content } = body; // Destructure userId and content from the body
+        const { userId, title, content } = body; // Destructure userId and content from the body
 
-        const result = await createBlogPost(userId, content); // Attempt to create the blog post
+        const result = await createBlogPost(userId, title, content); // Attempt to create the blog post
 
         if (!result.success) {
             // Return 401 if blog creation fails
