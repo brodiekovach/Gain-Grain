@@ -208,7 +208,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
               </div>
             ) : (
               <div className="post-content p-3 text-xl font-bold">
-                <h4 className="text-3xl font-semibold pb-3"></h4>
+                <h4 className="text-3xl font-semibold pb-3">{post.title}</h4>
                 <div dangerouslySetInnerHTML={{ __html: post.content }} />
               </div>
             )}
