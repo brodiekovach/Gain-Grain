@@ -1,7 +1,8 @@
 import clientPromise from './mongodb';
 import { NextResponse } from 'next/server';
-import { Post, Blog, MealPost, ProgressPic, Workout } from './postModels/Post'
+import { Blog, MealPost, ProgressPic, Workout } from './postModels/Post'
 import { ObjectId } from 'mongodb';
+import { getUserById } from './userModel';
 
 export const savePost = async (userId, postType, postData) => {
     const client = await clientPromise;
@@ -76,6 +77,39 @@ export const fetchPosts = async (userId) => {
         return { success: false, message: 'Error fetching posts' };
     }
 };
+
+export const fetchFollowedUserPosts = async (userId) => {
+    try {
+        const client = await clientPromise;
+        const db = client.db();
+
+        const response = await getUserById(userId);
+
+        if(!response.success) {
+            return { success: false, message: 'Error: ' + response.message }
+        }
+
+        const userFollowing = response.user.following;
+
+        if (!userFollowing || userFollowing.length === 0) {
+            return { success: false, message: 'User is not following anyone' };
+        }
+
+        const followingIds = userFollowing.map(id => new ObjectId(id));
+
+        const posts = await db.collection('posts').find({ userId: { $in: followingIds } }).toArray();
+
+        if (posts.length === 0) {
+            return { success: false, message: 'No posts found for followed users' };
+        }
+
+        return { success: true, posts };
+    }
+    catch (error) {
+        console.error('Error fetching posts:', error);
+        return { success: false, message: 'Error fetching posts' };
+    }
+}
 
 export const getPostById = async (id) => {
     console.log("User ID", userId);

@@ -99,10 +99,10 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
       case "Workout":
         return (
           <div className="post-content p-3">
-            <h4 className="text-3xl font-semibold">{post.title}</h4>
+            <h4 className="text-3xl font-bold pb-2">{post.title}</h4>
             {post.exercises?.map((exercise) => (
               <div key={exercise._id} className="exercise-info mt-1">
-                <p className="indent-[20px] text-xl">{exercise.name}</p>
+                <p className="indent-[20px] text-xl font-semibold">{exercise.name}</p>
                 <p className="indent-[45px] text-xl">Sets: {exercise.sets}</p>
                 <p className="indent-[45px] text-xl">Reps: {exercise.reps}</p>
               </div>

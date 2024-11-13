@@ -7,56 +7,9 @@ import './homepage.css';
 
 export default function Home() {
   const [user, setUser] = useState('');
-  const [posts, setPosts] = useState([]); 
   const [followedUserPosts, setFollowedUserPosts] = useState([]); 
   const [visibleComments, setVisibleComments] = useState(null);
 
-  useEffect(() => {
-    if (!user._id) return;
-
-    const fetchFollowedUserPosts = async () => {
-      try {
-        const response = await fetch(`/api/posts/get-followed-user-posts/${user._id}`);
-        const data = await response.json();
-        
-        if (response.ok) {
-          setFollowedUserPosts(Array.isArray(data) ? data : []); 
-        } else {
-          console.error("Error fetching followed user posts:", data.message);
-          setFollowedUserPosts([]); 
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        setFollowedUserPosts([]); 
-      }
-    };
-
-    fetchFollowedUserPosts();
-  }, [user]);
-
-  
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch("/api/posts/get-posts");
-        const data = await response.json();
-        
-        if (response.ok) {
-          setPosts(Array.isArray(data) ? data : []); 
-        } else {
-          console.error("Error fetching posts:", data.message);
-          setPosts([]); 
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        setPosts([]); 
-      }
-    };
-
-    fetchPosts();
-  }, []);
-
-  
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -74,7 +27,34 @@ export default function Home() {
     fetchUserData();
   }, []);
 
-  
+  useEffect(() => {
+    const fetchFollowedUserPosts = async () => {
+      try {
+        const response = await fetch('/api/posts/get-followed-user-posts', {
+          method: 'POST',
+          headers: {
+          'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId: user._id }),
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+          setFollowedUserPosts(result.posts); 
+        } else {
+          console.error("Error fetching followed user posts:", result.message);
+          setFollowedUserPosts([]); 
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setFollowedUserPosts([]); 
+      }
+    };
+
+    fetchFollowedUserPosts();
+  }, [user]);
+
   const toggleComments = (postId) => {
     setVisibleComments((currentId) => (currentId === postId ? null : postId));
   };
@@ -83,7 +63,7 @@ export default function Home() {
     <main className="homepage-main flex min-h-screen flex-col bg-gray-50">
       <Navbar />
       <Feed 
-        posts={[...(posts || []), ...(followedUserPosts || [])]} 
+        posts={[...(followedUserPosts || [])]} 
         toggleComments={toggleComments} 
         visibleComments={visibleComments} 
       />
