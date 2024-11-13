@@ -17,7 +17,6 @@ export async function GET() {
         }
 
         const tokenData = await verifyToken(sessionToken.value);
-        console.log('Token data:', tokenData);
         
         if (!tokenData || !tokenData.userId) {
             return NextResponse.json({ 
@@ -33,7 +32,6 @@ export async function GET() {
         const user = await db.collection('users').findOne(
             { _id: new ObjectId(tokenData.userId) }
         );
-        console.log('User document:', user);
 
         // Initialize savedPosts array if it doesn't exist
         if (!user.savedPosts) {
@@ -53,7 +51,6 @@ export async function GET() {
                 typeof id === 'string' ? new ObjectId(id) : id
             )}
         }).toArray();
-        console.log('Saved posts:', savedPosts);
 
         return NextResponse.json({ 
             success: true,

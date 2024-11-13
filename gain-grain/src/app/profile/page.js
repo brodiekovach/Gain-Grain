@@ -22,27 +22,6 @@ export default function profile() {
   const [expandedPostId, setExpandedPostId] = useState(null);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch("/api/posts/get-posts"); // Adjust route as needed
-        const data = await response.json();
-        
-        if (response.ok) {
-          setPosts(data); // Set posts if fetch is successful
-        } 
-        else {
-          console.error("Error fetching posts:", data.message);
-        }
-      } 
-      catch (error) {
-        console.error("Error:", error);
-      }
-    };
-
-    fetchPosts();
-  }, []);
-
-  useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await fetch('/api/profile/get-user-from-session', {
@@ -63,6 +42,35 @@ export default function profile() {
     };
 
     fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      try {
+        const response = await fetch("/api/posts/get-user-posts", {
+          method: 'POST',
+          headers: {
+          'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId: user._id }),
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+          setPosts(result.posts);
+          console.log('Posts: ', result.posts); 
+        } else {
+          console.error("Error fetching user posts:", result.message);
+          setPosts([]); 
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setPosts([]); 
+      }
+    };
+
+    fetchUserPosts();
   }, []);
 
   useEffect(() => {

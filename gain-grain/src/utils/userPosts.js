@@ -114,6 +114,25 @@ export const fetchFollowedUserPosts = async (userId) => {
     }
 }
 
+export const fetchUserPosts = async (userId) => {
+    const client = await clientPromise;
+    const db = client.db();
+
+    try {
+        const userPosts = await db.collection('posts').find({ userId }).toArray();
+
+        if(userPosts.length === 0) {
+            return { success: false, message: 'No posts found for user' };
+        }
+
+        return { success: true, posts: userPosts };
+    }
+    catch (error) {
+        console.error('Error fetching post:', error);
+        return { success: false, message: 'Error fetching post.' };
+    }
+}
+
 export const getPostById = async (id) => {
     console.log("User ID", userId);
     const client = await clientPromise;
