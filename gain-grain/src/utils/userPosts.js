@@ -103,6 +103,9 @@ export const fetchFollowedUserPosts = async (userId) => {
             return { success: false, message: 'No posts found for followed users' };
         }
 
+        // reverse posts to get most recent posts first
+        posts.reverse();
+
         return { success: true, posts };
     }
     catch (error) {
