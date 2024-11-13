@@ -349,31 +349,35 @@ const CustomCalendar = () => {
     
     const saveMealToProfile = async (meal) => {
         let userId = "";
-            try {
-                const response = await fetch('/api/profile/get-user-from-session', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-        
-                const data = await response.json();
-        
-                if (data.success) {
-                    userId = data.user._id;
-                }
-            } catch (error) {
-                console.error(error);
-            }
-    
         try {
+            const response = await fetch('/api/profile/get-user-from-session', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                userId = data.user._id;
+            }
+        } catch (error) {
+            console.error(error);
+        }
+
+        try {
+            // Log the incoming meal data
+            console.log('Meal being saved:', meal);
+
+            // Keep the ingredients exactly as they come from the URL parser
             const MealData = {
                 name: meal.name,
-                ingredients: meal.ingredients,
+                ingredients: meal.ingredients,  // Don't transform the ingredients
                 calories: meal.calories,
                 link: meal.link,
             };
-    
+
             const response = await fetch('/api/meals/saveToProfile', {
                 method: 'POST',
                 headers: {
@@ -382,19 +386,19 @@ const CustomCalendar = () => {
                 body: JSON.stringify({ 
                     userId, 
                     meal: MealData, 
-                    date: selectedDate // Ensure selectedDate is defined in the scope
+                    date: selectedDate
                 }),
             });
-    
+
             const data = await response.json();
             if (data.success) {
-                alert('Meal saved successfully!');
+                toast.success('Meal saved successfully!');
             } else {
-                alert(`Error: ${data.message}`);
+                toast.error(`Error: ${data.message}`);
             }
         } catch (error) {
             console.error('Error saving meal:', error);
-            alert('Failed to save meal');
+            toast.error('Failed to save meal');
         }
     };
 
