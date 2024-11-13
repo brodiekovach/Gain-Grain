@@ -178,13 +178,13 @@ export default function profile() {
         <div className="mt-4">
           <div className="flex justify-around border-b">
             <button
-              className={`py-2 px-4 ${activeTab === 'posts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+              className={`py-2 px-4 text-xl ${activeTab === 'posts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
               onClick={() => setActiveTab('posts')}
             >
               Posts
             </button>
             <button
-              className={`py-2 px-4 ${activeTab === 'likedPosts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+              className={`py-2 px-4 text-xl ${activeTab === 'likedPosts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
               onClick={() => setActiveTab('likedPosts')}
             >
               Liked Posts
