@@ -33,7 +33,7 @@ export default function Home() {
         const response = await fetch('/api/posts/get-followed-user-posts', {
           method: 'POST',
           headers: {
-          'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ userId: user._id }),
         });
@@ -63,7 +63,7 @@ export default function Home() {
     <main className="homepage-main flex min-h-screen flex-col bg-gray-50">
       <Navbar />
       <Feed 
-        posts={[...(followedUserPosts || [])]} 
+        posts={followedUserPosts}
         toggleComments={toggleComments} 
         visibleComments={visibleComments}
       />
