@@ -1,4 +1,4 @@
-import { FaDumbbell, FaCameraRetro, FaPencilAlt } from 'react-icons/fa';
+import { FaDumbbell, FaCameraRetro, FaPencilAlt, FaHeart, FaComment, FaBookmark  } from 'react-icons/fa';
 import { MdOutlineFastfood } from "react-icons/md";
 import { useState, useEffect } from 'react';
 import Link from "next/link";
@@ -388,9 +388,24 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
                 <div></div>
               ) : (
                 <div className="post-actions flex justify-around mt-auto pb-4">
-                  <button onClick={(e) => (liked ? unlikePost(e) : likePost(e))} className="text-xl font-semibold">{liked ? "Unlike" : "Like"}</button>
-                  <button onClick={handleCommentClick} className="text-xl font-semibold">Comment</button>
-                  <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }} className="text-xl font-semibold">{isSaved ? "Saved" : "Save"}</button>
+                  <button
+                    onClick={(e) => (liked ? unlikePost(e) : likePost(e))}
+                    className="text-3xl font-semibold"
+                  >
+                    <FaHeart 
+                      style={{ color: liked ? 'red' : 'gray', transition: 'color 0.3s' }}
+                      className={liked ? 'filled-heart' : 'outlined-heart'}
+                    />
+                    </button>
+                    <button onClick={handleCommentClick} className="text-3xl font-semibold">
+                      <FaComment className="text-gray-600" />
+                    </button>
+                  <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }}className="text-3xl font-semibold">
+                    <FaBookmark
+                      style={{ color: isSaved ? 'blue' : 'gray', transition: 'color 0.3s' }}
+                      className={isSaved ? 'filled-bookmark' : 'outlined-bookmark'}
+                  />
+                  </button>
                 </div>
               )}
               {visibleComments === post._id && <Comments comments={post.comments} />}
