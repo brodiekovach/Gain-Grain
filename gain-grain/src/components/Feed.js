@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 
 export default function Feed({ posts, toggleComments, visibleComments }) {
   const pathname = usePathname();
-  const [selectedCategory, setSelectedCategory] = useState('Workout');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [expandedPostId, setExpandedPostId] = useState(null);
   const [savedPosts, setSavedPosts] = useState([]);
   const [isProfilePage, setIsProfilePage] = useState(false);
@@ -58,8 +58,10 @@ export default function Feed({ posts, toggleComments, visibleComments }) {
     }
   };
 
-  // Filter posts based on selected category
-  const filteredPosts = posts.filter(post => post.postType === selectedCategory);
+  // Modified filter function to handle 'all' category
+  const filteredPosts = selectedCategory === 'all' 
+    ? posts 
+    : posts.filter(post => post.postType === selectedCategory);
 
   return (
     <div className="flex flex-col items-center mt-8 w-full">
@@ -67,8 +69,18 @@ export default function Feed({ posts, toggleComments, visibleComments }) {
       <div className="flex justify-center space-x-4 mb-8 w-full">
         <button
           className={`px-4 py-2 rounded-full ${
+            selectedCategory === 'all'
+              ? 'bg-[#58B8ED] text-white'
+              : 'bg-gray-200 text-gray-700'
+          }`}
+          onClick={() => setSelectedCategory('all')}
+        >
+          All
+        </button>
+        <button
+          className={`px-4 py-2 rounded-full ${
             selectedCategory === 'Workout'
-              ? 'bg-orange-500 text-white'
+              ? 'bg-[#58B8ED] text-white'
               : 'bg-gray-200 text-gray-700'
           }`}
           onClick={() => setSelectedCategory('Workout')}
@@ -78,7 +90,7 @@ export default function Feed({ posts, toggleComments, visibleComments }) {
         <button
           className={`px-4 py-2 rounded-full ${
             selectedCategory === 'Meal'
-              ? 'bg-orange-500 text-white'
+              ? 'bg-[#58B8ED] text-white'
               : 'bg-gray-200 text-gray-700'
           }`}
           onClick={() => setSelectedCategory('Meal')}
@@ -88,7 +100,7 @@ export default function Feed({ posts, toggleComments, visibleComments }) {
         <button
           className={`px-4 py-2 rounded-full ${
             selectedCategory === 'Blog'
-              ? 'bg-orange-500 text-white'
+              ? 'bg-[#58B8ED] text-white'
               : 'bg-gray-200 text-gray-700'
           }`}
           onClick={() => setSelectedCategory('Blog')}
@@ -98,7 +110,7 @@ export default function Feed({ posts, toggleComments, visibleComments }) {
         <button
           className={`px-4 py-2 rounded-full ${
             selectedCategory === 'ProgressPic'
-              ? 'bg-orange-500 text-white'
+              ? 'bg-[#58B8ED] text-white'
               : 'bg-gray-200 text-gray-700'
           }`}
           onClick={() => setSelectedCategory('ProgressPic')}
