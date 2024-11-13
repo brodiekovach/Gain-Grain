@@ -119,11 +119,13 @@ export const fetchUserPosts = async (userId) => {
     const db = client.db();
 
     try {
-        const userPosts = await db.collection('posts').find({ userId }).toArray();
+        const userPosts = await db.collection('posts').find({ userId: new ObjectId(userId) }).toArray();
 
         if(userPosts.length === 0) {
             return { success: false, message: 'No posts found for user' };
         }
+
+        userPosts.reverse();
 
         return { success: true, posts: userPosts };
     }

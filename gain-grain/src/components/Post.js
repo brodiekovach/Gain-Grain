@@ -3,12 +3,22 @@ import { MdOutlineFastfood } from "react-icons/md";
 import { useState, useEffect } from 'react';
 import Link from "next/link";
 import Comments from './Comments'
+import { usePathname } from 'next/navigation';
 
 export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, onSavePost, isSaved }) {
+  const pathname = usePathname();
+  
   const [userId, setUserId] = useState('');
   const [user, setUser] = useState('');
   const [date, setDate] = useState('');
   const [liked, setLiked] = useState(false);
+  const [isProfilePage, setIsProfilePage] = useState(false);
+
+  useEffect(() => {
+    if(pathname) {
+      setIsProfilePage(pathname === '/profile');
+    }
+  }, [pathname]);
 
   // Fetch the user data
   useEffect(() => {
@@ -115,41 +125,77 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
     switch (post.postType) {
       case "Workout":
         return (
-          <div className="post-content p-3">
-            <h4 className="text-3xl font-bold pb-2">{post.title}</h4>
-            {post.exercises?.map((exercise) => (
-              <div key={exercise._id} className="exercise-info mt-1">
-                <p className="indent-[20px] text-xl font-semibold">{exercise.name}</p>
-                <p className="indent-[45px] text-xl">Sets: {exercise.sets}</p>
-                <p className="indent-[45px] text-xl">Reps: {exercise.reps}</p>
-              </div>
-            ))}
+          <div>
+            {isProfilePage ? (
+              <div className="post-content p-3">
+              <h4 className="text-3xl text-center font-bold pt-12">{post.title}</h4>
+            </div>
+            ) : (
+              <div className="post-content p-3">
+              <h4 className="text-3xl font-bold pb-2">{post.title}</h4>
+              {post.exercises?.map((exercise) => (
+                <div key={exercise._id} className="exercise-info mt-1">
+                  <p className="indent-[20px] text-xl font-semibold">{exercise.name}</p>
+                  <p className="indent-[45px] text-xl">Sets: {exercise.sets}</p>
+                  <p className="indent-[45px] text-xl">Reps: {exercise.reps}</p>
+                </div>
+              ))}
+            </div>
+            )}
           </div>
         );
       case "Meal":
         return (
-          <div className="post-content p-3">
-            {post.meal?.map((item) => (
-              <div key={item._id} className="meal-info mt-1">
-                <h4 className="text-3xl font-semibold">{item.name}</h4>
-                <p className="indent-[20px] text-xl"><span className="font-bold">Calories: </span>{item.calories} kcal</p>
-                <p className="indent-[20px] text-xl"><span className="font-bold">Protein: </span>{item.protein}g</p>
-                <p className="indent-[20px] text-xl"><span className="font-bold">Carbs: </span>{item.carbs}g</p>
-                <p className="indent-[20px] text-xl"><span className="font-bold">Fats: </span>{item.fats}g</p>
+          <div>
+            {isProfilePage ? (
+              <div className="post-content p-3">
+                {post.meal?.map((item) => (
+                  <div key={item._id} className="meal-info mt-1">
+                    <h4 className="text-3xl font-semibold text-center pt-11">{item.name}</h4>
+                  </div>
+                ))}
               </div>
-            ))}
+            ) : (
+              <div className="post-content p-3">
+                {post.meal?.map((item) => (
+                  <div key={item._id} className="meal-info mt-1">
+                    <h4 className="text-3xl font-semibold">{item.name}</h4>
+                    <p className="indent-[20px] text-xl"><span className="font-bold">Calories: </span>{item.calories} kcal</p>
+                    <p className="indent-[20px] text-xl"><span className="font-bold">Protein: </span>{item.protein}g</p>
+                    <p className="indent-[20px] text-xl"><span className="font-bold">Carbs: </span>{item.carbs}g</p>
+                    <p className="indent-[20px] text-xl"><span className="font-bold">Fats: </span>{item.fats}g</p>
+                  </div>
+                ))}
+              </div>
+              )}
           </div>
         );
       case "Blog":
         return (
-          <div className="post-content p-3 text-xl font-bold">
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          <div>
+            {isProfilePage ? (
+              <div className="post-content p-3 text-m font-bold">
+                <div dangerouslySetInnerHTML={{ __html: post.content }} />
+              </div>
+            ) : (
+              <div className="post-content p-3 text-xl font-bold">
+                <div dangerouslySetInnerHTML={{ __html: post.content }} />
+              </div>
+            )}
           </div>
         );
       case "ProgressPic":
         return (
-          <div className="post-content p-3 flex justify-center items-center">
-            <img src={post.progressPic} alt="Progress" className="w-full max-w-xs rounded-lg object-cover" style={{ maxHeight: '300px' }} />
+          <div>
+            {isProfilePage ? (
+              <div className="post-content flex justify-center items-center">
+                <img src={post.progressPic} alt="Progress" className="w-full max-w-xs rounded-lg w-[65%] object-contain" style={{ maxHeight: '300px' }} />
+              </div>
+            ) : (
+              <div className="post-content p-3 flex justify-center items-center">
+                <img src={post.progressPic} alt="Progress" className="w-full max-w-xs rounded-lg object-cover" style={{ maxHeight: '300px' }} />
+              </div>
+            )}
           </div>
         );
       default:
@@ -165,66 +211,119 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
   }[post.postType] || "#FFFFFF";
 
   return (
-    <div className="relative flex justify-center mx-auto" style={{ 
-      width: '100%', 
-      maxWidth: '60vw',
-    }}>
-      {isExpanded && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 pointer-events-none">
+    <div>
+      {isProfilePage ? (
+        <div className="flex flex-wrap justify-evenly mx-auto p-4" style={{ maxWidth: '95vw' }}>
+          {isExpanded && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 z-30 pointer-events-none">
+            </div>
+          )}
+          <div
+            key={post._id}
+            className={`relative post bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-transform duration-200 ${isExpanded ? 'expanded z-40' : ''} w-full`}
+            style={{
+              height: '300px',
+              width: '30vw',
+              borderColor: postColor,
+              borderWidth: '3px',
+              position: isExpanded ? 'fixed' : 'relative',
+              top: isExpanded ? '25%' : 'auto',
+              left: isExpanded ? '35%' : 'auto', 
+              transform: isExpanded ? 'scale(1.5)' : 'none',
+              zIndex: isExpanded ? 40 : 1,
+            }}
+            onClick={() => handlePostClick(post._id)}
+          >
+            <div className="post-header flex items-center p-3">
+              {/* Icon in the top right */}
+              <div className="absolute top-3 right-3 text-2xl cursor-pointer" style={{ color: postColor }}>
+                {post.postType === "Workout" && <FaDumbbell />}
+                {post.postType === "Meal" && <MdOutlineFastfood />}
+                {post.postType === "ProgressPic" && <FaCameraRetro />}
+                {post.postType === "Blog" && <FaPencilAlt />}
+              </div>
+            </div>
+            <div className="space-x-2 flex flex-col h-full p-3">
+              <h5 className="text-right text-m">{date}</h5>
+              <div className="flex-grow max-w-full break-words whitespace-normal">{renderPostContent(post)}</div>
+
+              <div className="post-actions flex justify-around mt-auto pb-4">
+                <button onClick={(e) => (liked ? unlikePost(e) : likePost(e))} className="text-xl font-semibold">{liked ? "Unlike" : "Like"}</button>
+                <button onClick={() => toggleComments(post._id)} className="text-xl font-semibold">Comment</button>
+                <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }} className="text-xl font-semibold">{isSaved ? "Saved" : "Save"}</button>
+              </div>
+              {visibleComments === post._id && <Comments comments={post.comments} />}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="relative flex justify-center mx-auto" style={{ 
+          width: '100%', 
+          maxWidth: '60vw',
+        }}>
+          {isExpanded && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 z-30 pointer-events-none">
+            </div>
+          )}
+          <div
+            key={post._id}
+            className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0  ${isExpanded ? 'expanded' : ''}`}
+            style={{
+              width: '60vw',  // Set max width for the post
+              minHeight: '350px',  // Set minimum height to maintain consistency
+              flexDirection: 'column',
+              boxSizing: 'border-box',
+              borderColor: postColor, // Apply the color dynamically
+              borderWidth: '3px', // Increase the border width here
+              zIndex: isExpanded ? 40 : 1,
+              position: isExpanded ? 'fixed' : 'relative', // Use absolute positioning for expansion
+              top: isExpanded ? '50%' : 'auto', // Center vertically
+              left: isExpanded ? '50%' : 'auto', // Center horizontally
+              transform: isExpanded ? 'translate(-50%, -50%) scale(1.1)' : 'none', // Scale up when expanded
+              transformOrigin: 'center',
+              transition: 'transform 0.2s ease, z-index 0s', // Smooth transition for expansion
+            }}
+            onClick={() => handlePostClick(post._id)}
+          >
+            <div className="post-header flex items-center p-3">
+              <Link href={`/search/profile?userId=${user._id}`}>
+                <img
+                  src={user.profilePic}
+                  alt="User Profile"
+                  className="rounded-full mr-2"
+                  style={{ width: '40px', height: '40px' }}
+                />
+              </Link>
+              <h3 className="text-3xl font-bold hover:underline">
+                <Link href={`/search/profile?userId=${user._id}`}>@{user.username}</Link>
+              </h3>
+              {/* Icon in the top right */}
+              <div className="absolute top-3 right-3 text-2xl cursor-pointer" style={{ color: postColor }}>
+                {post.postType === "Workout" && <FaDumbbell />}
+                {post.postType === "Meal" && <MdOutlineFastfood />}
+                {post.postType === "ProgressPic" && <FaCameraRetro />}
+                {post.postType === "Blog" && <FaPencilAlt />}
+              </div>
+            </div>
+            <div className="space-x-2 flex flex-col h-full">
+              <h5 className="text-right pr-5 text-m mb-[-10px]">{date}</h5>
+              <div className="flex-grow max-w-[100%] break-words whitespace-normal">{renderPostContent(post)}</div>
+              {isProfilePage ? (
+                <div></div>
+              ) : (
+                <div className="post-actions flex justify-around mt-auto pb-5">
+                  <button onClick={(e) => (liked ? unlikePost(e) : likePost(e))} className="text-xl font-semibold">{liked ? "Unlike" : "Like"}</button>
+                  <button onClick={() => toggleComments(post._id)} className="text-xl font-semibold">Comment</button>
+                  <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }} className="text-xl font-semibold">{isSaved ? "Saved" : "Save"}</button>
+                </div>
+              )}
+              {visibleComments === post._id && <Comments comments={post.comments} />}
+            </div>
+          </div>
         </div>
       )}
-      <div
-        key={post._id}
-        className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0  ${isExpanded ? 'expanded' : ''}`}
-        style={{
-          width: '60vw',  // Set max width for the post
-          minHeight: '350px',  // Set minimum height to maintain consistency
-          flexDirection: 'column',
-          boxSizing: 'border-box',
-          borderColor: postColor, // Apply the color dynamically
-          borderWidth: '3px', // Increase the border width here
-          zIndex: isExpanded ? 40 : 1,
-          position: isExpanded ? 'fixed' : 'relative', // Use absolute positioning for expansion
-          top: isExpanded ? '50%' : 'auto', // Center vertically
-          left: isExpanded ? '50%' : 'auto', // Center horizontally
-          transform: isExpanded ? 'translate(-50%, -50%) scale(1.1)' : 'none', // Scale up when expanded
-          transformOrigin: 'center',
-          transition: 'transform 0.2s ease, z-index 0s', // Smooth transition for expansion
-        }}
-        onClick={() => handlePostClick(post._id)}
-      >
-        <div className="post-header flex items-center p-3">
-          <Link href={`/search/profile?userId=${user._id}`}>
-            <img
-              src={user.profilePic}
-              alt="User Profile"
-              className="rounded-full mr-2"
-              style={{ width: '40px', height: '40px' }}
-            />
-          </Link>
-          <h3 className="text-3xl font-bold hover:underline">
-            <Link href={`/search/profile?userId=${user._id}`}>@{user.username}</Link>
-          </h3>
-          {/* Icon in the top right */}
-          <div className="absolute top-3 right-3 text-2xl cursor-pointer" style={{ color: postColor }}>
-            {post.postType === "Workout" && <FaDumbbell />}
-            {post.postType === "Meal" && <MdOutlineFastfood />}
-            {post.postType === "ProgressPic" && <FaCameraRetro />}
-            {post.postType === "Blog" && <FaPencilAlt />}
-          </div>
-        </div>
-        <div className="space-x-2 flex flex-col h-full">
-          <h5 className="text-right pr-5 text-m mb-[-10px]">{date}</h5>
-          <div className="flex-grow max-w-[100%] break-words whitespace-normal">{renderPostContent(post)}</div>
-          <div className="post-actions flex justify-around mt-auto pb-5">
-            <button onClick={(e) => (liked ? unlikePost(e) : likePost(e))} className="text-xl font-semibold">{liked ? "Unlike" : "Like"}</button>
-            <button onClick={() => toggleComments(post._id)} className="text-xl font-semibold">Comment</button>
-            <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }} className="text-xl font-semibold">{isSaved ? "Saved" : "Save"}</button>
-          </div>
-          {visibleComments === post._id && <Comments comments={post.comments} />}
-        </div>
-      </div>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import Image from 'next/image';
 import dumbbell from '../../../public/images/dumbbell.png'
 import foodicon from '../../../public/images/foodicon.png'
 import Post from '@/components/Post';
+import Feed from "@/components/Feed";
 
 export default function profile() {
   const [user, setUser] = useState('');
@@ -59,7 +60,7 @@ export default function profile() {
         
         if (result.success) {
           setPosts(result.posts);
-          console.log('Posts: ', result.posts); 
+          // console.log('Posts: ', result.posts); 
         } else {
           console.error("Error fetching user posts:", result.message);
           setPosts([]); 
@@ -71,7 +72,7 @@ export default function profile() {
     };
 
     fetchUserPosts();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const fetchSavedWorkouts = async () => {
@@ -218,17 +219,12 @@ export default function profile() {
 
         {/* Posts Grid or No Posts Message */}
         <div className="mt-8">
-        {/* {activeTab === 'posts' && user.posts && user.posts.length > 0 ? ( */}
         {activeTab === 'posts' && posts.length > 0 ? (
-          <div className="grid grid-cols-3 gap-2">
-
-            {posts.map((post) => (
-              <div key={post.id} className="bg-blue-200 h-32 rounded-lg flex justify-center items-center">
-                <p className="text-center text-white">{post.title || "Post"}</p>
-              </div>
-            ))}
-            
-          </div>
+          <Feed 
+            posts={[...(posts || [])]} 
+            toggleComments={toggleComments} 
+            visibleComments={visibleComments} 
+          />
         ) : activeTab === 'posts' ? (
           <div className="flex flex-col items-center mt-4 text-center text-gray-500">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-camera-video-off mb-2" viewBox="0 0 16 16">

@@ -65,7 +65,7 @@ export default function Home() {
       <Feed 
         posts={[...(followedUserPosts || [])]} 
         toggleComments={toggleComments} 
-        visibleComments={visibleComments} 
+        visibleComments={visibleComments}
       />
     </main>
   );
