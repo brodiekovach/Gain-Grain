@@ -5,8 +5,7 @@ import Link from "next/link";
 import Comments from './Comments'
 import { usePathname } from 'next/navigation';
 
-export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, handleCommentClick, handleCommentSubmit,
-                                onSavePost, isSaved }) {
+export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, onSavePost, isSaved }) {
   const pathname = usePathname();
 
   const [userId, setUserId] = useState('');
@@ -15,6 +14,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
   const [liked, setLiked] = useState(false);
   const [isProfilePage, setIsProfilePage] = useState(false);
   const [commentText, setCommentText] = useState('');
+  const [comments, setComments] = useState(post.comments || []);
   const [isCommenting, setIsCommenting] = useState(false);
 
   useEffect(() => {
@@ -124,26 +124,31 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
     });
   };
 
-  const addComment = async (e) => {
+  const handleCommentSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!commentText.trim()) return; // Prevent empty comments
+    
+    if (!commentText.trim()) return;
 
     try {
-      const response = await fetch('/api/posts', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, postId: post._id, comment: commentText })
+      const response = await fetch('/api/posts/add-comment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          postId: post._id,
+          userId: userId,
+          content: commentText
+        })
       });
 
       const data = await response.json();
-
+      
       if (data.success) {
-        // Clear input and refresh comments
+        setComments([...comments, data.comment]);
         setCommentText('');
-        toggleComments(post._id); // Toggle comments to refresh
-      } else {
-        console.error('Failed to add comment:', data.message);
+        setIsCommenting(false);
       }
     } catch (error) {
       console.error('Error adding comment:', error);
@@ -240,98 +245,51 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
     Blog: "#FFC107",
   }[post.postType] || "#FFFFFF";
 
+  const renderCommentSection = () => (
+    <div className="comments-section p-4 border-t">
+      {post.comments && post.comments.length > 0 && (
+        <div className="mb-4">
+          {post.comments.map((comment, index) => (
+            <div key={index} className="bg-gray-50 p-3 rounded mb-2">
+              <p className="font-semibold">{comment.username}</p>
+              <p>{comment.content}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <form onSubmit={handleCommentSubmit} className="mt-4">
+        <div className="flex flex-col space-y-2">
+          <input
+            type="text"
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            placeholder="Write a comment..."
+            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Post Comment
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+
+  const handleCommentClick = (e) => {
+    e.stopPropagation();
+    handlePostClick(post._id);
+    toggleComments(post._id);
+    setIsCommenting(!isCommenting);
+  };
+
   return (
     <div>
       {isProfilePage ? (
-        <div className="flex flex-wrap justify-evenly mx-auto p-4" style={{ maxWidth: '95vw' }}>
-          {isExpanded && (
-            <div
-              className="fixed inset-0 bg-black bg-opacity-50 z-30 pointer-events-none">
-            </div>
-          )}
-          <div
-            key={post._id}
-            className={`relative post bg-white rounded-lg shadow-lg overflow-hidden flex flex-col transition-transform duration-200 ${isExpanded ? 'expanded z-40' : ''} w-full`}
-            style={{
-              height: '300px',
-              width: '30vw',
-              borderColor: postColor,
-              borderWidth: '3px',
-              position: isExpanded ? 'fixed' : 'relative',
-              top: isExpanded ? '25%' : 'auto',
-              left: isExpanded ? '35%' : 'auto',
-              transform: isExpanded ? 'scale(1.5)' : 'none',
-              zIndex: isExpanded ? 40 : 1,
-            }}
-            onClick={() => handlePostClick(post._id)}
-          >
-            <div className="post-header flex items-center p-3">
-              {/* Icon in the top right */}
-              <div className="absolute top-3 right-3 text-2xl cursor-pointer" style={{ color: postColor }}>
-                {post.postType === "Workout" && <FaDumbbell />}
-                {post.postType === "Meal" && <MdOutlineFastfood />}
-                {post.postType === "ProgressPic" && <FaCameraRetro />}
-                {post.postType === "Blog" && <FaPencilAlt />}
-              </div>
-            </div>
-            <div className="space-x-2 flex flex-col h-full p-3">
-              <h5 className="text-right text-m">{date}</h5>
-              <div className="flex-grow max-w-full break-words whitespace-normal">{renderPostContent(post)}</div>
-
-              <div className="post-actions flex justify-around mt-auto pb-4">
-                <button
-                  onClick={(e) => (liked ? unlikePost(e) : likePost(e))}
-                  className="text-xl font-semibold"
-                >
-                  {liked ? "Unlike" : "Like"}
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleComments(post._id);
-                    setIsCommenting(!isCommenting);
-                  }}
-                  className="text-xl font-semibold"
-                >
-                  Comment
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onSavePost(post._id);
-                  }}
-                  className="text-xl font-semibold"
-                >
-                  {isSaved ? "Saved" : "Save"}
-                </button>
-              </div>
-
-              {/* Conditional input field for comments */}
-              {isCommenting && visibleComments === post._id && (
-                <form onSubmit={addComment} className="p-3">
-                  <input
-                    type="text"
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                    placeholder="Add a comment..."
-                    className="w-full p-2 border rounded mb-2"
-                  />
-                  <button
-                    type="submit"
-                    onClick={(e) => e.stopPropagation()}  // Stop propagation here
-                    className="bg-blue-500 text-white px-4 py-2 rounded"
-                  >
-                    Submit
-                  </button>
-                </form>
-              )}
-
-              {/* Display existing comments */}
-              {visibleComments === post._id && <Comments comments={post.comments} />}
-            </div>
-          </div>
-        </div>
-      ) : (
         <div className="relative flex justify-center mx-auto" style={{
           width: '100%',
           maxWidth: '60vw',
@@ -343,21 +301,21 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
           )}
           <div
             key={post._id}
-            className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0  ${isExpanded ? 'expanded' : ''}`}
+            className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0 ${isExpanded ? 'expanded' : ''}`}
             style={{
-              width: '60vw',  // Set max width for the post
-              minHeight: '350px',  // Set minimum height to maintain consistency
+              width: isExpanded ? '45vw' : '60vw',
+              minHeight: '350px',
               flexDirection: 'column',
               boxSizing: 'border-box',
-              borderColor: postColor, // Apply the color dynamically
-              borderWidth: '3px', // Increase the border width here
+              borderColor: postColor,
+              borderWidth: '3px',
               zIndex: isExpanded ? 40 : 1,
-              position: isExpanded ? 'fixed' : 'relative', // Use absolute positioning for expansion
-              top: isExpanded ? '50%' : 'auto', // Center vertically
-              left: isExpanded ? '50%' : 'auto', // Center horizontally
-              transform: isExpanded ? 'translate(-50%, -50%) scale(1.1)' : 'none', // Scale up when expanded
+              position: isExpanded ? 'fixed' : 'relative',
+              top: isExpanded ? '50%' : 'auto',
+              left: isExpanded ? '35%' : 'auto',
+              transform: isExpanded ? 'translate(-50%, -50%)' : 'none',
               transformOrigin: 'center',
-              transition: 'transform 0.2s ease, z-index 0s', // Smooth transition for expansion
+              transition: 'all 0.2s ease',
             }}
             onClick={() => handlePostClick(post._id)}
           >
@@ -373,7 +331,6 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
               <h3 className="text-3xl font-bold hover:underline">
                 <Link href={`/search/profile?userId=${user._id}`}>@{user.username}</Link>
               </h3>
-              {/* Icon in the top right */}
               <div className="absolute top-3 right-3 text-2xl cursor-pointer" style={{ color: postColor }}>
                 {post.postType === "Workout" && <FaDumbbell />}
                 {post.postType === "Meal" && <MdOutlineFastfood />}
@@ -384,33 +341,178 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
             <div className="space-x-2 flex flex-col h-full">
               <h5 className="text-right pr-5 text-m mb-[-10px]">{date}</h5>
               <div className="flex-grow max-w-[100%] break-words whitespace-normal">{renderPostContent(post)}</div>
-              {isProfilePage ? (
-                <div></div>
-              ) : (
-                <div className="post-actions flex justify-around mt-auto pb-4">
-                  <button
-                    onClick={(e) => (liked ? unlikePost(e) : likePost(e))}
-                    className="text-3xl font-semibold"
-                  >
-                    <FaHeart 
-                      style={{ color: liked ? 'red' : 'gray', transition: 'color 0.3s' }}
-                      className={liked ? 'filled-heart' : 'outlined-heart'}
-                    />
-                    </button>
-                    <button onClick={handleCommentClick} className="text-3xl font-semibold">
-                      <FaComment className="text-gray-600" />
-                    </button>
-                  <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }}className="text-3xl font-semibold">
-                    <FaBookmark
-                      style={{ color: isSaved ? 'yellow' : 'gray', transition: 'color 0.3s' }}
-                      className={isSaved ? 'filled-bookmark' : 'outlined-bookmark'}
+              <div className="post-actions flex justify-around mt-auto pb-4">
+                <button
+                  onClick={(e) => (liked ? unlikePost(e) : likePost(e))}
+                  className="text-3xl font-semibold"
+                >
+                  <FaHeart 
+                    style={{ color: liked ? 'red' : 'gray', transition: 'color 0.3s' }}
+                    className={liked ? 'filled-heart' : 'outlined-heart'}
                   />
-                  </button>
-                </div>
-              )}
-              {visibleComments === post._id && <Comments comments={post.comments} />}
+                </button>
+                <button 
+                  onClick={handleCommentClick} 
+                  className="text-3xl font-semibold"
+                >
+                  <FaComment 
+                    style={{ color: visibleComments === post._id ? 'blue' : 'gray', transition: 'color 0.3s' }}
+                    className="text-gray-600" 
+                  />
+                </button>
+                <button 
+                  onClick={(e) => { 
+                    e.stopPropagation(); 
+                    onSavePost(post._id); 
+                  }}
+                  className="text-3xl font-semibold"
+                >
+                  <FaBookmark
+                    style={{ color: isSaved ? 'yellow' : 'gray', transition: 'color 0.3s' }}
+                    className={isSaved ? 'filled-bookmark' : 'outlined-bookmark'}
+                  />
+                </button>
+              </div>
             </div>
           </div>
+        </div>
+      ) : (
+        <div className="relative flex justify-center mx-auto" style={{
+          width: '100%',
+          maxWidth: '60vw',
+        }}>
+          {isExpanded && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 z-30 pointer-events-none">
+            </div>
+          )}
+          <div
+            key={post._id}
+            className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0 ${isExpanded ? 'expanded' : ''}`}
+            style={{
+              width: isExpanded ? '45vw' : '60vw',
+              minHeight: '350px',
+              flexDirection: 'column',
+              boxSizing: 'border-box',
+              borderColor: postColor,
+              borderWidth: '3px',
+              zIndex: isExpanded ? 40 : 1,
+              position: isExpanded ? 'fixed' : 'relative',
+              top: isExpanded ? '50%' : 'auto',
+              left: isExpanded ? '35%' : 'auto',
+              transform: isExpanded ? 'translate(-50%, -50%)' : 'none',
+              transformOrigin: 'center',
+              transition: 'all 0.2s ease',
+            }}
+            onClick={() => handlePostClick(post._id)}
+          >
+            <div className="post-header flex items-center p-3">
+              <Link href={`/search/profile?userId=${user._id}`}>
+                <img
+                  src={user.profilePic}
+                  alt="User Profile"
+                  className="rounded-full mr-2"
+                  style={{ width: '40px', height: '40px' }}
+                />
+              </Link>
+              <h3 className="text-3xl font-bold hover:underline">
+                <Link href={`/search/profile?userId=${user._id}`}>@{user.username}</Link>
+              </h3>
+              <div className="absolute top-3 right-3 text-2xl cursor-pointer" style={{ color: postColor }}>
+                {post.postType === "Workout" && <FaDumbbell />}
+                {post.postType === "Meal" && <MdOutlineFastfood />}
+                {post.postType === "ProgressPic" && <FaCameraRetro />}
+                {post.postType === "Blog" && <FaPencilAlt />}
+              </div>
+            </div>
+            <div className="space-x-2 flex flex-col h-full">
+              <h5 className="text-right pr-5 text-m mb-[-10px]">{date}</h5>
+              <div className="flex-grow max-w-[100%] break-words whitespace-normal">{renderPostContent(post)}</div>
+              <div className="post-actions flex justify-around mt-auto pb-4">
+                <button
+                  onClick={(e) => (liked ? unlikePost(e) : likePost(e))}
+                  className="text-3xl font-semibold"
+                >
+                  <FaHeart 
+                    style={{ color: liked ? 'red' : 'gray', transition: 'color 0.3s' }}
+                    className={liked ? 'filled-heart' : 'outlined-heart'}
+                  />
+                </button>
+                <button 
+                  onClick={handleCommentClick} 
+                  className="text-3xl font-semibold"
+                >
+                  <FaComment 
+                    style={{ color: visibleComments === post._id ? 'blue' : 'gray', transition: 'color 0.3s' }}
+                    className="text-gray-600" 
+                  />
+                </button>
+                <button 
+                  onClick={(e) => { 
+                    e.stopPropagation(); 
+                    onSavePost(post._id); 
+                  }}
+                  className="text-3xl font-semibold"
+                >
+                  <FaBookmark
+                    style={{ color: isSaved ? 'yellow' : 'gray', transition: 'color 0.3s' }}
+                    className={isSaved ? 'filled-bookmark' : 'outlined-bookmark'}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {isExpanded && (
+        <div 
+          className="comments-section bg-white rounded-lg p-4 border-2"
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '70%',
+            transform: 'translate(-50%, -50%)',
+            width: '25vw',
+            maxHeight: '80vh',
+            overflowY: 'auto',
+            zIndex: 41,
+            borderColor: postColor,
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h3 className="text-xl font-bold mb-4">Comments</h3>
+          {post.comments && post.comments.length > 0 ? (
+            <div className="space-y-4 mb-4">
+              {post.comments.map((comment, index) => (
+                <div key={index} className="bg-gray-50 p-3 rounded">
+                  <p className="font-semibold">{comment.username}</p>
+                  <p className="text-gray-700">{comment.content}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 mb-4">No comments yet</p>
+          )}
+
+          <form onSubmit={handleCommentSubmit} className="sticky bottom-0 bg-white pt-4">
+            <div className="flex flex-col space-y-2">
+              <input
+                type="text"
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+                placeholder="Write a comment..."
+                className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onClick={(e) => e.stopPropagation()}
+              />
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Post Comment
+              </button>
+            </div>
+          </form>
         </div>
       )}
     </div>
