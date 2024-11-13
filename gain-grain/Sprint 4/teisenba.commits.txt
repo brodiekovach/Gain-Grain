@@ -1,0 +1,509 @@
+We had massive rebasing on 11/12/2024 between Brodie, Ethan, and I, and as a result most
+of the lines I added are no longer attributed to me and some lines contributed by Brodie 
+and Ethan were attributed to me. The lines of code seen below are the ones I'm sure I committed
+and were manually, selectively copied from the commits listed under 'trevorbacher' on. For the most 
+part, I did everything related to likes for this sprint and them some extra. 
+https://github.com/utk-cs340-fall24/Gain-Grain/commits/main/ 
+
+gain-grain/src/app/api/posts/route.js
+
+    }  
+    export async function PUT(req) {
+        // Proceed with fetching data for the given userId
+        try {
+            const body = await req.json();
+            const { userId, postId, like} = body;
+            const likeStatus = like ? "like" : "unlike"
+            
+            
+            console.log(userId, postId);
+            const updatedPosts = await updatePostsById(userId, postId, likeStatus);
+            if (!updatedPosts) {
+                return NextResponse.json({ message: 'Could not find post'});
+            }
+            return NextResponse.json({ message: 'Like added!', updatedPosts });
+        } 
+        catch (error) {
+        return new Response("Error updating posts", { status: 500 });
+        }
+    }
+
+gain-grain/src/components/Post.js
+
+    import { useState, useEffect } from 'react';
+    export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick }) {
+        const [userId, setUserId] = useState('');
+        const [liked, setLiked] = useState(false);
+        useEffect(() => {
+            const fetchUserData = async () => {
+                try {
+                    const response = await fetch('/api/profile/get-user-from-session', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        setUserId(data.user._id);
+                    }
+                } 
+                catch (error) {
+                    console.error(error);
+                    return;
+                }
+            };
+            fetchUserData();
+        }, []);
+        useEffect(() => {
+                console.log("User ID:", userId)
+                if (!userId || !post?.likeCount) {
+                    return;
+                }
+                setLiked(post.likeCount.includes(userId));
+            }, [userId]);
+            useEffect(() => {
+                console.log("Liked:", liked);
+            
+            }, [liked]);
+            const likePost = async (e) => {
+                e.stopPropagation();
+                try {
+                    const likePost = await fetch('/api/posts', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            userId,
+                            postId: post._id,
+                            like: true,
+                        }),
+                    });
+                }
+                catch (error) {
+                    console.error(error);
+                    return;
+                }
+        const unlikePost = async (e) => {
+            e.stopPropagation();
+            try {
+                const unlikePost = await fetch('/api/posts', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        userId,
+                        postId: post._id,
+                        like: false,
+                    }),
+                });
+            }
+            catch (error) {
+                console.error(error);
+                return;
+            }
+        
+    const renderPostContent = (post) => {
+            switch (post.postType) {
+                case "Workout":
+                    return (
+                        <div className="post-content p-3">
+                            <h4 className="text-xl">{post.title}</h4>
+                            {post.exercises?.map((exercise) => (
+                                <div key={exercise._id} className="exercise-info mt-1">
+                                    <p>{exercise.name}</p>
+                                </div>
+                            ))}
+                        </div>
+                    );
+                case "Meal":
+                    return (
+                        <div className="post-content p-3">
+                            <h4 className="text-xl">Meal</h4>
+                            {post.meal?.map((item) => (
+                                <div key={item._id} className="meal-info mt-1">
+                                    <p>{item.name}</p>
+                                    <p>Calories: {item.calories} kcal</p>
+                                    <p>Protein: {item.protein}g</p>
+                                    <p>Carbs: {item.carbs}g</p>
+                                    <p>Fats: {item.fats}g</p>
+                                </div>
+                            ))}
+                        </div>
+                    );
+                case "Blog":
+                    return (
+                        <div className="post-content p-3">
+                            <h4 className="text-xl">Blog</h4>
+                            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                        </div>
+                    );
+                case "ProgressPic":
+                    return (
+                        <div className="post-content p-3 flex justify-center items-center">
+                            <div className="text-center">
+                                <img
+                                    src={post.progressPic}
+                                    alt="User Progress"
+                                    className="w-full max-w-xs h-auto object-cover rounded-lg"
+                                    style={{ maxHeight: '350px' }}
+                                />
+                            </div>
+                        </div>
+                    );
+                default:
+                    return null;
+            }
+        };
+    export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, onSavePost, isSaved }) {
+    const [userId, setUserId] = useState('');
+    const [username, setUsername] = useState('');
+    const [date, setDate] = useState('');
+    const [liked, setLiked] = useState(false);
+    // Fetch the user data
+    useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('/api/profile/get-user-from-session', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await response.json();
+        if (data.success) {
+          setUserId(data.user._id);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    useEffect(() => {
+    if (userId && post?.likeCount) {
+      setLiked(post.likeCount.includes(userId));
+    }
+    }, [userId]);
+    // Functions to like/unlike posts
+    const likePost = async (e) => {
+    e.stopPropagation();
+    setLiked(true);
+    await fetch('/api/posts', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, postId: post._id, like: true })
+    });
+    };
+    const unlikePost = async (e) => {
+        e.stopPropagation();
+        setLiked(false);
+        await fetch('/api/posts', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, postId: post._id, like: false })
+        });
+    };
+    const renderPostContent = (post) => {
+    switch (post.postType) {
+      case "Workout":
+        return (
+          <div className="post-content p-3">
+            <h4 className="text-xl font-semibold">{post.title}</h4>
+            {post.exercises?.map((exercise) => (
+              <div key={exercise._id} className="exercise-info mt-1">
+                <p>{exercise.name}</p>
+              </div>
+            ))}
+          </div>
+        );
+      case "Meal":
+        return (
+          <div className="post-content p-3">
+            {post.meal?.map((item) => (
+              <div key={item._id} className="meal-info mt-1">
+                <p>{item.name}</p>
+                <p>Calories: {item.calories} kcal</p>
+                <p>Protein: {item.protein}g</p>
+                <p>Carbs: {item.carbs}g</p>
+                <p>Fats: {item.fats}g</p>
+              </div>
+            ))}
+          </div>
+        );
+      case "Blog":
+        return <div dangerouslySetInnerHTML={{ __html: post.content }} />;
+      case "ProgressPic":
+        return <img src={post.progressPic} alt="Progress" className="w-full max-w-xs rounded-lg" />;
+      default:
+        return null;
+    }
+    };
+    const postColor = {
+        Workout: "#4CAF50",
+        Meal: "#FF5722",
+        ProgressPic: "#3F51B5",
+        Blog: "#FFC107",
+    }[post.postType] || "#FFFFFF";
+    return (
+    <div className="relative" style={{ width: '100%', maxWidth: '400px' }}>
+      {isExpanded && <div className="fixed inset-0 bg-black opacity-50 z-9"></div>}
+      <div
+        className="post bg-white mb-5 rounded-lg w-full"
+        style={{ borderColor: postColor, borderWidth: '3px' }}
+        onClick={() => handlePostClick(post._id)}
+      >
+        <div className="post-header flex items-center p-3">
+          <img src="https://via.placeholder.com/40" alt="User Profile" className="rounded-full mr-2" />
+          <h3 className="text-lg">@{username}</h3>
+          <span className="text-sm">{date}</span>
+        </div>
+        {renderPostContent(post)}
+        <div className="post-actions flex justify-around mt-auto">
+          <button onClick={(e) => (liked ? unlikePost(e) : likePost(e))}>{liked ? "Unlike" : "Like"}</button>
+          <button onClick={() => toggleComments(post._id)}>Comment</button>
+          <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }}>{isSaved ? "Saved" : "Save"}</button>
+    return (
+          <div className="post-content p-3 flex justify-center items-center">
+            <img src={post.progressPic} alt="Progress" className="w-full max-w-xs rounded-lg object-cover" style={{ maxHeight: '300px' }} />
+          </div>
+        );
+    <Link href={`/search/profile?userId=${user._id}`}>
+            <img src={user.profilePic} alt="User Profile" className="rounded-full mr-2" style={{ width: '40px', height: '40px' }} />
+          </Link>
+          <h3 className="text-2xl font-bold hover:underline">
+            <Link href={`/search/profile?userId=${user._id}`}>@{user.username}</Link>
+          </h3>
+    export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, onSavePost, isSaved }) {
+    const [userId, setUserId] = useState('');
+    const [username, setUsername] = useState('');
+    const [date, setDate] = useState('');
+    const [liked, setLiked] = useState(false);
+    // Fetch the user data
+    useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('/api/profile/get-user-from-session', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await response.json();
+        if (data.success) {
+          setUserId(data.user._id);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      fetchUserData();
+    }, []);
+    // Fetch the username
+    useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        const response = await fetch('/api/profile/get-user-by-id', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: post.userId })
+        });
+        const data = await response.json();
+        if (data.success) {
+          setUsername(data.user.username);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUsername();
+    }, [post.userId]);
+    // Set the date in a human-readable format
+    useEffect(() => {
+        const parsePostDate = () => {
+        const postDate = new Date(post.date);
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - postDate) / 1000);
+        const secondsInMinute = 60;
+        const secondsInHour = 3600;
+        const secondsInDay = 86400;
+        if (diffInSeconds < secondsInMinute) setDate(`${diffInSeconds} seconds ago`);
+        else if (diffInSeconds < secondsInHour) setDate(`${Math.floor(diffInSeconds / secondsInMinute)} minutes ago`);
+        else if (diffInSeconds < secondsInDay) setDate(`${Math.floor(diffInSeconds / secondsInHour)} hours ago`);
+        else setDate(postDate.toLocaleDateString());
+        };
+        parsePostDate();
+    }, [post.date]);
+     useEffect(() => {
+    if (userId && post?.likeCount) {
+      setLiked(post.likeCount.includes(userId));
+    }
+    }, [userId]);
+    // Functions to like/unlike posts
+    const likePost = async (e) => {
+    e.stopPropagation();
+    setLiked(true);
+    await fetch('/api/posts', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, postId: post._id, like: true })
+    });
+    };
+    const unlikePost = async (e) => {
+    e.stopPropagation();
+    setLiked(false);
+    await fetch('/api/posts', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, postId: post._id, like: false })
+    });
+    };
+    const renderPostContent = (post) => {
+    switch (post.postType) {
+      case "Workout":
+        return (
+          <div className="post-content p-3">
+            <h4 className="text-xl font-semibold">{post.title}</h4>
+            {post.exercises?.map((exercise) => (
+              <div key={exercise._id} className="exercise-info mt-1">
+                <p>{exercise.name}</p>
+              </div>
+            ))}
+          </div>
+        );
+      case "Meal":
+        return (
+          <div className="post-content p-3">
+            {post.meal?.map((item) => (
+              <div key={item._id} className="meal-info mt-1">
+                <p>{item.name}</p>
+                <p>Calories: {item.calories} kcal</p>
+                <p>Protein: {item.protein}g</p>
+                <p>Carbs: {item.carbs}g</p>
+                <p>Fats: {item.fats}g</p>
+              </div>
+            ))}
+          </div>
+        );
+      case "Blog":
+        return <div dangerouslySetInnerHTML={{ __html: post.content }} />;
+      case "ProgressPic":
+        return <img src={post.progressPic} alt="Progress" className="w-full max-w-xs rounded-lg" />;
+      default:
+        return null;
+    }
+    };
+    const postColor = {
+        Workout: "#4CAF50",
+        Meal: "#FF5722",
+        ProgressPic: "#3F51B5",
+        Blog: "#FFC107",
+    }[post.postType] || "#FFFFFF";
+    return (
+    <div className="relative" style={{ width: '100%', maxWidth: '400px' }}>
+      {isExpanded && <div className="fixed inset-0 bg-black opacity-50 z-9"></div>}
+      <div
+        className="post bg-white mb-5 rounded-lg w-full"
+        style={{ borderColor: postColor, borderWidth: '3px' }}
+        onClick={() => handlePostClick(post._id)}
+      >
+        <div className="post-header flex items-center p-3">
+          <img src="https://via.placeholder.com/40" alt="User Profile" className="rounded-full mr-2" />
+          <h3 className="text-lg">@{username}</h3>
+          <span className="text-sm">{date}</span>
+        </div>
+        {renderPostContent(post)}
+        <div className="post-actions flex justify-around mt-auto">
+          <button onClick={(e) => (liked ? unlikePost(e) : likePost(e))}>{liked ? "Unlike" : "Like"}</button>
+          <button onClick={() => toggleComments(post._id)}>Comment</button>
+          <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }}>{isSaved ? "Saved" : "Save"}</button>
+
+
+gain-grain/src/middleware.js
+
+    '/api/reset-password/remove-token', '/api/blogs', '/api/posts/get-posts', '/api/posts/get-followed-user-posts',
+                        '/api/posts'];
+
+gain-grain/src/utils/postModels/Post.js
+
+    likeCount: [{ type: String }]
+    const commentSchema = new mongoose.Schema({
+    comment: { type: String, required: true },
+    date: { type: Date, required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    }); 
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+        postType: { type: String, required: true },
+        likeCount: [{ type: String }],
+        comments: [commentSchema],
+    
+
+gain-grain/src/utils/userPosts.js
+
+    import clientPromise from './mongodb';
+    export const savePost = async (userId, postType, postData) => {
+    const client = await clientPromise;
+    const db = client.db();
+    let newPost;
+    try {
+        switch (postType) {
+            case 'Blog':
+                newPost = new Blog({
+                    userId,
+                    postType: "Blog",
+                    content: postData.content,
+                    date: postData.date
+                });
+                break;
+            case 'Meal':
+                newPost = new MealPost({
+                    userId,
+                    postType: "Meal",
+                    meal: postData.meal,
+                    date: postData.date
+                });
+                break;
+            case 'ProgressPic':
+                newPost = new ProgressPic({
+                    userId,
+                    postType: "ProgressPic",
+                    progressPic: postData.progressPic,
+                    date: postData.date
+                });
+                break;
+    export const savePost = async (userId, postType, postData) => {
+    const client = await clientPromise;
+    const db = client.db();
+    let newPost;
+    try {
+        switch (postType) {
+            case 'Blog':
+                newPost = new Blog({
+                    userId,
+                    postType: "Blog",
+                    content: postData.content,
+                    date: postData.date
+                });
+                break;
+            case 'Meal':
+                newPost = new MealPost({
+                    userId,
+                    postType: "Meal",
+                    meal: postData.meal,
+                    date: postData.date
+                });
+                break;
+            case 'ProgressPic':
+                newPost = new ProgressPic({
+                    userId,
+                    postType: "ProgressPic",
+                    progressPic: postData.progressPic,
+                    date: postData.date
+                });
+                break;
+    console.log("User ID", userId);
+    const client = await clientPromise;
+    const db = client.db();
+    const postCollection = db.collection('posts');
+    try {
+        const blog = await postCollection.findOne({ _id: new ObjectId(id) });
+        return blog || { success: false, message: 'Post not found.' };
+    }
+    catch (error) {
+        console.error('Error fetching post:', error);
+        return { success: false, message: 'Error fetching post.' };
+    }
+
+gain-grain/src/app/profile/page.js
+
+    const [visibleComments, setVisibleComments] = useState(null);
