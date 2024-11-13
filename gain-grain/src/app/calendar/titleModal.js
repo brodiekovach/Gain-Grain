@@ -15,8 +15,8 @@ const TitleModal = ({ show, onClose, onSave, title, setTitle }) => {
     };
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content">
+        <div className="title-modal-overlay">
+            <div className="title-modal-content">
                 <h3>Save Workout</h3>
                 <div className='title-container'>
                 <input    

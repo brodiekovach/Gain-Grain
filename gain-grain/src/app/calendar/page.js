@@ -69,9 +69,12 @@ const CustomCalendar = () => {
     const [groceryList, setGroceryList] = useState({});
     const [showGroceryModal, setShowGroceryModal] = useState(false);
     const [workoutStatus, setWorkoutStatus] = useState(() => {
-        // Load saved workout status from localStorage
-        const savedStatus = localStorage.getItem('workoutStatus');
-        return savedStatus ? JSON.parse(savedStatus) : {};
+        // Check if window is defined (client-side) before accessing localStorage
+        if (typeof window !== 'undefined') {
+            const savedStatus = localStorage.getItem('workoutStatus');
+            return savedStatus ? JSON.parse(savedStatus) : {};
+        }
+        return {}; // Return empty object as default for server-side rendering
     });
     const [workoutTimer, setWorkoutTimer] = useState(0); // Timer for the workout
     const [isWorkoutActive, setIsWorkoutActive] = useState(false); // Track if workout is active
@@ -664,12 +667,12 @@ const CustomCalendar = () => {
     const handleEndWorkout = () => {
         setIsWorkoutActive(false);
         setWorkoutModalVisible(false);
+        const formattedTime = new Date(workoutTimer * 1000).toISOString().substr(11, 8); // Format time as HH:MM:SS
         const updatedStatus = {
             ...workoutStatus,
-            [activeDay]: { completed: true, time: workoutTimer },
+            [activeDay]: { completed: true, time: formattedTime },
         };
         setWorkoutStatus(updatedStatus);
-        // Save updated workout status to localStorage
         localStorage.setItem('workoutStatus', JSON.stringify(updatedStatus));
     };
 
@@ -746,7 +749,7 @@ const CustomCalendar = () => {
                         <div className="workout-status">
                             <span>
                                 {workoutStatus[activeDay]?.completed ? 
-                                    `Workout Completed: ${workoutStatus[activeDay].time} seconds` : 
+                                    `Workout Completed: ${workoutStatus[activeDay].time}` : 
                                     "Workout Not Completed"}
                             </span>
                             {!workoutStatus[activeDay]?.completed && (
