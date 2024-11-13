@@ -92,38 +92,7 @@ export default function profile() {
 
     fetchUserData();
   }, [user, currentUser]);
-
-  // Fetch saved workouts when 'savedWorkouts' tab is selected
-  useEffect(() => {
-    const fetchSavedWorkouts = async () => {
-      setLoadingWorkouts(true);
-      try {
-        const response = await fetch('/api/profile/get-saved-workouts', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId }),
-        });
-        
-        const data = await response.json();
-        if (data.success) {
-          setSavedWorkouts(data.savedWorkouts);
-        } else {
-          setSavedWorkouts([]);
-        }
-      } catch (error) {
-        console.error(error);
-        setSavedWorkouts([]);
-      } finally {
-        setLoadingWorkouts(false);
-      }
-    };
-
-    if (activeTab === 'savedWorkouts') {
-      fetchSavedWorkouts();
-    }
-  }, [activeTab, userId]);
+  
 
   const handleFollowUnfollow = async() => {
     try {
@@ -160,13 +129,6 @@ export default function profile() {
     document.getElementById('alert-close').addEventListener('click', () => {
       alertContainer.classList.add('hidden');
     });
-};
-
-const toggleWorkoutExpand = (workoutId) => {
-  setExpandedWorkouts(prevState => ({
-    ...prevState,
-    [workoutId]: !prevState[workoutId]
-  }));
 };
 
 
@@ -222,18 +184,6 @@ const toggleWorkoutExpand = (workoutId) => {
               Posts
             </button>
             <button
-              className={`py-2 px-4 ${activeTab === 'savedWorkouts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
-              onClick={() => setActiveTab('savedWorkouts')}
-            >
-              Saved Workouts
-            </button>
-            <button
-              className={`py-2 px-4 ${activeTab === 'savedMeals' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
-              onClick={() => setActiveTab('savedMeals')}
-            >
-              Saved Meals
-            </button>
-            <button
               className={`py-2 px-4 ${activeTab === 'likedPosts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
               onClick={() => setActiveTab('likedPosts')}
             >
@@ -259,39 +209,7 @@ const toggleWorkoutExpand = (workoutId) => {
             </svg>
             <p>No posts available.</p>
           </div>
-        ) : activeTab === 'savedWorkouts' && loadingWorkouts ? (
-          <p>Loading workouts...</p>
-      ) : activeTab === 'savedWorkouts' && savedWorkouts.length === 0 ? (
-          <div className="flex flex-col items-center mt-4 text-center text-gray-500">
-              <Image src={dumbbell} width={32} height={32} alt="Dumbbell" className="mb-2"/>
-              <p>No saved workouts.</p>
-          </div>
-      ) : activeTab === 'savedWorkouts' ? (
-          <div className="grid grid-cols-2 gap-4">
-              {savedWorkouts.map((workout) => (
-                  <div key={workout._id} className="bg-gray-200 p-4 rounded-lg">
-                      <h3 className="cursor-pointer font-semibold" onClick={() => toggleWorkoutExpand(workout._id)}>
-                                    {workout.title}
-                                </h3>
-                      <p>Exercises: {workout.exercises.length}</p>
-                      {expandedWorkouts[workout._id] && (
-                                    <ul className="mt-2">
-                                        {workout.exercises.map((exercise, index) => (
-                                            <li key={index} className="text-gray-700 ml-4">
-                                                • {exercise.name} - {exercise.reps} reps, {exercise.sets} sets
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-      ) : activeTab === 'savedMeals' && (!user.savedMeals || user.savedMeals.length === 0) ? (
-          <div className="flex flex-col items-center mt-4 text-center text-gray-500">
-              <Image src={foodicon} width={45} height={45} alt="Cooking food" className="mb-2"/>
-              <p>No saved meals.</p>
-          </div>
-      ) : activeTab === 'likedPosts' && (!user.likedPosts || user.likedPosts.length === 0) ? (
+        ) : activeTab === 'likedPosts' && (!user.likedPosts || user.likedPosts.length === 0) ? (
           <div className="flex flex-col items-center mt-4 text-center text-gray-500">
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-heart" viewBox="0 0 16 16">
                   <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
