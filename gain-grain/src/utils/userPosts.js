@@ -151,25 +151,40 @@ export const getPostById = async (id) => {
     }
 };
 
-export const updatePostsById = async (userId, postId, likeStatus) => {
+export const updatePostsById = async (userId, postId, actionType, data) => {
     const client = await clientPromise;
     const db = client.db();
     const postCollection = db.collection('posts');
+
     try {
         let update;
-        if (likeStatus === "like") {
-            update = { $addToSet: { likeCount: userId } };
-            console.log("Liked:: ", likeStatus);
-        }
+
+        if (actionType === "like") {
+            update = { $addToSet: { likeArr: userId } };
+        } 
+        else if (actionType === "unlike") {
+            update = { $pull: { likeArr: userId } };
+        } 
+        else if (actionType === "comment") {
+            // Adding a new comment
+            const newComment = {
+                userId,
+                comment: data.comment,
+                date: new Date(),
+            };
+            update = { $push: { comments: newComment } };
+        } 
         else {
-            update = { $pull: { likeCount: userId } };
-            console.log("Liked:: ", likeStatus);
+            return { success: false, message: 'Invalid action type.' };
         }
-        const blog = await postCollection.updateOne({ _id: new ObjectId(postId) }, update);
-        return blog || { success: false, message: 'Post not found.' };
-    }
-    catch (error) {
-        console.error('Error fetching post:', error);
-        return { success: false, message: 'Error fetching post.' };
+
+        const result = await postCollection.updateOne({ _id: new ObjectId(postId) }, update);
+
+        return result.modifiedCount > 0
+            ? { success: true, message: `${actionType} successful` }
+            : { success: false, message: 'Post not found.' };
+    } catch (error) {
+        console.error('Error updating post:', error);
+        return { success: false, message: 'Error updating post.' };
     }
 };

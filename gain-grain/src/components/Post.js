@@ -5,17 +5,20 @@ import Link from "next/link";
 import Comments from './Comments'
 import { usePathname } from 'next/navigation';
 
-export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, onSavePost, isSaved }) {
+export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, handleCommentClick, handleCommentSubmit,
+                                onSavePost, isSaved }) {
   const pathname = usePathname();
-  
+
   const [userId, setUserId] = useState('');
   const [user, setUser] = useState('');
   const [date, setDate] = useState('');
   const [liked, setLiked] = useState(false);
   const [isProfilePage, setIsProfilePage] = useState(false);
+  const [commentText, setCommentText] = useState('');
+  const [isCommenting, setIsCommenting] = useState(false);
 
   useEffect(() => {
-    if(pathname) {
+    if (pathname) {
       setIsProfilePage(pathname === '/profile');
     }
   }, [pathname]);
@@ -72,7 +75,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
       const secondsInMonth = 2592000;
       const secondsInYear = 31536000;
 
-      if(diffInSeconds < secondsInMinute) {
+      if (diffInSeconds < secondsInMinute) {
         setDate(`${diffInSeconds} seconds ago`);
       } else if (diffInSeconds < secondsInHour) {
         const minutes = Math.floor(diffInSeconds / secondsInMinute);
@@ -95,10 +98,10 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
   }, [post.date]);
 
   useEffect(() => {
-    if (userId && post?.likeCount) {
-      setLiked(post.likeCount.includes(userId));
+    if (userId && post?.likeArr) {
+      setLiked(post.likeArr.includes(userId));
     }
-  }, [userId, post.likeCount]);
+  }, [userId, post.likeArr]);
 
   // Functions to like/unlike posts
   const likePost = async (e) => {
@@ -121,6 +124,32 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
     });
   };
 
+  const addComment = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!commentText.trim()) return; // Prevent empty comments
+
+    try {
+      const response = await fetch('/api/posts', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, postId: post._id, comment: commentText })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Clear input and refresh comments
+        setCommentText('');
+        toggleComments(post._id); // Toggle comments to refresh
+      } else {
+        console.error('Failed to add comment:', data.message);
+      }
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    }
+  };
+
   const renderPostContent = (post) => {
     switch (post.postType) {
       case "Workout":
@@ -128,19 +157,19 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
           <div>
             {isProfilePage ? (
               <div className="post-content p-3">
-              <h4 className="text-3xl text-center font-bold pt-12">{post.title}</h4>
-            </div>
+                <h4 className="text-3xl text-center font-bold pt-12">{post.title}</h4>
+              </div>
             ) : (
               <div className="post-content p-3">
-              <h4 className="text-3xl font-bold pb-2">{post.title}</h4>
-              {post.exercises?.map((exercise) => (
-                <div key={exercise._id} className="exercise-info mt-1">
-                  <p className="indent-[20px] text-xl font-semibold">{exercise.name}</p>
-                  <p className="indent-[45px] text-xl">Sets: {exercise.sets}</p>
-                  <p className="indent-[45px] text-xl">Reps: {exercise.reps}</p>
-                </div>
-              ))}
-            </div>
+                <h4 className="text-3xl font-bold pb-2">{post.title}</h4>
+                {post.exercises?.map((exercise) => (
+                  <div key={exercise._id} className="exercise-info mt-1">
+                    <p className="indent-[20px] text-xl font-semibold">{exercise.name}</p>
+                    <p className="indent-[45px] text-xl">Sets: {exercise.sets}</p>
+                    <p className="indent-[45px] text-xl">Reps: {exercise.reps}</p>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
         );
@@ -167,7 +196,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
                   </div>
                 ))}
               </div>
-              )}
+            )}
           </div>
         );
       case "Blog":
@@ -229,7 +258,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
               borderWidth: '3px',
               position: isExpanded ? 'fixed' : 'relative',
               top: isExpanded ? '25%' : 'auto',
-              left: isExpanded ? '35%' : 'auto', 
+              left: isExpanded ? '35%' : 'auto',
               transform: isExpanded ? 'scale(1.5)' : 'none',
               zIndex: isExpanded ? 40 : 1,
             }}
@@ -249,17 +278,61 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
               <div className="flex-grow max-w-full break-words whitespace-normal">{renderPostContent(post)}</div>
 
               <div className="post-actions flex justify-around mt-auto pb-4">
-                <button onClick={(e) => (liked ? unlikePost(e) : likePost(e))} className="text-xl font-semibold">{liked ? "Unlike" : "Like"}</button>
-                <button onClick={() => toggleComments(post._id)} className="text-xl font-semibold">Comment</button>
-                <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }} className="text-xl font-semibold">{isSaved ? "Saved" : "Save"}</button>
+                <button
+                  onClick={(e) => (liked ? unlikePost(e) : likePost(e))}
+                  className="text-xl font-semibold"
+                >
+                  {liked ? "Unlike" : "Like"}
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleComments(post._id);
+                    setIsCommenting(!isCommenting);
+                  }}
+                  className="text-xl font-semibold"
+                >
+                  Comment
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSavePost(post._id);
+                  }}
+                  className="text-xl font-semibold"
+                >
+                  {isSaved ? "Saved" : "Save"}
+                </button>
               </div>
+
+              {/* Conditional input field for comments */}
+              {isCommenting && visibleComments === post._id && (
+                <form onSubmit={addComment} className="p-3">
+                  <input
+                    type="text"
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    placeholder="Add a comment..."
+                    className="w-full p-2 border rounded mb-2"
+                  />
+                  <button
+                    type="submit"
+                    onClick={(e) => e.stopPropagation()}  // Stop propagation here
+                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                  >
+                    Submit
+                  </button>
+                </form>
+              )}
+
+              {/* Display existing comments */}
               {visibleComments === post._id && <Comments comments={post.comments} />}
             </div>
           </div>
         </div>
       ) : (
-        <div className="relative flex justify-center mx-auto" style={{ 
-          width: '100%', 
+        <div className="relative flex justify-center mx-auto" style={{
+          width: '100%',
           maxWidth: '60vw',
         }}>
           {isExpanded && (
@@ -313,9 +386,9 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
               {isProfilePage ? (
                 <div></div>
               ) : (
-                <div className="post-actions flex justify-around mt-auto pb-5">
+                <div className="post-actions flex justify-around mt-auto pb-4">
                   <button onClick={(e) => (liked ? unlikePost(e) : likePost(e))} className="text-xl font-semibold">{liked ? "Unlike" : "Like"}</button>
-                  <button onClick={() => toggleComments(post._id)} className="text-xl font-semibold">Comment</button>
+                  <button onClick={handleCommentClick} className="text-xl font-semibold">Comment</button>
                   <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }} className="text-xl font-semibold">{isSaved ? "Saved" : "Save"}</button>
                 </div>
               )}

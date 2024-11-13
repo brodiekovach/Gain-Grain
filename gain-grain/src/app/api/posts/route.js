@@ -39,23 +39,41 @@ export async function GET(req) {
     }
 }  
 
+// Update post with some sort of information (add a like, add a comment, etc.)
 export async function PUT(req) {
-    // Proceed with fetching data for the given userId
     try {
         const body = await req.json();
-        const { userId, postId, like} = body;
-        const likeStatus = like ? "like" : "unlike"
-        
-        
-        console.log(userId, postId);
+        const { userId, postId, like, comment } = body;
 
-        const updatedPosts = await updatePostsById(userId, postId, likeStatus);
-        if (!updatedPosts) {
-            return NextResponse.json({ message: 'Could not find post'});
+        // Validate that userId and postId are provided
+        if (!userId || !postId) {
+            return NextResponse.json({ message: 'Missing userId or postId' }, { status: 400 });
         }
-        return NextResponse.json({ message: 'Like added!', updatedPosts });
+
+        let actionType;
+        let data;
+
+        // Handle like/unlike functionality
+        if (like !== undefined) {
+            actionType = like ? "like" : "unlike";
+        } 
+        // Handle adding a comment
+        else if (comment) {
+            actionType = "comment";
+            data = { comment };
+        } else {
+            return NextResponse.json({ message: 'No valid action specified' }, { status: 400 });
+        }
+
+        const result = await updatePostsById(userId, postId, actionType, data);
+
+        if (!result.success) {
+            return NextResponse.json({ message: result.message }, { status: 404 });
+        }
+        return NextResponse.json({ message: result.message });
     } 
     catch (error) {
-      return new Response("Error updating posts", { status: 500 });
+        console.error('Error updating post:', error);
+        return NextResponse.json({ message: 'Error updating post' }, { status: 500 });
     }
 }

@@ -1,15 +1,21 @@
-export default function Comments({ visibleComments }) {
-    return (
-        <div className="comments-container flex flex-col ml-4">
-            {Object.keys(visibleComments).map((postId) =>
-                visibleComments[postId] ? (
-                    <div key={postId} className="comments-section bg-white p-3 rounded-lg mt-3 w-64">
-                        <h4 className="font-bold">Comments</h4>
-                        <div className="comment mb-2"><strong>@user456:</strong> Great post!</div>
-                        <div className="comment"><strong>@fitguru:</strong> Really informative!</div>
-                    </div>
-                ) : null
-            )}
-        </div>
-    );
+import React from 'react';
+
+export default function Comments({ comments }) {
+  if (!comments || !Array.isArray(comments)) {
+    return <div>No comments yet.</div>;  // Fallback in case there are no comments
+  }
+
+  return (
+    <div className="comments-container flex flex-col ml-4">
+      {comments.length === 0 ? (
+        <div>No comments yet.</div>
+      ) : (
+        comments.map((comment, index) => (
+          <div key={index} className="comment bg-white p-3 rounded-lg mt-3 w-64">
+            <p>{comment.text}</p>
+          </div>
+        ))
+      )}
+    </div>
+  );
 }

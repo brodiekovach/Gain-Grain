@@ -1,16 +1,18 @@
 import mongoose from 'mongoose';
 
-const commentSchema = new mongoose.Schema({
+const commentSchema = new mongoose.Schema(
+    {
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     comment: { type: String, required: true },
     date: { type: Date, default: Date.now },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-});
+    }
+);
 
 const postSchema = new mongoose.Schema(
     {
         userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
         postType: { type: String, required: true },
-        likeCount: [{ type: String }],
+        likeArr: [{ type: String }],
         comments: [commentSchema],
     },
     { discriminatorKey: 'postType', collection: 'posts' }
