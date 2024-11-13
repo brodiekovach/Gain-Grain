@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 
 export default function Feed({ posts, toggleComments, visibleComments }) {
   const pathname = usePathname();
-
+  const [selectedCategory, setSelectedCategory] = useState('Workout');
   const [expandedPostId, setExpandedPostId] = useState(null);
   const [savedPosts, setSavedPosts] = useState([]);
   const [isProfilePage, setIsProfilePage] = useState(false);
@@ -58,39 +58,87 @@ export default function Feed({ posts, toggleComments, visibleComments }) {
     }
   };
 
+  // Filter posts based on selected category
+  const filteredPosts = posts.filter(post => post.postType === selectedCategory);
+
   return (
-    <div className="flex justify-center mt-8 w-full">
+    <div className="flex flex-col items-center mt-8 w-full">
+      {/* Category Selection Menu */}
+      <div className="flex justify-center space-x-4 mb-8 w-full">
+        <button
+          className={`px-4 py-2 rounded-full ${
+            selectedCategory === 'Workout'
+              ? 'bg-orange-500 text-white'
+              : 'bg-gray-200 text-gray-700'
+          }`}
+          onClick={() => setSelectedCategory('Workout')}
+        >
+          Workouts
+        </button>
+        <button
+          className={`px-4 py-2 rounded-full ${
+            selectedCategory === 'Meal'
+              ? 'bg-orange-500 text-white'
+              : 'bg-gray-200 text-gray-700'
+          }`}
+          onClick={() => setSelectedCategory('Meal')}
+        >
+          Meals
+        </button>
+        <button
+          className={`px-4 py-2 rounded-full ${
+            selectedCategory === 'Blog'
+              ? 'bg-orange-500 text-white'
+              : 'bg-gray-200 text-gray-700'
+          }`}
+          onClick={() => setSelectedCategory('Blog')}
+        >
+          Blogs
+        </button>
+        <button
+          className={`px-4 py-2 rounded-full ${
+            selectedCategory === 'ProgressPic'
+              ? 'bg-orange-500 text-white'
+              : 'bg-gray-200 text-gray-700'
+          }`}
+          onClick={() => setSelectedCategory('ProgressPic')}
+        >
+          Progress Pics
+        </button>
+      </div>
+
+      {/* Posts Grid */}
       {isProfilePage ? (
         <div className="grid grid-cols-3 gap-6 max-w-7xl w-full">
-        {posts.map((post) => (
-          <Post
-            classname="w-[60%] mx-auto"
-            key={post._id}
-            post={post}
-            toggleComments={toggleComments}
-            visibleComments={visibleComments}
-            isExpanded={expandedPostId === post._id}
-            handlePostClick={handlePostClick}
-            onSavePost={handleSavePost}
-            isSaved={savedPosts.includes(post._id)}
-          />
-        ))}
+          {filteredPosts.map((post) => (
+            <Post
+              classname="w-[60%] mx-auto"
+              key={post._id}
+              post={post}
+              toggleComments={toggleComments}
+              visibleComments={visibleComments}
+              isExpanded={expandedPostId === post._id}
+              handlePostClick={handlePostClick}
+              onSavePost={handleSavePost}
+              isSaved={savedPosts.includes(post._id)}
+            />
+          ))}
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 max-w-7xl w-full">
-        {posts.map((post) => (
-          <Post
-            classname="w-[60%] mx-auto"
-            key={post._id}
-            post={post}
-            toggleComments={toggleComments}
-            visibleComments={visibleComments}
-            isExpanded={expandedPostId === post._id}
-            handlePostClick={handlePostClick}
-            onSavePost={handleSavePost}
-            isSaved={savedPosts.includes(post._id)}
-          />
-        ))}
+          {filteredPosts.map((post) => (
+            <Post
+              classname="w-[60%] mx-auto"
+              key={post._id}
+              post={post}
+              toggleComments={toggleComments}
+              visibleComments={visibleComments}
+              isExpanded={expandedPostId === post._id}
+              handlePostClick={handlePostClick}
+              onSavePost={handleSavePost}
+              isSaved={savedPosts.includes(post._id)}
+            />
+          ))}
         </div>
       )}
     </div>
