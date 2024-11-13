@@ -103,13 +103,14 @@ const CreateBlogPost = () => {
             <div className="max-w-2xl mx-auto p-4">
                 <h1 className="text-2xl font-bold mb-4">Create a Blog Post</h1>
                 <form onSubmit={handleSubmit}>
-                    <label className="text-lg">:</label>
+                    <label className="text-lg p-3 font-bold">Title:</label>
                     <input
                         type="text"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        className="border p-2 rounded-md"
+                        className="border border-5 rounded-md w-[300px] h-[30px]"
                     />
+                    <div className="pb-4"></div>
                     <ReactQuill
                         value={postContent}
                         onChange={handleChange}
