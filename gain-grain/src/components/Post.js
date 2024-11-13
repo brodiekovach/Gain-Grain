@@ -204,10 +204,11 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
           <div>
             {isProfilePage ? (
               <div className="post-content p-3 text-m font-bold">
-                <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                <h4 className="text-3xl font-semibold text-center pt-11">{post.title}</h4>
               </div>
             ) : (
               <div className="post-content p-3 text-xl font-bold">
+                <h4 className="text-3xl font-semibold pb-3"></h4>
                 <div dangerouslySetInnerHTML={{ __html: post.content }} />
               </div>
             )}
