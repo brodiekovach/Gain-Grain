@@ -402,7 +402,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
                     </button>
                   <button onClick={(e) => { e.stopPropagation(); onSavePost(post._id); }}className="text-3xl font-semibold">
                     <FaBookmark
-                      style={{ color: isSaved ? 'blue' : 'gray', transition: 'color 0.3s' }}
+                      style={{ color: isSaved ? 'yellow' : 'gray', transition: 'color 0.3s' }}
                       className={isSaved ? 'filled-bookmark' : 'outlined-bookmark'}
                   />
                   </button>
