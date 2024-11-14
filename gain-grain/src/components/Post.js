@@ -436,7 +436,6 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
             <div className="space-x-2 flex flex-col h-full">
               <h5 className="text-right pr-5 text-m mb-[-10px]">{date}</h5>
               <div className="flex-grow max-w-[100%] break-words whitespace-normal">{renderPostContent(post)}</div>
-              {isExpanded && (
                 <div className="post-actions flex justify-around mt-auto pb-4">
                   <button
                     onClick={(e) => (liked ? unlikePost(e) : likePost(e))}
@@ -469,7 +468,6 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
                     />
                   </button>
                 </div>
-              )}
             </div>
           </div>
         </div>
