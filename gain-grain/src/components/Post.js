@@ -161,11 +161,30 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
         return (
           <div>
             {isProfilePage ? (
-              <div className="post-content" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <h4 className="text-3xl text-center font-bold">{post.title}</h4>
-              </div>  
+              isExpanded ? (
+                <div className="post-content p-3" style={{ 
+                  maxHeight: '60vh',
+                  overflowY: 'auto'
+                }}>
+                  <h4 className="text-3xl font-bold pb-2">{post.title}</h4>
+                  {post.exercises?.map((exercise) => (
+                    <div key={exercise._id} className="exercise-info mt-1">
+                      <p className="indent-[20px] text-xl font-semibold">{exercise.name}</p>
+                      <p className="indent-[45px] text-xl">Sets: {exercise.reps}</p>
+                      <p className="indent-[45px] text-xl">Reps: {exercise.sets}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="post-content" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <h4 className="text-3xl text-center font-bold">{post.title}</h4>
+                </div>
+              )  
             ) : (
-              <div className="post-content p-3">
+              <div className="post-content p-3" style={{ 
+                maxHeight: isExpanded ? '65vh' : '280px',
+                overflowY: 'auto'
+              }}>
                 <h4 className="text-3xl font-bold pb-2">{post.title}</h4>
                 {post.exercises?.map((exercise) => (
                   <div key={exercise._id} className="exercise-info mt-1">
@@ -182,15 +201,35 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
         return (
           <div>
             {isProfilePage ? (
-              <div className="post-content p-3">
-                {post.meal?.map((item) => (
-                  <div key={item._id} className="meal-info mt-1">
-                    <h4 className="text-3xl font-semibold text-center pt-11">{item.name}</h4>
-                  </div>
-                ))}
-              </div>
+              isExpanded ? (
+                <div className="post-content p-3" style={{ 
+                  maxHeight: '60vh',
+                  overflowY: 'auto'
+                }}>
+                  {post.meal?.map((item) => (
+                    <div key={item._id} className="meal-info mt-1">
+                      <h4 className="text-3xl font-semibold">{item.name}</h4>
+                      <p className="indent-[20px] text-xl"><span className="font-bold">Calories: </span>{item.calories} kcal</p>
+                      <p className="indent-[20px] text-xl"><span className="font-bold">Protein: </span>{item.protein}g</p>
+                      <p className="indent-[20px] text-xl"><span className="font-bold">Carbs: </span>{item.carbs}g</p>
+                      <p className="indent-[20px] text-xl"><span className="font-bold">Fats: </span>{item.fats}g</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="post-content p-3">
+                  {post.meal?.map((item) => (
+                    <div key={item._id} className="meal-info mt-1">
+                      <h4 className="text-3xl font-semibold text-center pt-11">{item.name}</h4>
+                    </div>
+                  ))}
+                </div>
+              )
             ) : (
-              <div className="post-content p-3">
+              <div className="post-content p-3" style={{ 
+                maxHeight: isExpanded ? '65vh' : '280px',
+                overflowY: 'auto'
+              }}>
                 {post.meal?.map((item) => (
                   <div key={item._id} className="meal-info mt-1">
                     <h4 className="text-3xl font-semibold">{item.name}</h4>
@@ -208,11 +247,24 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
         return (
           <div>
             {isProfilePage ? (
-              <div className="post-content p-3 text-m font-bold">
-                <h4 className="text-3xl font-semibold text-center pt-12">{post.title}</h4>
-              </div>
+              isExpanded ? (
+                <div className="post-content p-3 text-xl" style={{ 
+                  maxHeight: '60vh',
+                  overflowY: 'auto'
+                }}>
+                  <h4 className="text-3xl font-semibold pb-3">{post.title}</h4>
+                  <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                </div>
+              ) : (
+                <div className="post-content p-3 text-m font-bold">
+                  <h4 className="text-3xl font-semibold text-center pt-12">{post.title}</h4>
+                </div>
+              )
             ) : (
-              <div className="post-content p-3 text-xl">
+              <div className="post-content p-3 text-xl" style={{ 
+                maxHeight: isExpanded ? '65vh' : '280px',
+                overflowY: 'auto'
+              }}>
                 <h4 className="text-3xl font-semibold pb-3">{post.title}</h4>
                 <div dangerouslySetInnerHTML={{ __html: post.content }} />
               </div>
@@ -224,19 +276,19 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
           <div>
             {isProfilePage ? (
               <div className="post-content" style={{ 
-                height: isExpanded ? '200px' : '250px', 
+                height: isExpanded ? '45vh' : '250px', 
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '20px'
+                padding: '20px',
+                paddingTop: isExpanded ? '' : '20px',
+                marginTop: isExpanded ? '20px' : '0px',
               }}>
                 <img 
                   src={post.progressPic} 
                   alt="Progress" 
                   style={{ 
-                    maxHeight: isExpanded ? '400px' : '260px',
-                    paddingTop: isExpanded ? '0px' : '10px',
-                    paddingBottom: isExpanded ? '0px' : '10px',
+                    maxHeight: isExpanded ? '50vh' : '210px',
                     width: 'auto',
                     objectFit: 'contain',
                     borderRadius: '0.5rem'
