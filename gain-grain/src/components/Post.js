@@ -161,9 +161,9 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
         return (
           <div>
             {isProfilePage ? (
-              <div className="post-content p-3">
-                <h4 className="text-3xl text-center font-bold pt-12">{post.title}</h4>
-              </div>
+              <div className="post-content" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <h4 className="text-3xl text-center font-bold">{post.title}</h4>
+              </div>  
             ) : (
               <div className="post-content p-3">
                 <h4 className="text-3xl font-bold pb-2">{post.title}</h4>
@@ -209,10 +209,10 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
           <div>
             {isProfilePage ? (
               <div className="post-content p-3 text-m font-bold">
-                <h4 className="text-3xl font-semibold text-center pt-11">{post.title}</h4>
+                <h4 className="text-3xl font-semibold text-center pt-12">{post.title}</h4>
               </div>
             ) : (
-              <div className="post-content p-3 text-xl font-bold">
+              <div className="post-content p-3 text-xl">
                 <h4 className="text-3xl font-semibold pb-3">{post.title}</h4>
                 <div dangerouslySetInnerHTML={{ __html: post.content }} />
               </div>
@@ -223,8 +223,25 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
         return (
           <div>
             {isProfilePage ? (
-              <div className="post-content flex justify-center items-center">
-                <img src={post.progressPic} alt="Progress" className="w-full max-w-xs rounded-lg w-[65%] object-contain" style={{ maxHeight: '300px' }} />
+              <div className="post-content" style={{ 
+                height: isExpanded ? '200px' : '250px', 
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '20px'
+              }}>
+                <img 
+                  src={post.progressPic} 
+                  alt="Progress" 
+                  style={{ 
+                    maxHeight: isExpanded ? '400px' : '260px',
+                    paddingTop: isExpanded ? '0px' : '10px',
+                    paddingBottom: isExpanded ? '0px' : '10px',
+                    width: 'auto',
+                    objectFit: 'contain',
+                    borderRadius: '0.5rem'
+                  }} 
+                />
               </div>
             ) : (
               <div className="post-content p-3 flex justify-center items-center">
@@ -288,11 +305,13 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
   };
 
   return (
-    <div>
+    <div className="w-full flex justify-center px-4">
       {isProfilePage ? (
         <div className="relative flex justify-center mx-auto" style={{
           width: '100%',
-          maxWidth: '60vw',
+          maxWidth: '50vw',
+          margin: '0 auto',
+          position: 'relative',
         }}>
           {isExpanded && (
             <div
@@ -303,8 +322,8 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
             key={post._id}
             className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0 ${isExpanded ? 'expanded' : ''}`}
             style={{
-              width: isExpanded ? '45vw' : '60vw',
-              minHeight: '350px',
+              width: isExpanded ? '45vw' : '100%',
+              height: isExpanded ? '80vh' : '350px',
               flexDirection: 'column',
               boxSizing: 'border-box',
               borderColor: postColor,
@@ -320,17 +339,13 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
             onClick={() => handlePostClick(post._id)}
           >
             <div className="post-header flex items-center p-3">
-              <Link href={`/search/profile?userId=${user._id}`}>
-                <img
-                  src={user.profilePic}
-                  alt="User Profile"
-                  className="rounded-full mr-2"
-                  style={{ width: '40px', height: '40px' }}
-                />
-              </Link>
-              <h3 className="text-3xl font-bold hover:underline">
-                <Link href={`/search/profile?userId=${user._id}`}>@{user.username}</Link>
-              </h3>
+              <img
+                src={user.profilePic}
+                alt="User Profile"
+                className="rounded-full mr-2"
+                style={{ width: '40px', height: '40px' }}
+              />
+              <h3 className="text-3xl font-bold">@{user.username}</h3>
               <div className="absolute top-3 right-3 text-2xl cursor-pointer" style={{ color: postColor }}>
                 {post.postType === "Workout" && <FaDumbbell />}
                 {post.postType === "Meal" && <MdOutlineFastfood />}
@@ -339,40 +354,33 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
               </div>
             </div>
             <div className="space-x-2 flex flex-col h-full">
-              <h5 className="text-right pr-5 text-m mb-[-10px]">{date}</h5>
+              <h5 className="text-right pr-5 text-m z-10" style={{ marginTop: '-15px' }}>{date}</h5>
               <div className="flex-grow max-w-[100%] break-words whitespace-normal">{renderPostContent(post)}</div>
-              <div className="post-actions flex justify-around mt-auto pb-4">
-                <button
-                  onClick={(e) => (liked ? unlikePost(e) : likePost(e))}
-                  className="text-3xl font-semibold"
-                >
-                  <FaHeart 
-                    style={{ color: liked ? 'red' : 'gray', transition: 'color 0.3s' }}
-                    className={liked ? 'filled-heart' : 'outlined-heart'}
-                  />
-                </button>
-                <button 
-                  onClick={handleCommentClick} 
-                  className="text-3xl font-semibold"
-                >
-                  <FaComment 
-                    style={{ color: visibleComments === post._id ? 'blue' : 'gray', transition: 'color 0.3s' }}
-                    className="text-gray-600" 
-                  />
-                </button>
-                <button 
-                  onClick={(e) => { 
-                    e.stopPropagation(); 
-                    onSavePost(post._id); 
-                  }}
-                  className="text-3xl font-semibold"
-                >
-                  <FaBookmark
-                    style={{ color: isSaved ? 'yellow' : 'gray', transition: 'color 0.3s' }}
-                    className={isSaved ? 'filled-bookmark' : 'outlined-bookmark'}
-                  />
-                </button>
-              </div>
+              {isExpanded && (
+                <div className="post-actions flex justify-around mt-auto pb-4">
+                  <button
+                    onClick={(e) => (liked ? unlikePost(e) : likePost(e))}
+                    className="text-3xl font-semibold"
+                  >
+                    <FaHeart 
+                      style={{ color: liked ? 'red' : 'gray', transition: 'color 0.3s' }}
+                      className={liked ? 'filled-heart' : 'outlined-heart'}
+                    />
+                  </button>
+                  <button 
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      onSavePost(post._id); 
+                    }}
+                    className="text-3xl font-semibold"
+                  >
+                    <FaBookmark
+                      style={{ color: isSaved ? 'yellow' : 'gray', transition: 'color 0.3s' }}
+                      className={isSaved ? 'filled-bookmark' : 'outlined-bookmark'}
+                    />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -428,38 +436,40 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
             <div className="space-x-2 flex flex-col h-full">
               <h5 className="text-right pr-5 text-m mb-[-10px]">{date}</h5>
               <div className="flex-grow max-w-[100%] break-words whitespace-normal">{renderPostContent(post)}</div>
-              <div className="post-actions flex justify-around mt-auto pb-4">
-                <button
-                  onClick={(e) => (liked ? unlikePost(e) : likePost(e))}
-                  className="text-3xl font-semibold"
-                >
-                  <FaHeart 
-                    style={{ color: liked ? 'red' : 'gray', transition: 'color 0.3s' }}
-                    className={liked ? 'filled-heart' : 'outlined-heart'}
-                  />
-                </button>
-                <button 
-                  onClick={handleCommentClick} 
-                  className="text-3xl font-semibold"
-                >
-                  <FaComment 
-                    style={{ color: visibleComments === post._id ? 'blue' : 'gray', transition: 'color 0.3s' }}
-                    className="text-gray-600" 
-                  />
-                </button>
-                <button 
-                  onClick={(e) => { 
-                    e.stopPropagation(); 
-                    onSavePost(post._id); 
-                  }}
-                  className="text-3xl font-semibold"
-                >
-                  <FaBookmark
-                    style={{ color: isSaved ? 'yellow' : 'gray', transition: 'color 0.3s' }}
-                    className={isSaved ? 'filled-bookmark' : 'outlined-bookmark'}
-                  />
-                </button>
-              </div>
+              {isExpanded && (
+                <div className="post-actions flex justify-around mt-auto pb-4">
+                  <button
+                    onClick={(e) => (liked ? unlikePost(e) : likePost(e))}
+                    className="text-3xl font-semibold"
+                  >
+                    <FaHeart 
+                      style={{ color: liked ? 'red' : 'gray', transition: 'color 0.3s' }}
+                      className={liked ? 'filled-heart' : 'outlined-heart'}
+                    />
+                  </button>
+                  <button 
+                    onClick={handleCommentClick} 
+                    className="text-3xl font-semibold"
+                  >
+                    <FaComment 
+                      style={{ color: visibleComments === post._id ? 'blue' : 'gray', transition: 'color 0.3s' }}
+                      className="text-gray-600" 
+                    />
+                  </button>
+                  <button 
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      onSavePost(post._id); 
+                    }}
+                    className="text-3xl font-semibold"
+                  >
+                    <FaBookmark
+                      style={{ color: isSaved ? 'yellow' : 'gray', transition: 'color 0.3s' }}
+                      className={isSaved ? 'filled-bookmark' : 'outlined-bookmark'}
+                    />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

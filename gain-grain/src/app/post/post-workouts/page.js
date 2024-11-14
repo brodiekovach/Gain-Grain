@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 export default function PostWorkouts() {
     const [exercises, setExercises] = useState([
-        { id: 1, name: '', reps: '', sets: '' },
+        { id: 1, name: '', sets: '', reps: '' },
     ]);
     const [title, setTitle] = useState(''); 
     const [userId, setUserId] = useState('');
@@ -46,7 +46,7 @@ export default function PostWorkouts() {
     const addExercise = () => {
         setExercises((prev) => [
             ...prev,
-            { id: prev.length + 1, name: '', reps: '', sets: '' },
+            { id: prev.length + 1, name: '', sets: '',reps: '' },
         ]);
     };
 
