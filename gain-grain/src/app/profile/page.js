@@ -133,14 +133,12 @@ export default function profile() {
           </div>
           <div className={styles.profile}>
             <h1 className={styles.username}>{user.username} </h1>
-            <div className="flex justify-between space-x-4 mt-2">
+            <div className="flex flex-row justify-center space-x-4 mt-2">
             <p>Followers: <strong>{user.numFollowers}</strong></p>
             <p>Following: <strong>{user.numFollowing}</strong></p>
           </div>
-            {user.bio ? (
-              <p className="mt-4 text-center">{user.bio}</p>
-            ) : (
-              <p></p>
+            {user.bio && (
+              <p className="mt-4 text-center max-w-xs overflow-hidden text-ellipsis">{user.bio}</p>
             )}
             <div className="flex flex-col items-center w-full mt-6">
             <Link href="/edit-profile">
