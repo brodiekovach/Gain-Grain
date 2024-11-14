@@ -104,7 +104,7 @@ export default function EditProfile() {
   return (
     <div>
       <Navbar />
-      <div className="container mx-auto p-4 max-w-2xl">
+      <div className="container mx-auto p-8 max-w-lg border-2 border-gray-300 rounded-lg shadow-lg">
         <h1 className="text-3xl font-semibold text-center mb-6">Edit Profile</h1>
         {error && <p className="text-center text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleProfileSave} className="bg-white shadow-md rounded-lg p-6 space-y-6">
@@ -113,6 +113,7 @@ export default function EditProfile() {
           <label htmlFor="profilePic" className="text-lg mb-2">Profile Picture</label>
           <div className="relative mb-3 flex flex-col items-center">
             {profilePicPath && (
+              
               <img
                 src={profilePicPath}
                 alt="Current Profile Picture"
@@ -124,7 +125,7 @@ export default function EditProfile() {
               accept="image/*"
               id="profilePic"
               onChange={(e) => setPic(e.target.files[0])}
-              className="file:bg-orange-500 file:text-white file:py-1 file:px-4 file:rounded file:border-none file:cursor-pointer"
+              className="file:bg-black file:text-white file:py-1 file:px-4 file:rounded file:border-none file:cursor-pointer"
             />
           </div>
         </div>
@@ -159,7 +160,7 @@ export default function EditProfile() {
             />
           </div>
 
-          <button className="w-full bg-orange-500 text-white font-semibold py-3 rounded-lg hover:bg-blue-600 transition-colors">
+          <button className="w-full bg-black text-white font-semibold py-3 rounded-lg hover:bg-blue-600 transition-colors">
             Save Changes
           </button>
         </form>
