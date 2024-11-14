@@ -1,3 +1,62 @@
 7bc01a38 (V1w35h           2024-11-13 17:11:11 -0500   1) import { FaDumbbell, FaCameraRetro, FaPencilAlt, FaHeart, FaComment, FaBookmark  } from 'react-icons/fa';
 59052109 (V1w35h           2024-11-10 14:30:48 -0500 526)     </div>
+01e011a1 (V1w35h   2024-11-13 23:07:30 -0500 107)       <div className="container mx-auto p-8 max-w-lg border-2 border-gray-300 rounded-lg shadow-lg">
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 108)         <h1 className="text-3xl font-semibold text-center mb-6">Edit Profile</h1>
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 109)         {error && <p className="text-center text-red-500 mb-4">{error}</p>}
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 110)         <form onSubmit={handleProfileSave} className="bg-white shadow-md rounded-lg p-6 space-y-6">
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 111)           
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 112)         <div className="flex flex-col items-center mb-6">
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 113)           <label htmlFor="profilePic" className="text-lg mb-2">Profile Picture</label>
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 114)           <div className="relative mb-3 flex flex-col items-center">
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 115)             {profilePicPath && (
+01e011a1 (V1w35h   2024-11-13 23:07:30 -0500 116)               
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 117)               <img
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 118)                 src={profilePicPath}
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 119)                 alt="Current Profile Picture"
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 120)                 className="w-24 h-24 rounded-full object-cover border mb-4"
+^48d9ae1 (teisenba 2024-10-28 20:41:53 -0400 121)               />
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 122)             )}
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 123)             <input
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 124)               type="file"
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 125)               accept="image/*"
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 126)               id="profilePic"
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 127)               onChange={(e) => setPic(e.target.files[0])}
+01e011a1 (V1w35h   2024-11-13 23:07:30 -0500 128)               className="file:bg-black file:text-white file:py-1 file:px-4 file:rounded file:border-none file:cursor-pointer"
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 129)             />
+^48d9ae1 (teisenba 2024-10-28 20:41:53 -0400 130)           </div>
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 131)         </div>
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 132) 
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 133)           <div>
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 134)             <label className="text-lg font-medium mb-1">Name</label>
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 135)             <input
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 136)               type="text"
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 137)               value={name}
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 138)               onChange={(e) => setName(e.target.value)}
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 139)               className="border p-3 w-full rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 140)             />
+^48d9ae1 (teisenba 2024-10-28 20:41:53 -0400 141)           </div>
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 142) 
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 143)           <div>
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 144)             <label className="text-lg font-medium mb-1">Username</label>
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 145)             <input
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 146)               type="text"
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 147)               value={username}
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 148)               onChange={(e) => setUsername(e.target.value)}
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 149)               className="border p-3 w-full rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 150)             />
+^48d9ae1 (teisenba 2024-10-28 20:41:53 -0400 151)           </div>
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 152) 
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 153)           <div>
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 154)             <label className="text-lg font-medium mb-1">Bio</label>
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 155)             <textarea
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 156)               value={bio}
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 157)               onChange={(e) => setBio(e.target.value)}
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 158)               className="border p-3 w-full rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 159)               rows="4"
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 160)             />
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 161)           </div>
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 162) 
+01e011a1 (V1w35h   2024-11-13 23:07:30 -0500 163)           <button className="w-full bg-black text-white font-semibold py-3 rounded-lg hover:bg-blue-600 transition-colors">
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 164)             Save Changes
+5cf41908 (V1w35h   2024-11-13 22:45:35 -0500 165)           </button>
 
