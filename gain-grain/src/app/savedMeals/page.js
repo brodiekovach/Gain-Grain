@@ -87,7 +87,6 @@ const SavedMealsPage = () => {
                                 <button className="meal-action-button" onClick={() => toggleDetails(meal._id)}>
                                     {meal.showDetails ? 'Hide Details' : 'View Details'}
                                 </button>
-                                <button className="meal-action-button">Edit</button>
                             </div>
 
                             {/* Conditionally render details */}

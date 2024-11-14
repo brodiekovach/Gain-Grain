@@ -210,16 +210,22 @@ const CustomCalendar = () => {
 
     const handleAddMeal = () => {
         if (mealName && mealCalories) {
-            // Format ingredients to match the expected structure
-            const formattedIngredients = mealIngredients.map(ingredient => ({
-                name: ingredient.name,
-                amount: `${ingredient.amount.quantity} ${ingredient.amount.unit}`
-            }));
+            // Convert mealIngredients string to array format if it's not already an array
+            let ingredients = mealIngredients;
+            if (typeof mealIngredients === 'string' && mealIngredients) {
+                ingredients = [{
+                    name: mealIngredients,
+                    amount: {
+                        quantity: 1,
+                        unit: 'unit'
+                    }
+                }];
+            }
 
             const newMeal = {
                 name: mealName,
                 calories: mealCalories,
-                ingredients: formattedIngredients,
+                ingredients: ingredients,
                 link: mealUrl,
             };
 
@@ -285,8 +291,14 @@ const CustomCalendar = () => {
             }
     
             if (data.success) {
+                // Format ingredients to match the expected structure
+                const formattedIngredients = data.ingredients.map(ingredient => ({
+                    name: ingredient.name,
+                    amount: ingredient.amount // Keep the amount as a string
+                }));
+
                 setMealName(data.name);
-                setMealIngredients(data.ingredients);
+                setMealIngredients(formattedIngredients);
                 setMealCalories(data.calories);
     
                 if (!data.caloriesFound) {
@@ -367,16 +379,27 @@ const CustomCalendar = () => {
         }
 
         try {
-            // Log the incoming meal data
-            console.log('Meal being saved:', meal);
+            // Log the incoming meal data for debugging
+            console.log('Meal before saving:', meal);
 
-            // Keep the ingredients exactly as they come from the URL parser
+            // Format ingredients to ensure they're strings
+            const formattedIngredients = meal.ingredients.map(ingredient => ({
+                name: ingredient.name,
+                amount: typeof ingredient.amount === 'string' 
+                    ? ingredient.amount 
+                    : ingredient.amount.quantity && ingredient.amount.unit
+                        ? `${ingredient.amount.quantity} ${ingredient.amount.unit}`
+                        : 'as needed'
+            }));
+
             const MealData = {
                 name: meal.name,
-                ingredients: meal.ingredients,  // Don't transform the ingredients
+                ingredients: formattedIngredients,
                 calories: meal.calories,
                 link: meal.link,
             };
+
+            console.log('Formatted meal data:', MealData);
 
             const response = await fetch('/api/meals/saveToProfile', {
                 method: 'POST',

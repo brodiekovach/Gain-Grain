@@ -81,10 +81,11 @@ const SavedWorkoutsPage = () => {
                         <div key={workout._id} className="workout-card">
                             <h3>{workout.title}</h3>
                             <p>Exercises: {workout.exercises.length}</p>
-                            <button className="workout-action-button" onClick={() => toggleDetails(workout._id)}>
-                                {workout.showDetails ? 'Hide Details' : 'View Details'}
-                            </button>
-                            <button className='workout-action-button'>edit</button>
+                            <div className="workout-buttons">
+                                <button className="workout-action-button" onClick={() => toggleDetails(workout._id)}>
+                                    {workout.showDetails ? 'Hide Details' : 'View Details'}
+                                </button>
+                            </div>
                             
                             {/* Show exercise details if toggleDetails is true */}
                             {workout.showDetails && (
