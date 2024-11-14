@@ -170,8 +170,8 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
                 {post.exercises?.map((exercise) => (
                   <div key={exercise._id} className="exercise-info mt-1">
                     <p className="indent-[20px] text-xl font-semibold">{exercise.name}</p>
-                    <p className="indent-[45px] text-xl">Sets: {exercise.sets}</p>
-                    <p className="indent-[45px] text-xl">Reps: {exercise.reps}</p>
+                    <p className="indent-[45px] text-xl">Sets: {exercise.reps}</p>
+                    <p className="indent-[45px] text-xl">Reps: {exercise.sets}</p>
                   </div>
                 ))}
               </div>
