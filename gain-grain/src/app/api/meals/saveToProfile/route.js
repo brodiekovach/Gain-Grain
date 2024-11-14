@@ -10,25 +10,24 @@ export async function POST(req) {
             return NextResponse.json({ success: false, message: 'Missing required fields'});
         }
 
-        // Debug logs
-        console.log('Raw incoming meal:', meal);
-        console.log('Raw ingredients:', meal.ingredients);
+        // Validate and format ingredients
+        if (!Array.isArray(meal.ingredients)) {
+            console.error('Invalid ingredients format:', meal.ingredients);
+            return NextResponse.json({ success: false, message: 'Invalid ingredients format'});
+        }
 
-        // Ensure ingredients are properly formatted
+        // Ensure each ingredient has the correct structure
         const formattedIngredients = meal.ingredients.map(ingredient => {
-            console.log('Processing ingredient:', ingredient);
-            
-            // Handle case where ingredient might be undefined
-            if (!ingredient) {
-                console.warn('Undefined ingredient found');
-                return null;
+            if (!ingredient || typeof ingredient !== 'object') {
+                console.error('Invalid ingredient:', ingredient);
+                return { name: 'Unknown', amount: 'as needed' };
             }
 
             return {
                 name: ingredient.name || 'Unknown',
                 amount: ingredient.amount || 'as needed'
             };
-        }).filter(Boolean); // Remove any null values
+        });
 
         console.log('Formatted ingredients:', formattedIngredients);
 
