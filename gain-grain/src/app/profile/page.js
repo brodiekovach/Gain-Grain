@@ -18,6 +18,7 @@ export default function profile() {
   const [loadingSavedPosts, setLoadingSavedPosts] = useState(true);
   const [visibleComments, setVisibleComments] = useState(null);
   const [expandedPostId, setExpandedPostId] = useState(null);
+  const [isProfilePicExpanded, setIsProfilePicExpanded] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -104,6 +105,10 @@ export default function profile() {
     }
   }, [user]);
 
+  const toggleProfilePic = () => {
+    setIsProfilePicExpanded(!isProfilePicExpanded);
+  };
+
 
   const handlePostClick = (postId) => {
     if (expandedPostId === postId) {
@@ -120,8 +125,15 @@ export default function profile() {
   return (
     <div className={styles.wrapper}>
       <Navbar />
+      {isProfilePicExpanded && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-30" onClick={toggleProfilePic}>
+          <div className="flex justify-center items-center h-full">
+            <Image src={user.profilePic} width={300} height={300} className="rounded-full object-cover" />
+          </div>
+        </div>
+      )}
         <div className="flex flex-col items-center p-4">
-          <div className="w-24 h-24">
+          <div className="w-24 h-24" onClick={toggleProfilePic}>
             {user.profilePic ? (
               <Image src={user.profilePic} width={150} height={150} className="rounded-full w-full h-full object-cover"/>
             ) : (
