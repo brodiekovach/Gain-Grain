@@ -5,8 +5,6 @@ import styles from './profile.module.css'
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import Image from 'next/image';
-import dumbbell from '../../../public/images/dumbbell.png'
-import foodicon from '../../../public/images/foodicon.png'
 import Post from '@/components/Post';
 import Feed from "@/components/Feed";
 
@@ -58,7 +56,6 @@ export default function profile() {
         
         if (result.success) {
           setPosts(result.posts);
-          // console.log('Posts: ', result.posts); 
         } else {
           console.error("Error fetching user posts:", result.message);
           setPosts([]); 

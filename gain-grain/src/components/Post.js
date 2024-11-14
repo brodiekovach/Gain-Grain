@@ -26,7 +26,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
 
   useEffect(() => {
     if (pathname) {
-      setIsProfilePage(pathname === '/profile');
+      setIsProfilePage(pathname === '/profile' || pathname === '/search/profile');
     }
   }, [pathname]);
 
