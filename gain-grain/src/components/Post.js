@@ -283,6 +283,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
                 padding: '20px',
                 paddingTop: isExpanded ? '' : '20px',
                 marginTop: isExpanded ? '20px' : '0px',
+                overflowY: 'auto'
               }}>
                 <img 
                   src={post.progressPic} 
@@ -297,7 +298,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
               </div>
             ) : (
               <div className="post-content p-3 flex justify-center items-center">
-                <img src={post.progressPic} alt="Progress" className="w-full max-w-xs rounded-lg object-cover" style={{ maxHeight: '300px' }} />
+                <img src={post.progressPic} alt="Progress" className="w-full max-w-xs rounded-lg object-cover" style={{ maxHeight: '300px', overflowY: 'auto' }} />
               </div>
             )}
           </div>
@@ -375,7 +376,9 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
             className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0 ${isExpanded ? 'expanded' : ''}`}
             style={{
               width: isExpanded ? '45vw' : '100%',
-              height: isExpanded ? '80vh' : '350px',
+              height: isExpanded ? '450px' : '350px',
+              minHeight: '350px',
+              maxHeight: isExpanded ? '450px' : '350px',
               flexDirection: 'column',
               boxSizing: 'border-box',
               borderColor: postColor,
@@ -451,6 +454,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
             className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0 ${isExpanded ? 'expanded' : ''}`}
             style={{
               width: isExpanded ? '45vw' : '60vw',
+              height: isExpanded ? '500px' : '450px',
               minHeight: '350px',
               flexDirection: 'column',
               boxSizing: 'border-box',

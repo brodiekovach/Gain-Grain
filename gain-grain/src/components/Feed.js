@@ -124,7 +124,7 @@ export default function Feed({ posts, toggleComments, visibleComments }) {
         <div className="grid grid-cols-3 gap-6 max-w-7xl w-full">
           {filteredPosts.map((post) => (
             <Post
-              classname="w-[60%] mx-auto"
+              classname="w-full h-[350px]"
               key={post._id}
               post={post}
               toggleComments={toggleComments}
@@ -140,7 +140,7 @@ export default function Feed({ posts, toggleComments, visibleComments }) {
         <div className="grid grid-cols-1 gap-6 max-w-7xl w-full">
           {filteredPosts.map((post) => (
             <Post
-              classname="w-[60%] mx-auto"
+              classname="w-[60%] mx-auto h-[350px]"
               key={post._id}
               post={post}
               toggleComments={toggleComments}
