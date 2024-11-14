@@ -104,60 +104,64 @@ export default function EditProfile() {
   return (
     <div>
       <Navbar />
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold">Edit Profile</h1>
-        {error && <p className="text-red-500">{error}</p>}
-        <form onSubmit={handleProfileSave}>
-          <div className="mt-4">
-            <div className="flex flex-col">
-              {/* change your name */}
-              <label className="text-lg">Name:</label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="border p-2 rounded-md"
+      <div className="container mx-auto p-4 max-w-2xl">
+        <h1 className="text-3xl font-semibold text-center mb-6">Edit Profile</h1>
+        {error && <p className="text-center text-red-500 mb-4">{error}</p>}
+        <form onSubmit={handleProfileSave} className="bg-white shadow-md rounded-lg p-6 space-y-6">
+          
+        <div className="flex flex-col items-center mb-6">
+          <label htmlFor="profilePic" className="text-lg mb-2">Profile Picture</label>
+          <div className="relative mb-3 flex flex-col items-center">
+            {profilePicPath && (
+              <img
+                src={profilePicPath}
+                alt="Current Profile Picture"
+                className="w-24 h-24 rounded-full object-cover border mb-4"
               />
-              </div>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              id="profilePic"
+              onChange={(e) => setPic(e.target.files[0])}
+              className="file:bg-orange-500 file:text-white file:py-1 file:px-4 file:rounded file:border-none file:cursor-pointer"
+            />
           </div>
-          <div className="mt-4">
-            <div className="flex flex-col">
-            {/* change your username */}
-              <label className="text-lg">Username:</label>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="border p-2 rounded-md"
-              />
-          </div>
-          <div className="mt-4">
-            {/* change your bio */}
-            <div className="flex flex-col">
-              <label className="text-lg">Bio:</label>
-              <textarea
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                className="border p-2 rounded-md"
-              />
-              </div>
-            </div>
+        </div>
 
-            <div className="flex flex-col mt-4">
-              {/* add a profile picture */}
-              <label className="text-lg">Profile Picture:</label>
-              <input
-                  type="file"
-                  accept="image/*"
-                  id="profilePic"
-                  onChange={(e) => setPic(e.target.files[0])}
-                />
-            </div>
-
-            <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md">
-              Save Changes
-            </button>
+          <div>
+            <label className="text-lg font-medium mb-1">Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="border p-3 w-full rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
+            />
           </div>
+
+          <div>
+            <label className="text-lg font-medium mb-1">Username</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="border p-3 w-full rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
+            />
+          </div>
+
+          <div>
+            <label className="text-lg font-medium mb-1">Bio</label>
+            <textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              className="border p-3 w-full rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
+              rows="4"
+            />
+          </div>
+
+          <button className="w-full bg-orange-500 text-white font-semibold py-3 rounded-lg hover:bg-blue-600 transition-colors">
+            Save Changes
+          </button>
         </form>
       </div>
     </div>
