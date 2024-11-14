@@ -104,13 +104,13 @@ export default function EditProfile() {
   return (
     <div>
       <Navbar />
-      <div className="container mx-auto p-8 max-w-lg border-2 border-gray-300 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-semibold text-center mb-6">Edit Profile</h1>
+      <div className="container mx-auto p-8 max-w-lg border-2 border-blue-300 rounded-lg shadow-lg">
+        <h1 className="text-3xl font-semibold text-black text-center mb-6">Edit Profile</h1>
         {error && <p className="text-center text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleProfileSave} className="bg-white shadow-md rounded-lg p-6 space-y-6">
           
         <div className="flex flex-col items-center mb-6">
-          <label htmlFor="profilePic" className="text-lg mb-2">Profile Picture</label>
+          <label htmlFor="profilePic" className="text-black text-lg mb-2">Profile Picture</label>
           <div className="relative mb-3 flex flex-col items-center">
             {profilePicPath && (
               
@@ -131,7 +131,7 @@ export default function EditProfile() {
         </div>
 
           <div>
-            <label className="text-lg font-medium mb-1">Name</label>
+            <label className="text-black text-lg font-medium mb-1">Name</label>
             <input
               type="text"
               value={name}
@@ -141,7 +141,7 @@ export default function EditProfile() {
           </div>
 
           <div>
-            <label className="text-lg font-medium mb-1">Username</label>
+            <label className="text-black text-lg font-medium mb-1">Username</label>
             <input
               type="text"
               value={username}
@@ -151,7 +151,7 @@ export default function EditProfile() {
           </div>
 
           <div>
-            <label className="text-lg font-medium mb-1">Bio</label>
+            <label className="text-black text-lg font-medium mb-1">Bio</label>
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
