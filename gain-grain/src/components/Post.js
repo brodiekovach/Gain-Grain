@@ -1,4 +1,11 @@
-import { FaDumbbell, FaCameraRetro, FaPencilAlt, FaHeart, FaComment, FaBookmark  } from 'react-icons/fa';
+import { 
+  FaDumbbell, 
+  FaCameraRetro, 
+  FaPencilAlt, 
+  FaHeart, 
+  FaComment, 
+  FaBookmark 
+} from 'react-icons/fa';
 import { MdOutlineFastfood } from "react-icons/md";
 import { useState, useEffect } from 'react';
 import Link from "next/link";
@@ -131,6 +138,17 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
     if (!commentText.trim()) return;
 
     try {
+      // Get the current user's data (commenter's data)
+      const userResponse = await fetch('/api/profile/get-user-from-session', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      
+      const userData = await userResponse.json();
+      if (!userData.success) {
+        throw new Error('Failed to get user data');
+      }
+
       const response = await fetch('/api/posts/add-comment', {
         method: 'POST',
         headers: {
@@ -146,7 +164,16 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
       const data = await response.json();
       
       if (data.success) {
-        setComments([...comments, data.comment]);
+        // Create new comment object with the commenter's username
+        const newComment = {
+          ...data.comment,
+          username: userData.user.username  // Use the current user's (commenter's) username
+        };
+        
+        // Update both local states
+        setComments(prevComments => [...prevComments, newComment]);
+        post.comments = [...post.comments, newComment];  // Update the post object directly
+        
         setCommentText('');
         setIsCommenting(false);
       }
@@ -503,7 +530,7 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
                     className="text-3xl font-semibold"
                   >
                     <FaComment 
-                      style={{ color: visibleComments === post._id ? 'blue' : 'gray', transition: 'color 0.3s' }}
+                      style={{ color: 'gray' }}
                       className="text-gray-600" 
                     />
                   </button>
