@@ -403,9 +403,9 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
             className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0 ${isExpanded ? 'expanded' : ''}`}
             style={{
               width: isExpanded ? '45vw' : '100%',
-              height: isExpanded ? '450px' : '350px',
+              height: isExpanded ? 'auto' : '350px',
               minHeight: '350px',
-              maxHeight: isExpanded ? '450px' : '350px',
+              maxHeight: isExpanded ? '80vh' : '350px',
               flexDirection: 'column',
               boxSizing: 'border-box',
               borderColor: postColor,
@@ -481,8 +481,9 @@ export default function Post({ post, toggleComments, visibleComments, isExpanded
             className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0 ${isExpanded ? 'expanded' : ''}`}
             style={{
               width: isExpanded ? '45vw' : '60vw',
-              height: isExpanded ? '500px' : '450px',
+              height: isExpanded ? 'auto' : '450px',
               minHeight: '350px',
+              maxHeight: isExpanded ? '80vh' : '450px',
               flexDirection: 'column',
               boxSizing: 'border-box',
               borderColor: postColor,
