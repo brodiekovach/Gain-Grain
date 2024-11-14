@@ -1,0 +1,328 @@
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500   2) import { MdOutlineFastfood } from "react-icons/md";
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500   7) 
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500   8) export default function Post({ post, toggleComments, visibleComments, isExpanded, handlePostClick, onSavePost, isSaved }) {
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500  17)   const [comments, setComments] = useState(post.comments || []);
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 127)   const handleCommentSubmit = async (e) => {
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 130)     
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 131)     if (!commentText.trim()) return;
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 134)       const response = await fetch('/api/posts/add-comment', {
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 135)         method: 'POST',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 136)         headers: {
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 137)           'Content-Type': 'application/json',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 138)         },
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 139)         body: JSON.stringify({
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 140)           postId: post._id,
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 141)           userId: userId,
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 142)           content: commentText
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 143)         })
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 147)       
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 149)         setComments([...comments, data.comment]);
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 151)         setIsCommenting(false);
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 158)   const renderPostContent = (post) => {
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 159)     switch (post.postType) {
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 160)       case "Workout":
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 161)         return (
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 179)           </div>
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 180)         );
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 181)       case "Meal":
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 182)         return (
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 205)           </div>
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 206)         );
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 207)       case "Blog":
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 208)         return (
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 220)           </div>
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 221)         );
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 222)       case "ProgressPic":
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 223)         return (
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 251)           </div>
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 252)         );
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 253)       default:
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 254)         return null;
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 255)     }
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 256)   };
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 257) 
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 264) 
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 265)   const renderCommentSection = () => (
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 266)     <div className="comments-section p-4 border-t">
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 267)       {post.comments && post.comments.length > 0 && (
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 268)         <div className="mb-4">
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 269)           {post.comments.map((comment, index) => (
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 270)             <div key={index} className="bg-gray-50 p-3 rounded mb-2">
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 271)               <p className="font-semibold">{comment.username}</p>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 272)               <p>{comment.content}</p>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 273)             </div>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 274)           ))}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 275)         </div>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 276)       )}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 277) 
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 278)       <form onSubmit={handleCommentSubmit} className="mt-4">
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 279)         <div className="flex flex-col space-y-2">
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 280)           <input
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 281)             type="text"
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 282)             value={commentText}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 283)             onChange={(e) => setCommentText(e.target.value)}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 284)             placeholder="Write a comment..."
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 285)             className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 286)             onClick={(e) => e.stopPropagation()}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 287)           />
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 288)           <button
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 289)             type="submit"
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 290)             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 291)             onClick={(e) => e.stopPropagation()}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 292)           >
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 293)             Post Comment
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 294)           </button>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 295)         </div>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 296)       </form>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 297)     </div>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 298)   );
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 299) 
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 300)   const handleCommentClick = (e) => {
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 301)     e.stopPropagation();
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 302)     handlePostClick(post._id);
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 303)     toggleComments(post._id);
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 304)     setIsCommenting(!isCommenting);
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 305)   };
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 306) 
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 307)   return (
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 310)         <div className="relative flex justify-center mx-auto" style={{
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 311)           width: '100%',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 315)         }}>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 323)             className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0 ${isExpanded ? 'expanded' : ''}`}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 327)               flexDirection: 'column',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 328)               boxSizing: 'border-box',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 331)               zIndex: isExpanded ? 40 : 1,
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 333)               top: isExpanded ? '50%' : 'auto',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 335)               transform: isExpanded ? 'translate(-50%, -50%)' : 'none',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 336)               transformOrigin: 'center',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 337)               transition: 'all 0.2s ease',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 356)             <div className="space-x-2 flex flex-col h-full">
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 358)               <div className="flex-grow max-w-[100%] break-words whitespace-normal">{renderPostContent(post)}</div>
+../gain-grain/src/components/Post.js: e2c56369 (Peyton Pridemore 2024-11-06 14:51:41 -0500 386)         </div>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 399)             className={`post bg-white mb-5 rounded-lg w-full flex flex-col flex-shrink-0 min-w-0 ${isExpanded ? 'expanded' : ''}`}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 401)               width: isExpanded ? '45vw' : '60vw',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 402)               minHeight: '350px',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 405)               borderColor: postColor,
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 406)               borderWidth: '3px',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 408)               position: isExpanded ? 'fixed' : 'relative',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 409)               top: isExpanded ? '50%' : 'auto',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 410)               left: isExpanded ? '35%' : 'auto',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 411)               transform: isExpanded ? 'translate(-50%, -50%)' : 'none',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 413)               transition: 'all 0.2s ease',
+../gain-grain/src/components/Post.js: e2c56369 (Peyton Pridemore 2024-11-06 14:51:41 -0500 473)         </div>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 475)       {isExpanded && (
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 476)         <div 
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 477)           className="comments-section bg-white rounded-lg p-4 border-2"
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 478)           style={{
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 479)             position: 'fixed',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 480)             top: '50%',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 481)             left: '70%',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 482)             transform: 'translate(-50%, -50%)',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 483)             width: '25vw',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 484)             maxHeight: '80vh',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 485)             overflowY: 'auto',
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 486)             zIndex: 41,
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 487)             borderColor: postColor,
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 488)           }}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 489)           onClick={(e) => e.stopPropagation()}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 490)         >
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 491)           <h3 className="text-xl font-bold mb-4">Comments</h3>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 492)           {post.comments && post.comments.length > 0 ? (
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 493)             <div className="space-y-4 mb-4">
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 494)               {post.comments.map((comment, index) => (
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 495)                 <div key={index} className="bg-gray-50 p-3 rounded">
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 496)                   <p className="font-semibold">{comment.username}</p>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 497)                   <p className="text-gray-700">{comment.content}</p>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 498)                 </div>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 499)               ))}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 500)             </div>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 501)           ) : (
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 502)             <p className="text-gray-500 mb-4">No comments yet</p>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 503)           )}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 504) 
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 505)           <form onSubmit={handleCommentSubmit} className="sticky bottom-0 bg-white pt-4">
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 506)             <div className="flex flex-col space-y-2">
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 507)               <input
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 508)                 type="text"
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 509)                 value={commentText}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 510)                 onChange={(e) => setCommentText(e.target.value)}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 511)                 placeholder="Write a comment..."
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 512)                 className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 513)                 onClick={(e) => e.stopPropagation()}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 514)               />
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 515)               <button
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 516)                 type="submit"
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 517)                 className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 518)                 onClick={(e) => e.stopPropagation()}
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 519)               >
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 520)                 Post Comment
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 521)               </button>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 522)             </div>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 523)           </form>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 524)         </div>
+../gain-grain/src/components/Post.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 525)       )}
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 527)   );
+../gain-grain/src/components/Post.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 528) }
+../gain-grain/src/components/Feed.js: e2c56369 (Peyton Pridemore 2024-11-06 14:51:41 -0500   1) import Post from './Post';  // Import the new Post component
+../gain-grain/src/components/Feed.js: e2c56369 (Peyton Pridemore 2024-11-06 14:51:41 -0500   5) export default function Feed({ posts, toggleComments, visibleComments }) {
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500   7)   const [selectedCategory, setSelectedCategory] = useState('all');
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  61)   // Modified filter function to handle 'all' category
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  62)   const filteredPosts = selectedCategory === 'all' 
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  63)     ? posts 
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  64)     : posts.filter(post => post.postType === selectedCategory);
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  65) 
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  67)     <div className="flex flex-col items-center mt-8 w-full">
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  68)       {/* Category Selection Menu */}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  69)       <div className="flex justify-center space-x-4 mb-8 w-full">
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  70)         <button
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  71)           className={`px-4 py-2 rounded-full ${
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  72)             selectedCategory === 'all'
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  73)               ? 'bg-[#58B8ED] text-white'
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  74)               : 'bg-gray-200 text-gray-700'
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  75)           }`}
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  76)           onClick={() => setSelectedCategory('all')}
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  77)         >
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  78)           All
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  79)         </button>
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  80)         <button
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  81)           className={`px-4 py-2 rounded-full ${
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  82)             selectedCategory === 'Workout'
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  83)               ? 'bg-[#58B8ED] text-white'
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  84)               : 'bg-gray-200 text-gray-700'
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  85)           }`}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  86)           onClick={() => setSelectedCategory('Workout')}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  87)         >
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  88)           Workouts
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  89)         </button>
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  90)         <button
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  91)           className={`px-4 py-2 rounded-full ${
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  92)             selectedCategory === 'Meal'
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500  93)               ? 'bg-[#58B8ED] text-white'
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  94)               : 'bg-gray-200 text-gray-700'
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  95)           }`}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  96)           onClick={() => setSelectedCategory('Meal')}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  97)         >
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  98)           Meals
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500  99)         </button>
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 100)         <button
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 101)           className={`px-4 py-2 rounded-full ${
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 102)             selectedCategory === 'Blog'
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500 103)               ? 'bg-[#58B8ED] text-white'
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 104)               : 'bg-gray-200 text-gray-700'
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 105)           }`}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 106)           onClick={() => setSelectedCategory('Blog')}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 107)         >
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 108)           Blogs
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 109)         </button>
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 110)         <button
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 111)           className={`px-4 py-2 rounded-full ${
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 112)             selectedCategory === 'ProgressPic'
+../gain-grain/src/components/Feed.js: 73df82df (Peyton Pridemore 2024-11-13 16:53:19 -0500 113)               ? 'bg-[#58B8ED] text-white'
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 114)               : 'bg-gray-200 text-gray-700'
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 115)           }`}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 116)           onClick={() => setSelectedCategory('ProgressPic')}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 117)         >
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 118)           Progress Pics
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 119)         </button>
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 120)       </div>
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 121) 
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 122)       {/* Posts Grid */}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 125)           {filteredPosts.map((post) => (
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 126)             <Post
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 127)               classname="w-[60%] mx-auto"
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 128)               key={post._id}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 129)               post={post}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 130)               toggleComments={toggleComments}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 131)               visibleComments={visibleComments}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 132)               isExpanded={expandedPostId === post._id}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 133)               handlePostClick={handlePostClick}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 134)               onSavePost={handleSavePost}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 135)               isSaved={savedPosts.includes(post._id)}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 136)             />
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 137)           ))}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 141)           {filteredPosts.map((post) => (
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 142)             <Post
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 143)               classname="w-[60%] mx-auto"
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 144)               key={post._id}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 145)               post={post}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 146)               toggleComments={toggleComments}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 147)               visibleComments={visibleComments}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 148)               isExpanded={expandedPostId === post._id}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 149)               handlePostClick={handlePostClick}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 150)               onSavePost={handleSavePost}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 151)               isSaved={savedPosts.includes(post._id)}
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 152)             />
+../gain-grain/src/components/Feed.js: 9fe35275 (Peyton Pridemore 2024-11-13 16:38:30 -0500 153)           ))}
+../gain-grain/src/components/Feed.js: d2ad4c1e (Peyton Pridemore 2024-11-08 15:02:53 -0500 159) 
+../gain-grain/src/app/page.js: 6595c979 (Peyton Pridemore   2024-11-06 13:53:22 -0500 10)   const [followedUserPosts, setFollowedUserPosts] = useState([]); 
+../gain-grain/src/app/page.js: 6595c979 (Peyton Pridemore   2024-11-06 13:53:22 -0500 22)       } catch (error) {
+../gain-grain/src/app/page.js: 9fe35275 (Peyton Pridemore   2024-11-13 16:38:30 -0500 36)             'Content-Type': 'application/json',
+../gain-grain/src/app/page.js: 6595c979 (Peyton Pridemore   2024-11-06 13:53:22 -0500 65)       <Feed 
+../gain-grain/src/app/page.js: 9fe35275 (Peyton Pridemore   2024-11-13 16:38:30 -0500 66)         posts={followedUserPosts}
+../gain-grain/src/app/page.js: 6595c979 (Peyton Pridemore   2024-11-06 13:53:22 -0500 67)         toggleComments={toggleComments} 
+../gain-grain/src/app/page.js: 6595c979 (Peyton Pridemore   2024-11-06 13:53:22 -0500 69)       />
+../gain-grain/src/app/post/post-blog/page.js: bbcde7cf (Peyton Pridemore 2024-11-13 14:19:03 -0500 106)                     <label className="text-lg p-3 font-bold">Title:</label>
+../gain-grain/src/app/post/post-blog/page.js: bbcde7cf (Peyton Pridemore 2024-11-13 14:19:03 -0500 111)                         className="border border-5 rounded-md w-[300px] h-[30px]"
+../gain-grain/src/app/post/post-blog/page.js: bbcde7cf (Peyton Pridemore 2024-11-13 14:19:03 -0500 113)  
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 176)         {/* Posts Display */}
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 177)         <div className="mt-8">
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 178)           {user.posts && user.posts.length > 0 ? (
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 179)             <div className="grid grid-cols-3 gap-2">
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 180)               {user.posts.map((post) => (
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 181)                 <div key={post.id} className="bg-blue-200 h-32 rounded-lg flex justify-center items-center">
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 182)                   <p className="text-center text-white">{post.title || "Post"}</p>
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 183)                 </div>
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 184)               ))}
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 185)             </div>
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 186)           ) : (
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 187)             <div className="flex flex-col items-center mt-4 text-center text-gray-500">
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 188)               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-camera-video-off mb-2" viewBox="0 0 16 16">
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 189)                 <path fillRule="evenodd" d="M10.961 12.365a2 2 0 0 0 .522-1.103l3.11 1.382A1 1 0 0 0 16 11.731V4.269a1 1 0 0 0-1.406-.913l-3.111 1.382A2 2 0 0 0 9.5 3H4.272l.714 1H9.5a1 1 0 0 1 1 1v6a1 1 0 0 1-.144.518zM1.428 4.18A1 1 0 0 0 1 5v6a1 1 0 0 0 1 1h5.014l.714 1H2a2 2 0 0 1-2-2V5c0-.675.334-1.272.847-1.634zM15 11.73l-3.5-1.555v-4.35L15 4.269zm-4.407 3.56-10-14 .814-.58 10 14z" />
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 191)               <p>No posts available.</p>
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 192)             </div>
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 193)           )}
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 194)         </div>
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 195)     </div>
+../gain-grain/src/app/search/profile/page.js: 4d3e5d2a (Peyton Pridemore 2024-11-13 17:43:54 -0500 196)   );
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500  1) import { NextResponse } from 'next/server';
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500  2) import clientPromise from '@/utils/mongodb';
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500  3) import { ObjectId } from 'mongodb';
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500  4) 
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500  5) export async function POST(req) {
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500  6)   try {
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500  7)     const { postId, userId, content } = await req.json();
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500  8)     const client = await clientPromise;
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500  9)     const db = client.db();
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 10) 
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 11)     // Get user info for the comment
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 12)     const user = await db.collection('users').findOne({ _id: new ObjectId(userId) });
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 13) 
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 14)     const comment = {
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 15)       _id: new ObjectId(),
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 16)       userId: new ObjectId(userId),
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 17)       username: user.username,
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 18)       content,
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 19)       createdAt: new Date(),
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 20)     };
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 21) 
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 22)     // Add comment to post
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 23)     await db.collection('posts').updateOne(
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 24)       { _id: new ObjectId(postId) },
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 25)       { $push: { comments: comment } }
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 26)     );
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 27) 
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 28)     return NextResponse.json({
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 29)       success: true,
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 30)       comment
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 31)     });
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 32)   } catch (error) {
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 33)     console.error('Error adding comment:', error);
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 34)     return NextResponse.json({
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 35)       success: false,
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 36)       message: 'Error adding comment'
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 37)     }, { status: 500 });
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 38)   }
+../gain-grain/src/app/api/posts/add-comment/route.js: f0d73cbf (Peyton Pridemore 2024-11-13 18:25:02 -0500 39) } 
+../gain-grain/src/app/profile/page.js: 189cc84a (Peyton Pridemore 2024-11-13 17:26:16 -0500 156)               className={`py-2 px-4 text-xl ${activeTab === 'posts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+../gain-grain/src/app/profile/page.js: 189cc84a (Peyton Pridemore 2024-11-13 17:26:16 -0500 162)               className={`py-2 px-4 text-xl ${activeTab === 'savedPosts' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+../gain-grain/src/app/profile/page.js: 189cc84a (Peyton Pridemore 2024-11-13 17:26:16 -0500 185)         ) : activeTab === 'savedPosts' && loadingSavedPosts ? (
